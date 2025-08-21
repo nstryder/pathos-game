@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EntityCardData" load_steps=2 format=3 uid="uid://u8xt3s6d3yjv"]
+
+[ext_resource type="Script" uid="uid://d3iqhcpkdtq6i" path="res://src/resources/entity_card_data/entity_card_data.gd" id="1_xk8er"]
+
+[resource]
+script = ExtResource("1_xk8er")
+nickname = "Hibiki"
+base_attack = 2
+base_shield = 1
+rarity = 0
+metadata/_custom_type_script = "uid://d3iqhcpkdtq6i"

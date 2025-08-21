@@ -1,0 +1,103 @@
+[gd_scene load_steps=3 format=3 uid="uid://ceolswq6wxma7"]
+
+[ext_resource type="Theme" uid="uid://hxc2axapg1lc" path="res://src/game_screens/new_theme.tres" id="1_8xuw1"]
+[ext_resource type="Script" uid="uid://d322sy6wn63x" path="res://src/game_screens/multiplayer_menu.gd" id="2_duhrc"]
+
+[node name="MultiplayerMenu" type="CenterContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_8xuw1")
+script = ExtResource("2_duhrc")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="HostBox" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/HostBox"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/HostBox/MarginContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer/HostBox/MarginContainer/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/HostBox/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Port"
+
+[node name="HostPort" type="SpinBox" parent="VBoxContainer/HBoxContainer/HostBox/MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 99999.0
+value = 7000.0
+
+[node name="HostButton" type="Button" parent="VBoxContainer/HBoxContainer/HostBox/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Host Game"
+
+[node name="JoinBox" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/JoinBox"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/JoinBox/MarginContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer/JoinBox/MarginContainer/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/JoinBox/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Address"
+
+[node name="JoinAddress" type="LineEdit" parent="VBoxContainer/HBoxContainer/JoinBox/MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+text = "127.0.0.1"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer/JoinBox/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Port"
+
+[node name="JoinPort" type="SpinBox" parent="VBoxContainer/HBoxContainer/JoinBox/MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 99999.0
+value = 7000.0
+
+[node name="JoinButton" type="Button" parent="VBoxContainer/HBoxContainer/JoinBox/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Join Game"
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Status: "
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/HostBox/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/JoinBox/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]

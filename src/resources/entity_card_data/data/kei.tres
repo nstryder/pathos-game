@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EntityCardData" load_steps=2 format=3 uid="uid://uravpsxba18j"]
+
+[ext_resource type="Script" uid="uid://d3iqhcpkdtq6i" path="res://src/resources/entity_card_data/entity_card_data.gd" id="1_g1lc6"]
+
+[resource]
+script = ExtResource("1_g1lc6")
+nickname = "Kei"
+base_attack = 3
+base_shield = 2
+rarity = 1
+metadata/_custom_type_script = "uid://d3iqhcpkdtq6i"
