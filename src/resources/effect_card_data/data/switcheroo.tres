@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EffectCardData" load_steps=2 format=3 uid="uid://yulss6tmrw80"]
+
+[ext_resource type="Script" uid="uid://bsj6kvr5i23qw" path="res://src/resources/effect_card_data/effect_card_data.gd" id="1_y7r61"]
+
+[resource]
+script = ExtResource("1_y7r61")
+effect_name = "Parry"
+effect_type = 1
+identifier = 1
+ability_phase = 3
+usage_type = 1
+timeline_condition = 0
+metadata/_custom_type_script = "uid://bsj6kvr5i23qw"

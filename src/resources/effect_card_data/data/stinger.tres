@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EffectCardData" load_steps=2 format=3 uid="uid://boy7se56prj56"]
+
+[ext_resource type="Script" uid="uid://bsj6kvr5i23qw" path="res://src/resources/effect_card_data/effect_card_data.gd" id="1_m3qxs"]
+
+[resource]
+script = ExtResource("1_m3qxs")
+effect_name = "Knife"
+effect_type = 0
+identifier = 0
+ability_phase = 0
+usage_type = 0
+timeline_condition = 0
+metadata/_custom_type_script = "uid://bsj6kvr5i23qw"
