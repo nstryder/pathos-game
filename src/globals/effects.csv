@@ -1,0 +1,46 @@
+Nickname,Effect Name,Effect Type,Identifier,Ability Description,Ability Phase,Timeline Condition,Use/Attach,Effect Art,Code
+Knife,KNIFE,Offensive,Item,Gain +2 ATK.,Both,None,Attach,,S000-E01-N001
+Snipe,SNIPE,Offensive,Skill,Ignore SHD and deal DMG to HP instead. Exhaust.,Offense,None,Attach,,S000-E01-N002
+Mortar,MORTAR,Offensive,Item,Deal 1 DMG to all Revealed enemy Entities.,Offense,None,Use,,S000-E01-N003
+Bite,BITE,Offensive,Skill,Gain +1 ATK and Heal 1 SHD upon hit.,Both,None,Attach,,S000-E01-N004
+Lance,LANCE,Offensive,Item,Gain +3 ATK. Exhaust.,Offense,None,Attach,,S000-E01-N005
+Arsenal,ARSENAL,Offensive,Skill,"If your Synergy is activated, your Entity in combat activates their Ability twice instead.",Both,None,Use,,S000-E01-N006
+Energizer,ENERGIZER,Offensive,Item,Reveal an ally Entity without activating their Ability,Offense,Immediate,Use,,S000-E01-N007
+Shotgun,SHOTGUN,Offensive,Item,"On combat, attack twice. Exhaust.",Offense,None,Attach,,S000-E01-N008
+Self-Destruct,SELF-DESTRUCT,Offensive,Skill,KO one of your ally Entities. Deal 1 DMG to your opponent's HP.,Both,Immediate,Use,,S000-E01-N009
+Nitro,NITRO,Offensive,Item,"If this is the first Effect card played, skip DEF Phase and start combat.",Offense,None,Use,,S000-E01-N010
+Stinger,STINGER,Offensive,Skill,Lose 1 HP. Deal 1 DMG to an Entity.,Both,Immediate,Attach,,S000-E01-N011
+Dart,DART,Offensive,Status,Apply Fatigued to an Entity.,Offense,None,Attach,,S000-E01-N012
+Sludge,SLUDGE,Offensive,Status,Apply Poisoned to an Entity.,Offense,None,Attach,,S000-E01-N013
+Flash Freeze,FLASH FREEZE,Offensive,Status,Apply Frozen to an Entity.,Offense,None,Attach,,S000-E01-N014
+Taunt,TAUNT,Offensive,Status,Apply Aggro to an Entity.,Both,None,Attach,,S000-E01-N015
+Plate,PLATE,Defensive,Item,Gain +2 SHD.,Both,None,Attach,,S000-E01-N016
+Syringe,SYRINGE,Defensive,Item,Remove a Status from one Entity.,Both,None,Attach,,S000-E01-N017
+Barricade,BARRICADE,Defensive,Item,Immune to all DMG. Exhaust.,Both,None,Attach,,S000-E01-N018
+Medkit,MEDKIT,Defensive,Item,Heal +3 SHD.,Both,None,Attach,,S000-E01-N019
+Mask,MASK,Defensive,Item,Negate any Statuses applied this Phase.,Defense,None,Use,,S000-E01-N020
+Dome,DOME,Defensive,Item,Immune to Overdamage.,Defense,None,Attach,,S000-E01-N021
+Rally,RALLY,Defensive,Skill,"If your Synergy is activated, Negate all Effect cards played by the opponent.",Defense,None,Use,,S000-E01-N022
+Whistle,WHISTLE,Defensive,Item,Negate an Entity's Ability.,Defense,None,Attach,,S000-E01-N023
+Stop Sign,STOP SIGN,Defensive,Item,Negate the first Effect card played by the opponent. Immediate Effect cards aren't affected.,Defense,None,Use,,S000-E01-N024
+Payback,PAYBACK,Defensive,Skill,"After being hit in combat, deal the amount of ATK of your Entity back to the enemy Entity. If your Entity was KO'd, this card has no effect.",Defense,None,Use,,S000-E01-N025
+Turret,TURRET,Defensive,Skill,"If your Synergy is activated, deal 2 DMG to an Entity if an ally Entity was hit last Phase.",Offense,Immediate,Use,,S000-E01-N026
+Helmet,HELMET,Defensive,Item,No Inverts after this card is played this Phase.,Both,None,Attach,,S000-E01-N027
+Bear Trap,BEAR TRAP,Defensive,Item,"Keep this card Attached to an Entity. If the Entity is hit this Phase, deal 1 DMG to your opponent's HP.",Both,None,Attach,,S000-E01-N028
+Parry,PARRY,Defensive,Skill,Sap -1 ATK to Gain +1 SHD.,None,None,Attach,,S000-E01-N029
+Pills,PILLS,Defensive,Status,Apply Resistant to an Entity.,Offense,None,Attach,,S000-E01-N030
+Switcheroo,SWITCHEROO,Special,Skill,Invert ATK and SHD.,Both,None,Attach,,S000-E01-N031
+Cape,CAPE,Special,Item,Hide all of your Revealed ally Entities.,Both,None,Use,,S000-E01-N032
+Smoke Grenade,SMOKE GRENADE,Special,Item,Hide an Entity.,Both,None,Attach,,S000-E01-N033
+Magnifying Glass,MAGNIFYING GLASS,Special,Item,Reveal an enemy Entity without activating their Ability.,Both,Immediate,Use,,S000-E01-N034
+Recon,RECON,Special,Skill,Reveal an opponent's hand.,Both,Immediate,Use,,S000-E01-N035
+Reshuffler,RESHUFFLER,Special,Item,"Opponent puts their hand back into their Effect deck, shuffles, and draws 2 Effect cards.",Both,Immediate,Use,,S000-E01-N036
+Treasure,TREASURE,Special,Item,Draw 1 Effect card.,Offense,Immediate,Use,,S000-E01-N037
+Scepter,SCEPTER,Special,Item,"Upon landing a KO, opponent Reveals the Entity replacing the KO.",Defense,None,Use,,S000-E01-N038
+Disguise,DISGUISE,Special,Item,Changes the ally Entity's Set.,Both,None,Attach,,S000-E01-N039
+Gem,GEM,Special,Item,"Your Entity in combat activates one of your other Entities' Ability instead of their own, so long as they are in the Play Field. If Hidden, Reveal that Entity.",Both,None,Use,,S000-E01-N040
+Plug-in,PLUG-IN,Special,Item,Transfer a Status onto one of your Entities.,Both,None,Use,,S000-E01-N041
+Stun Grenade,STUN GRENADE,Special,Item,The Entity and their Ability cannot be used. Keep this card Attached until next Phase.,Defense,None,Attach,,S000-E01-N042
+Trash Can,TRASH CAN,Special,Item,"Exhaust any number of Effect cards in your hand, including this card.",Both,None,Use,,S000-E01-N043
+Recycle,RECYCLE,Special,Skill,Search your Discard pile and take one Effect card into your hand.,Both,Immediate,Use,,S000-E01-N044
+Recall,RECALL,Special,Skill,Shuffle an ally Entity in the Play Field back into your Entity deck and replace it. Exhaust.,Both,Immediate,Use,,S000-E01-N045

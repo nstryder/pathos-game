@@ -2,8 +2,8 @@ extends Resource
 class_name EffectCardData
 
 enum EffectType {
-    OFFENSE,
-    DEFENSE,
+    OFFENSIVE,
+    DEFENSIVE,
     SPECIAL
 }
 
@@ -15,7 +15,7 @@ enum Identifier {
 
 enum AbilityPhase {
     BOTH,
-    ATTACK,
+    OFFENSE,
     DEFENSE,
     NONE
 }
@@ -26,13 +26,13 @@ enum TimelineCondition {
 }
 
 enum UsageType {
-    CONSUME,
+    USE,
     ATTACH
 }
 
 @export var effect_name: String
-@export var effect_type: EffectType = EffectType.OFFENSE
+@export var effect_type: EffectType = EffectType.OFFENSIVE
 @export var identifier: Identifier = Identifier.ITEM
 @export var ability_phase: AbilityPhase = AbilityPhase.BOTH
-@export var usage_type: UsageType = UsageType.CONSUME
+@export var usage_type: UsageType = UsageType.USE
 @export var timeline_condition: TimelineCondition = TimelineCondition.NONE
