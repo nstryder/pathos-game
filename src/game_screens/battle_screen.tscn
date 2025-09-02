@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://43uuxv7mhc08"]
+
+[ext_resource type="Script" uid="uid://dr8a80niv2ae8" path="res://src/game_screens/battle_screen.gd" id="1_36hs7"]
+[ext_resource type="PackedScene" uid="uid://c3nn8w6dsajke" path="res://src/actors/player.tscn" id="2_gl2eh"]
+
+[node name="BattleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_36hs7")
+template_entity_deck = Array[String](["Ginko", "Golem", "Pixie", "Hibiki", "Haru"])
+template_effect_deck = Array[String](["Knife", "Mortar", "Bite", "Plate", "Medkit", "Parry", "Treasure", "Switcheroo", "Reshuffler"])
+
+[node name="Players" type="Node" parent="."]
+
+[node name="Player1" parent="Players" instance=ExtResource("2_gl2eh")]
+
+[node name="Player2" parent="Players" instance=ExtResource("2_gl2eh")]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+alignment = 1

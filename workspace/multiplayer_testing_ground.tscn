@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://cs406e3dpucl7"]
+
+[ext_resource type="Script" uid="uid://br62cict8v2x2" path="res://workspace/multiplayer_testing_ground.gd" id="1_ifnwc"]
+
+[node name="MultiplayerTestingGround" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ifnwc")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="BtnTestMode" type="Button" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Test Mode
+"
+
+[node name="BtnClientToServer" type="Button" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Message Client to Server"
+
+[node name="BtnServerToClient" type="Button" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Message Server To Client"

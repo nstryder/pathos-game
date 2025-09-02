@@ -7,6 +7,15 @@ func _ready() -> void:
 	multiplayer.connected_to_server.connect(_on_connected_ok)
 	multiplayer.connection_failed.connect(_on_connected_fail)
 
+	if OS.has_feature("debug"):
+		var args = OS.get_cmdline_args()
+		var is_server = "server" in args
+		if is_server:
+			get_window().title = "Pathos Server"
+			_on_host_button_pressed()
+		else:
+			_on_join_button_pressed()
+
 
 func status_out(text) -> void:
 	$%StatusLabel.text = str(text)
@@ -15,6 +24,9 @@ func status_out(text) -> void:
 @rpc("authority", "reliable", "call_local")
 func start_game():
 	status_out("Let's do this: " + str(multiplayer.get_unique_id()))
+	await get_tree().create_timer(1).timeout
+	# get_tree().change_scene_to_file("res://src/game_screens/battle_screen.tscn")
+	get_tree().change_scene_to_file("res://workspace/multiplayer_testing_ground.tscn")
 
 
 func _on_host_button_pressed():

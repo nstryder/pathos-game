@@ -3,11 +3,15 @@ extends Node
 
 # TODO: Detect when csv has been changed (probably via hash comparison)
 
-@export var entity_cards: Dictionary[String, EntityCardData] = {}
-@export var effect_cards: Dictionary[String, EffectCardData] = {}
-@export var entity_cards_indexed_by_name: Dictionary[String, String] = {}
-@export var effect_cards_indexed_by_name: Dictionary[String, String] = {}
+@export var entity_cards: Dictionary[String, EntityCardData] = {} # {Code: EntityCardData}
+@export var effect_cards: Dictionary[String, EffectCardData] = {} # {Code: EffectCardData}
+@export var entity_cards_indexed_by_name: Dictionary[String, String] = {} # {Nickname: Code}
+@export var effect_cards_indexed_by_name: Dictionary[String, String] = {} # {Nickname: Code}
 @export_tool_button("Build Card Data From CSV", "Callable") var build_button = _build_all_data
+
+
+func get_entity_by_name(entity_name: String) -> EntityCardData:
+	return entity_cards[entity_cards_indexed_by_name[entity_name]]
 
 
 func _build_all_data():
