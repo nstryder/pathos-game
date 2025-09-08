@@ -1,0 +1,140 @@
+[gd_scene load_steps=5 format=3 uid="uid://c2gshyv3lm0xw"]
+
+[ext_resource type="Script" uid="uid://220a8t7sh726" path="res://src/actors/entity_cards/entity_card.gd" id="1_1gj0d"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gj0d"]
+resource_local_to_scene = true
+bg_color = Color(0.878431, 0.788235, 0.65098, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.29, 0.174, 0, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 4
+shadow_offset = Vector2(0, 9)
+
+[sub_resource type="Theme" id="Theme_fygcf"]
+resource_local_to_scene = true
+Label/colors/font_color = Color(0, 0, 0, 1)
+MarginContainer/constants/margin_bottom = 12
+MarginContainer/constants/margin_left = 12
+MarginContainer/constants/margin_right = 12
+MarginContainer/constants/margin_top = 12
+Panel/styles/panel = SubResource("StyleBoxFlat_1gj0d")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fygcf"]
+size = Vector2(240, 360)
+
+[node name="EntityCard" type="Node2D"]
+script = ExtResource("1_1gj0d")
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(240, 360)
+layout_mode = 3
+anchor_right = 0.125
+anchor_bottom = 0.333333
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = SubResource("Theme_fygcf")
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Border" type="ColorRect" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/Border"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Background" type="ColorRect" parent="Control/Border/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+
+[node name="Nickname" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Card Nickname"
+
+[node name="ArtPlaceholder" type="ColorRect" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Description"
+
+[node name="HSeparator" type="HSeparator" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Description" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Attack" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ATK: 0"
+
+[node name="Shield" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "SHD: 0"
+
+[node name="Veil" type="ColorRect" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.136988, 0.136988, 0.136988, 1)
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_fygcf")

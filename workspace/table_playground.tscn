@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://buyir22g6fd6q"]
+
+[ext_resource type="PackedScene" uid="uid://brojsgyxvag1" path="res://src/actors/card_manager.tscn" id="1_ilo2n"]
+[ext_resource type="PackedScene" uid="uid://c2gshyv3lm0xw" path="res://src/actors/entity_cards/entity_card.tscn" id="2_3scsr"]
+
+[node name="TablePlayground" type="Node2D"]
+
+[node name="CardManager" parent="." instance=ExtResource("1_ilo2n")]
+
+[node name="EntityCard" parent="CardManager" instance=ExtResource("2_3scsr")]
+position = Vector2(317, 616)
+
+[node name="EntityCard2" parent="CardManager" instance=ExtResource("2_3scsr")]
+position = Vector2(850, 427)
