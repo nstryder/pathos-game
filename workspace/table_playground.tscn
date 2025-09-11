@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://buyir22g6fd6q"]
+[gd_scene load_steps=4 format=3 uid="uid://buyir22g6fd6q"]
 
 [ext_resource type="PackedScene" uid="uid://brojsgyxvag1" path="res://src/actors/card_manager.tscn" id="1_ilo2n"]
 [ext_resource type="PackedScene" uid="uid://c2gshyv3lm0xw" path="res://src/actors/entity_cards/entity_card.tscn" id="2_3scsr"]
+[ext_resource type="PackedScene" uid="uid://c1t6j0a6ap1jc" path="res://src/actors/card_slot.tscn" id="3_3scsr"]
 
 [node name="TablePlayground" type="Node2D"]
 
@@ -12,3 +13,6 @@ position = Vector2(317, 616)
 
 [node name="EntityCard2" parent="CardManager" instance=ExtResource("2_3scsr")]
 position = Vector2(850, 427)
+
+[node name="CardSlot" parent="." instance=ExtResource("3_3scsr")]
+position = Vector2(1355, 376)

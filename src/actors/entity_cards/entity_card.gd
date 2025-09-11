@@ -7,6 +7,11 @@ var max_attack: int
 var max_shield: int
 var current_attack: int
 var current_shield: int
+var draggable: bool = true:
+	set(value):
+		draggable = value
+		($Area2D/CollisionShape2D as CollisionShape2D).disabled = !value
+
 
 var has_shadow: bool = false:
 	set(value):
