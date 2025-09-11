@@ -10,6 +10,6 @@ enum Rarity {
 @export var base_attack: int
 @export var base_shield: int
 @export var rarity: Rarity = Rarity.CHARACTER
-var synergy_type
-var name_of_set
-var ability
+var synergy_type: Variant
+var name_of_set: Variant
+var ability: Variant

@@ -31,14 +31,14 @@ func _process(_delta: float) -> void:
 
 
 # SERVER METHODS
-func _assign_player_ids():
+func _assign_player_ids() -> void:
 	var peer_ids := Array(multiplayer.get_peers())
 	peer_ids.shuffle()
 	player1.id = peer_ids[0]
 	player2.id = peer_ids[1]
 
 
-func _setup_player_decks():
+func _setup_player_decks() -> void:
 	for entity_name in template_entity_deck:
 		player1.base_entity_deck.append(CardDb.entity_cards_indexed_by_name[entity_name])
 	for effect_name in template_effect_deck:

@@ -69,12 +69,12 @@ extends Control
 
 func _ready() -> void:
 	($%BtnTestMode as Button).pressed.connect(_on_test_mode_pressed)
-	$%BtnClientToServer.pressed.connect(_on_btn_client_to_server_pressed)
-	$%BtnServerToClient.pressed.connect(_on_btn_server_to_client_pressed)
+	($%BtnClientToServer as Button).pressed.connect(_on_btn_client_to_server_pressed)
+	($%BtnServerToClient as Button).pressed.connect(_on_btn_server_to_client_pressed)
 
 
 @rpc("any_peer", "call_local", "reliable")
-func test_mode():
+func test_mode() -> void:
 	print("This func was called by ", multiplayer.get_unique_id())
 
 
@@ -83,28 +83,28 @@ func test_mode():
 # Need to check NOT is_server before doing rpc_id() to stop error
 # Otherwise server can try to call itself which is not allowed
 @rpc("any_peer", "call_remote", "reliable")
-func test_client_to_server_communication(message: String):
+func test_client_to_server_communication(message: String) -> void:
 	print("Hello, this is the server. ", message)
 
 # For server to send data to clients
 # Can call this using rpc(), just need to check is_server() first before doing rpc() to stop error
 @rpc("authority", "call_remote", "reliable")
-func test_server_to_client_communication(message: String):
+func test_server_to_client_communication(message: String) -> void:
 	print("Client here. ", message)
 
 
-func _on_test_mode_pressed():
+func _on_test_mode_pressed() -> void:
 	test_mode.rpc()
 
 
-func _on_btn_client_to_server_pressed():
+func _on_btn_client_to_server_pressed() -> void:
 	if multiplayer.is_server():
 		print("Attempted client-exclusive call from server.")
 		return
 	test_client_to_server_communication.rpc_id(1, "This is a message from a client!")
 
 
-func _on_btn_server_to_client_pressed():
+func _on_btn_server_to_client_pressed() -> void:
 	if not multiplayer.is_server():
 		print("Attempted server-exclusive call from client.")
 		return
