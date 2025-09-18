@@ -1,4 +1,4 @@
-extends Node2D
+extends Card
 class_name EntityCard
 
 @export var entity_card_data: EntityCardData
@@ -7,20 +7,6 @@ var max_attack: int
 var max_shield: int
 var current_attack: int
 var current_shield: int
-var draggable: bool = true:
-	set(value):
-		draggable = value
-		($Area2D/CollisionShape2D as CollisionShape2D).disabled = !value
-
-
-var has_shadow: bool = false:
-	set(value):
-		has_shadow = value
-		var card_background := ($Control as Control).theme.get_stylebox("panel", "Panel") as StyleBoxFlat
-		if has_shadow:
-			card_background.shadow_size = 6
-		else:
-			card_background.shadow_size = 0
 
 
 # Called when the node enters the scene tree for the first time.

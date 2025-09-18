@@ -18,7 +18,7 @@ class_name Player
 @export var effect_exhaust_pile: Array[int] = []
 
 # This should only be called after both base decks are set up
-func initialize_decks():
+func initialize_decks() -> void:
 	entity_deck = range(base_entity_deck.size())
 	entity_deck.shuffle()
 	effect_deck = range(base_effect_deck.size())

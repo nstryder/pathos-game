@@ -3,8 +3,10 @@ extends Node2D
 const COLLISION_MASK_CARD = 0b1
 const COLLISION_MASK_SLOT = 0b10
 
-var card_being_dragged: EntityCard
-var last_card_dragged: EntityCard
+var card_being_dragged: Card
+var last_card_dragged: Card
+
+@export var player_hand: PlayerHand
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -33,9 +35,12 @@ func end_drag() -> void:
 		card_being_dragged.scale = Vector2.ONE
 		var card_slot_found: CardSlot = raycast_check_for_card(COLLISION_MASK_SLOT)
 		if card_slot_found and not card_slot_found.card_is_in_slot:
+			player_hand.remove_card_from_hand(card_being_dragged)
 			card_being_dragged.global_position = card_slot_found.global_position
 			card_being_dragged.draggable = false
 			card_slot_found.card_is_in_slot = true
+		else:
+			player_hand.animate_card_to_position(card_being_dragged, card_being_dragged.starting_position)
 	card_being_dragged = null
 
 
