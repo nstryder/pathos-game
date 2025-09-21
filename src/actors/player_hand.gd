@@ -11,20 +11,15 @@ Critiques:
         - and using that position (maybe use a Control child later?)
 """
 
-const HAND_COUNT = 5
 const CARD_WIDTH = 250
 const HAND_Y_POSITION = 890
+const ANIMATION_TWEEN_TIME = 0.2
 @export var card_manager: Node2D
 
 var player_hand: Array[Card] = []
 
 func _ready() -> void:
-    const card_scene = preload("uid://djf85mhy7rn64")
-    for i in range(HAND_COUNT):
-        var new_card: Card = card_scene.instantiate()
-        card_manager.add_child(new_card)
-        new_card.name = "card"
-        add_card_to_hand(new_card)
+    pass
 
 
 func add_card_to_hand(card: Card) -> void:
@@ -49,7 +44,7 @@ func calculate_card_position(index: int) -> float:
 
 func animate_card_to_position(card: Card, new_position: Vector2) -> void:
     var tween := create_tween()
-    tween.tween_property(card, "position", new_position, 0.1) \
+    tween.tween_property(card, "position", new_position, ANIMATION_TWEEN_TIME) \
         .set_trans(Tween.TRANS_SPRING) \
         .set_ease(Tween.EASE_OUT)
 

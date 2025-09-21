@@ -1,0 +1,100 @@
+[gd_scene load_steps=7 format=3 uid="uid://b5eojojjt7qk3"]
+
+[ext_resource type="Script" uid="uid://bw8ap3bbiknsc" path="res://src/actors/deck.gd" id="1_jeps2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gj0d"]
+resource_local_to_scene = true
+bg_color = Color(0.878431, 0.788235, 0.65098, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.29, 0.174, 0, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 4
+shadow_offset = Vector2(0, 9)
+
+[sub_resource type="Theme" id="Theme_5wyg4"]
+resource_local_to_scene = true
+Label/colors/font_color = Color(0, 0, 0, 1)
+MarginContainer/constants/margin_bottom = 12
+MarginContainer/constants/margin_left = 12
+MarginContainer/constants/margin_right = 12
+MarginContainer/constants/margin_top = 12
+Panel/styles/panel = SubResource("StyleBoxFlat_1gj0d")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jeps2"]
+resource_local_to_scene = true
+bg_color = Color(0.41117534, 0.332108, 0.20712313, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.29, 0.174, 0, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 4
+shadow_offset = Vector2(0, 9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jeps2"]
+font_size = 144
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rsf8w"]
+size = Vector2(240, 360)
+
+[node name="Deck" type="Node2D"]
+z_index = -2
+script = ExtResource("1_jeps2")
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(240, 360)
+layout_mode = 3
+anchor_right = 0.125
+anchor_bottom = 0.333333
+offset_left = -120.0
+offset_top = -180.0
+offset_right = 120.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = SubResource("Theme_5wyg4")
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jeps2")
+
+[node name="CenterContainer" type="CenterContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CardCounter" type="Label" parent="Control/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "9"
+label_settings = SubResource("LabelSettings_jeps2")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_rsf8w")

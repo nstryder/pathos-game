@@ -1,18 +1,74 @@
-[gd_scene load_steps=5 format=3 uid="uid://buyir22g6fd6q"]
+[gd_scene load_steps=7 format=3 uid="uid://buyir22g6fd6q"]
 
 [ext_resource type="PackedScene" uid="uid://brojsgyxvag1" path="res://src/actors/card_manager.tscn" id="1_ilo2n"]
-[ext_resource type="PackedScene" uid="uid://c1t6j0a6ap1jc" path="res://src/actors/card_slot.tscn" id="3_3scsr"]
 [ext_resource type="PackedScene" uid="uid://qbgnkpc4g0sa" path="res://src/actors/player_hand.tscn" id="4_l2e2a"]
+[ext_resource type="PackedScene" uid="uid://b5eojojjt7qk3" path="res://src/actors/deck.tscn" id="5_fdryh"]
 [ext_resource type="Script" uid="uid://b1pyjj40b5ol1" path="res://src/actors/player_hand.gd" id="5_itgml"]
+[ext_resource type="PackedScene" uid="uid://mnwle3qvukwi" path="res://src/actors/input_manager.tscn" id="6_i6af0"]
+[ext_resource type="Script" uid="uid://dnu86yuq4wb0r" path="res://src/actors/input_manager.gd" id="7_nfchv"]
 
 [node name="TablePlayground" type="Node2D"]
 
-[node name="CardManager" parent="." node_paths=PackedStringArray("player_hand") instance=ExtResource("1_ilo2n")]
-player_hand = NodePath("../PlayerHand")
-
-[node name="CardSlot" parent="." instance=ExtResource("3_3scsr")]
-position = Vector2(1355, 376)
+[node name="CardManager" parent="." instance=ExtResource("1_ilo2n")]
+unique_name_in_owner = true
 
 [node name="PlayerHand" parent="." node_paths=PackedStringArray("card_manager") instance=ExtResource("4_l2e2a")]
+unique_name_in_owner = true
 script = ExtResource("5_itgml")
 card_manager = NodePath("../CardManager")
+
+[node name="Deck" parent="." instance=ExtResource("5_fdryh")]
+unique_name_in_owner = true
+position = Vector2(185, 819)
+
+[node name="InputManager" parent="." instance=ExtResource("6_i6af0")]
+unique_name_in_owner = true
+script = ExtResource("7_nfchv")
+
+[node name="CardSlots" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="CardSlotPositions" type="HBoxContainer" parent="Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="CenterContainer" parent="Control/CardSlotPositions"]
+custom_minimum_size = Vector2(144, 216)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Control/CardSlotPositions/Control"]
+layout_mode = 2
+
+[node name="Control2" type="CenterContainer" parent="Control/CardSlotPositions"]
+custom_minimum_size = Vector2(144, 216)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Control/CardSlotPositions/Control2"]
+layout_mode = 2
+
+[node name="Control3" type="CenterContainer" parent="Control/CardSlotPositions"]
+custom_minimum_size = Vector2(144, 216)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Control/CardSlotPositions/Control3"]
+layout_mode = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
