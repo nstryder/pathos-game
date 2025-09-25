@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Pathos"
-run/main_scene="uid://ceolswq6wxma7"
+run/main_scene="uid://c5pfphsd5oquf"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
 

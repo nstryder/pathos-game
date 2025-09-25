@@ -19,7 +19,7 @@ class_name Player
 
 # This should only be called after both base decks are set up
 func initialize_decks() -> void:
-	entity_deck = range(base_entity_deck.size())
+	entity_deck.assign(range(base_entity_deck.size()))
 	entity_deck.shuffle()
-	effect_deck = range(base_effect_deck.size())
+	effect_deck.assign(range(base_effect_deck.size()))
 	effect_deck.shuffle()

@@ -1,5 +1,7 @@
 extends CenterContainer
 
+
+@onready var lobby: LobbyScreen = owner
 @onready var status_label: Label = $%StatusLabel
 @onready var host_port_box: SpinBox = $%HostPort
 @onready var join_port_box: SpinBox = $%JoinPort
@@ -29,8 +31,9 @@ func status_out(text: Variant) -> void:
 func start_game() -> void:
 	status_out("Let's do this: " + str(multiplayer.get_unique_id()))
 	await get_tree().create_timer(1).timeout
-	# get_tree().change_scene_to_file("res://src/game_screens/battle_screen.tscn")
-	get_tree().change_scene_to_file("res://workspace/multiplayer_testing_ground.tscn")
+	hide()
+	if multiplayer.is_server():
+		lobby.start_game()
 
 
 func _on_host_button_pressed() -> void:

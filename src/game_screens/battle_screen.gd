@@ -1,4 +1,5 @@
-extends Control
+extends Node2D
+class_name BattleScreen
 
 @export var template_entity_deck: Array[String] = []
 @export var template_effect_deck: Array[String] = []
@@ -20,9 +21,7 @@ var seated_as_player_number: int
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if multiplayer.is_server():
-		_assign_player_ids()
-		_setup_player_decks()
+	pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -31,8 +30,16 @@ func _process(_delta: float) -> void:
 
 
 # SERVER METHODS
+func initialize_board() -> void:
+	if multiplayer.is_server():
+		_assign_player_ids()
+		_setup_player_decks()
+
+
 func _assign_player_ids() -> void:
-	var peer_ids := Array(multiplayer.get_peers())
+	# NOTE: get_peers() does NOT include caller's own ID
+	# so we need to include it manually (for the server it is 1)
+	var peer_ids := [1, multiplayer.get_peers()[0]]
 	peer_ids.shuffle()
 	player1.id = peer_ids[0]
 	player2.id = peer_ids[1]
