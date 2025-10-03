@@ -6,5 +6,6 @@ class_name LobbyScreen
 
 
 func start_game() -> void:
-    if not multiplayer.is_server(): return
-    battle_screen.initialize_board()
+	($ConnectLayer as CanvasLayer).hide()
+	if multiplayer.is_server():
+		battle_screen.initialize_board()

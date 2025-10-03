@@ -1,14 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://43uuxv7mhc08"]
+[gd_scene load_steps=6 format=3 uid="uid://43uuxv7mhc08"]
 
 [ext_resource type="Script" uid="uid://dr8a80niv2ae8" path="res://src/game_screens/battle_screen.gd" id="1_36hs7"]
 [ext_resource type="PackedScene" uid="uid://c3nn8w6dsajke" path="res://src/actors/player.tscn" id="2_gl2eh"]
+[ext_resource type="PackedScene" uid="uid://qbgnkpc4g0sa" path="res://src/actors/player_hand.tscn" id="3_j7by3"]
+[ext_resource type="Script" uid="uid://c3oox5b6qpuv4" path="res://src/game_screens/entity_slot_markers.gd" id="4_g8hex"]
+[ext_resource type="PackedScene" uid="uid://b5eojojjt7qk3" path="res://src/actors/deck.tscn" id="4_jpl4g"]
 
 [node name="BattleScreen" type="Node2D"]
 script = ExtResource("1_36hs7")
 template_entity_deck = Array[String](["Ginko", "Golem", "Pixie", "Hibiki", "Haru"])
 template_effect_deck = Array[String](["Knife", "Mortar", "Bite", "Plate", "Medkit", "Parry", "Treasure", "Switcheroo", "Reshuffler"])
 
-[node name="Players" type="Node" parent="."]
+[node name="Players" type="Node2D" parent="."]
 
 [node name="Player1" parent="Players" instance=ExtResource("2_gl2eh")]
 
@@ -16,3 +19,59 @@ template_effect_deck = Array[String](["Knife", "Mortar", "Bite", "Plate", "Medki
 
 [node name="CenterPoint" type="Marker2D" parent="."]
 position = Vector2(960, 540)
+
+[node name="YourSide" type="Node2D" parent="CenterPoint"]
+
+[node name="YourEffectDeck" parent="CenterPoint/YourSide" instance=ExtResource("4_jpl4g")]
+unique_name_in_owner = true
+position = Vector2(-754, 291)
+deck_type = 1
+
+[node name="YourEntityDeck" parent="CenterPoint/YourSide" instance=ExtResource("4_jpl4g")]
+unique_name_in_owner = true
+position = Vector2(-412, 202)
+scale = Vector2(0.6, 0.6)
+deck_type = 1
+
+[node name="YourHand" parent="CenterPoint/YourSide" instance=ExtResource("3_j7by3")]
+unique_name_in_owner = true
+position = Vector2(0, 300)
+
+[node name="YourEntitySlotMarkers" type="Node2D" parent="CenterPoint/YourSide"]
+position = Vector2(0, 200)
+script = ExtResource("4_g8hex")
+gap = 40
+
+[node name="Slot1" type="Marker2D" parent="CenterPoint/YourSide/YourEntitySlotMarkers"]
+position = Vector2(200, 0)
+
+[node name="Slot2" type="Marker2D" parent="CenterPoint/YourSide/YourEntitySlotMarkers"]
+
+[node name="Slot3" type="Marker2D" parent="CenterPoint/YourSide/YourEntitySlotMarkers"]
+position = Vector2(-200, 0)
+
+[node name="OppSide" type="Node2D" parent="CenterPoint"]
+
+[node name="OppEntityDeck" parent="CenterPoint/OppSide" instance=ExtResource("4_jpl4g")]
+unique_name_in_owner = true
+position = Vector2(416, -204)
+scale = Vector2(0.6, 0.6)
+deck_type = 1
+
+[node name="OppEffectDeck" parent="CenterPoint/OppSide" instance=ExtResource("4_jpl4g")]
+unique_name_in_owner = true
+position = Vector2(770, -307)
+deck_type = 1
+
+[node name="OppEntitySlotMarkers" type="Node2D" parent="CenterPoint/OppSide"]
+position = Vector2(0, -200)
+script = ExtResource("4_g8hex")
+gap = 40
+
+[node name="Slot1" type="Marker2D" parent="CenterPoint/OppSide/OppEntitySlotMarkers"]
+position = Vector2(200, 0)
+
+[node name="Slot2" type="Marker2D" parent="CenterPoint/OppSide/OppEntitySlotMarkers"]
+
+[node name="Slot3" type="Marker2D" parent="CenterPoint/OppSide/OppEntitySlotMarkers"]
+position = Vector2(-200, 0)

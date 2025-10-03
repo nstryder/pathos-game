@@ -7,8 +7,16 @@
 [node name="LobbyScreen" type="Node2D"]
 script = ExtResource("1_gafqt")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="ConnectLayer" type="CanvasLayer" parent="."]
 
-[node name="MultiplayerMenu" parent="CanvasLayer" instance=ExtResource("2_nl1gy")]
+[node name="ColorRect" type="ColorRect" parent="ConnectLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(8.085966e-06, 0.9858903, 0.7853136, 1)
+
+[node name="MultiplayerMenu" parent="ConnectLayer" instance=ExtResource("2_nl1gy")]
 
 [node name="BattleScreen" parent="." instance=ExtResource("3_nl1gy")]

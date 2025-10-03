@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b5eojojjt7qk3"]
+[gd_scene load_steps=6 format=3 uid="uid://b5eojojjt7qk3"]
 
 [ext_resource type="Script" uid="uid://bw8ap3bbiknsc" path="res://src/actors/deck.gd" id="1_jeps2"]
 
@@ -46,9 +46,6 @@ shadow_offset = Vector2(0, 9)
 [sub_resource type="LabelSettings" id="LabelSettings_jeps2"]
 font_size = 144
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rsf8w"]
-size = Vector2(240, 360)
-
 [node name="Deck" type="Node2D"]
 z_index = -2
 script = ExtResource("1_jeps2")
@@ -91,10 +88,3 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "9"
 label_settings = SubResource("LabelSettings_jeps2")
-
-[node name="Area2D" type="Area2D" parent="."]
-collision_layer = 4
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("RectangleShape2D_rsf8w")

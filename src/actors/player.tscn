@@ -34,8 +34,20 @@ properties/9/path = NodePath(".:id")
 properties/9/spawn = true
 properties/9/replication_mode = 2
 
-[node name="Player" type="Node"]
+[node name="Player" type="Node2D"]
 script = ExtResource("1_iairh")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_iairh")
+
+[node name="EntitySpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://djf85mhy7rn64")
+spawn_path = NodePath("../EntityCards")
+
+[node name="EffectSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://lfqkryekm4io")
+spawn_path = NodePath("../EffectCards")
+
+[node name="EntityCards" type="Node2D" parent="."]
+
+[node name="EffectCards" type="Node2D" parent="."]

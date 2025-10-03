@@ -17,3 +17,8 @@ var has_shadow: bool = false:
 			card_background.shadow_size = 6
 		else:
 			card_background.shadow_size = 0
+
+
+@rpc("authority", "call_local", "reliable")
+func hide_from_field() -> void:
+	global_position = Vector2() * 10000

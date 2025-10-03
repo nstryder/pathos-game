@@ -31,9 +31,7 @@ func status_out(text: Variant) -> void:
 func start_game() -> void:
 	status_out("Let's do this: " + str(multiplayer.get_unique_id()))
 	await get_tree().create_timer(1).timeout
-	hide()
-	if multiplayer.is_server():
-		lobby.start_game()
+	lobby.start_game()
 
 
 func _on_host_button_pressed() -> void:

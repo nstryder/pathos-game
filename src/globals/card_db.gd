@@ -10,8 +10,20 @@ extends Node
 @export_tool_button("Build Card Data From CSV", "Callable") var build_button: Callable = _build_all_data
 
 
+func get_entity_by_code(entity_code: String) -> EntityCardData:
+	return entity_cards[entity_code]
+
+
+func get_effect_by_code(effect_code: String) -> EffectCardData:
+	return effect_cards[effect_code]
+
+
 func get_entity_by_name(entity_name: String) -> EntityCardData:
 	return entity_cards[entity_cards_indexed_by_name[entity_name]]
+
+
+func get_effect_by_name(effect_name: String) -> EffectCardData:
+	return effect_cards[effect_cards_indexed_by_name[effect_name]]
 
 
 func _build_all_data() -> void:
