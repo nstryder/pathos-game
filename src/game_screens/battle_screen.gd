@@ -14,8 +14,10 @@ var controlled_player: Player
 var opposing_player: Player
 @onready var your_entity_deck: Deck = %YourEntityDeck
 @onready var your_effect_deck: Deck = %YourEffectDeck
+@onready var your_entity_markers: EntitySlotMarkers = %YourEntitySlotMarkers
 @onready var opp_entity_deck: Deck = %OppEntityDeck
 @onready var opp_effect_deck: Deck = %OppEffectDeck
+@onready var opp_entity_markers: EntitySlotMarkers = %OppEntitySlotMarkers
 
 
 # assign player ids
@@ -40,6 +42,7 @@ func initialize_board() -> void:
 	if multiplayer.is_server():
 		_assign_player_ids()
 		_setup_player_decks()
+		_draw_initial_entities()
 		_finish_client_side_setup.rpc()
 
 
@@ -65,34 +68,49 @@ func _setup_player_decks() -> void:
 	player2.initialize_decks()
 
 
+func _draw_initial_entities() -> void:
+	player1.draw_entities()
+	player2.draw_entities()
+
+
 @rpc("authority", "call_local", "reliable")
 func _assign_client_player_number(player_number: int) -> void:
 	if player_number == 1:
 		controlled_player = player1
 		opposing_player = player2
+		(%PlayerNumberLabel as Label).text = "You are player 1"
 	else:
 		controlled_player = player2
 		opposing_player = player1
+		(%PlayerNumberLabel as Label).text = "You are player 2"
 	
 #endregion
 
 #region CLIENT METHODS
-
 @rpc("authority", "call_local", "reliable")
 func _finish_client_side_setup() -> void:
+	if not multiplayer.is_server():
+		await controlled_player.syncer.delta_synchronized
 	_setup_board()
 	_place_entities_on_field()
 
 
 func _setup_board() -> void:
+	your_entity_deck.deck_player = controlled_player
 	your_entity_deck.set_deck(controlled_player.entity_deck)
+	your_entity_deck.set_entity_marker_node(your_entity_markers)
+	
+	your_effect_deck.deck_player = controlled_player
 	your_effect_deck.set_deck(controlled_player.effect_deck)
+	
+	opp_entity_deck.deck_player = opposing_player
 	opp_entity_deck.set_deck(opposing_player.entity_deck)
+	opp_entity_deck.set_entity_marker_node(opp_entity_markers)
 	opp_effect_deck.set_deck(opposing_player.effect_deck)
 
 
 func _place_entities_on_field() -> void:
-	player1.draw_entities()
-	player2.draw_entities()
+	your_entity_deck.realize_entity_state()
+	opp_entity_deck.realize_entity_state()
 
 #endregion

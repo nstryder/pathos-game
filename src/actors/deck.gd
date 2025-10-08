@@ -5,8 +5,8 @@ const entity_card_scene = preload("uid://djf85mhy7rn64")
 const effect_card_scene = preload("uid://lfqkryekm4io")
 
 enum DeckType {
-    ENTITY,
-    EFFECTS
+	ENTITY,
+	EFFECTS
 }
 
 @export var deck_type: DeckType = DeckType.ENTITY
@@ -15,37 +15,56 @@ var deck: Array
 var card_scene: PackedScene
 var deck_player: Player
 
+## This MUST be set upon instantiating this scene
+var entity_slot_markers: EntitySlotMarkers
+
 # @onready var player_hand: PlayerHand = %PlayerHand
 # @onready var card_manager: CardManager = %CardManager
 @onready var card_counter: Label = %CardCounter
 
 
 func _ready() -> void:
-    if deck_type == DeckType.ENTITY:
-        card_scene = entity_card_scene
-    else:
-        card_scene = effect_card_scene
+	if deck_type == DeckType.ENTITY:
+		card_scene = entity_card_scene
+	else:
+		card_scene = effect_card_scene
+
+
+func set_entity_marker_node(marker_node: EntitySlotMarkers) -> void:
+	entity_slot_markers = marker_node
 
 
 func update_counter() -> void:
-    card_counter.text = str(deck.size())
+	card_counter.text = str(deck.size())
+	if deck.is_empty():
+		visible = false
 
 
 func set_deck(new_deck: Array) -> void:
-    deck = new_deck
-    update_counter()
+	deck = new_deck
+	update_counter()
 
 
 func draw_card() -> void:
-    update_counter()
-    if deck.is_empty():
-        visible = false
-    var new_card: Card = card_scene.instantiate()
-    # card_manager.add_child(new_card)
-    # new_card.name = card_drawn
-    new_card.global_position = global_position
-    # player_hand.add_card_to_hand(new_card)
+	update_counter()
 
 
-func sync_entities() -> void:
-    pass
+func realize_entity_state() -> void:
+	if entity_slot_markers.current_idx_representation == deck_player.entities_in_play:
+		return
+	hide_old_entities_in_play()
+	for slot_num: int in range(deck_player.entities_in_play.size()):
+		var entity_idx: int = deck_player.entities_in_play[slot_num]
+		if entity_idx == -1: continue
+		var entity_card: EntityCard = deck_player.get_entity_card_at_index(entity_idx)
+		var new_pos: Vector2 = entity_slot_markers.get_position_at_slot(slot_num)
+		entity_card.global_position = new_pos
+		entity_card.scale = Vector2.ONE * Constants.ENTITY_SCALE
+		print("moving card idx ", entity_idx, " to slot num ", slot_num)
+
+
+func hide_old_entities_in_play() -> void:
+	for entity_idx: int in entity_slot_markers.current_idx_representation:
+		if entity_idx == -1: continue
+		var current_card: EntityCard = deck_player.get_entity_card_at_index(entity_idx)
+		current_card.hide_from_field()

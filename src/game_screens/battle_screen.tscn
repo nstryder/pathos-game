@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://43uuxv7mhc08"]
+[gd_scene load_steps=7 format=3 uid="uid://43uuxv7mhc08"]
 
 [ext_resource type="Script" uid="uid://dr8a80niv2ae8" path="res://src/game_screens/battle_screen.gd" id="1_36hs7"]
 [ext_resource type="PackedScene" uid="uid://c3nn8w6dsajke" path="res://src/actors/player.tscn" id="2_gl2eh"]
 [ext_resource type="PackedScene" uid="uid://qbgnkpc4g0sa" path="res://src/actors/player_hand.tscn" id="3_j7by3"]
 [ext_resource type="Script" uid="uid://c3oox5b6qpuv4" path="res://src/game_screens/entity_slot_markers.gd" id="4_g8hex"]
 [ext_resource type="PackedScene" uid="uid://b5eojojjt7qk3" path="res://src/actors/deck.tscn" id="4_jpl4g"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jpl4g"]
+font_size = 32
 
 [node name="BattleScreen" type="Node2D"]
 script = ExtResource("1_36hs7")
@@ -38,6 +41,7 @@ unique_name_in_owner = true
 position = Vector2(0, 300)
 
 [node name="YourEntitySlotMarkers" type="Node2D" parent="CenterPoint/YourSide"]
+unique_name_in_owner = true
 position = Vector2(0, 200)
 script = ExtResource("4_g8hex")
 gap = 40
@@ -64,6 +68,7 @@ position = Vector2(770, -307)
 deck_type = 1
 
 [node name="OppEntitySlotMarkers" type="Node2D" parent="CenterPoint/OppSide"]
+unique_name_in_owner = true
 position = Vector2(0, -200)
 script = ExtResource("4_g8hex")
 gap = 40
@@ -75,3 +80,12 @@ position = Vector2(200, 0)
 
 [node name="Slot3" type="Marker2D" parent="CenterPoint/OppSide/OppEntitySlotMarkers"]
 position = Vector2(-200, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PlayerNumberLabel" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_right = 40.0
+offset_bottom = 23.0
+text = "You are player:"
+label_settings = SubResource("LabelSettings_jpl4g")

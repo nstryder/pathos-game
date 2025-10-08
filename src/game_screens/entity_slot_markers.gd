@@ -1,11 +1,15 @@
 @tool
 extends Node2D
+class_name EntitySlotMarkers
 
 
 @export var gap: int = 16:
     set(value):
         gap = value
         update_slot_positions()
+
+# We use this to check if state has changed and we need to update
+var current_idx_representation: Array[int]
 
 @onready var is_ready: bool = true
 
@@ -18,6 +22,10 @@ func update_slot_positions() -> void:
     ($Slot2 as Marker2D).position = Vector2.ZERO
     ($Slot3 as Marker2D).position = Vector2(- (gap + Constants.ENTITY_SLOT_WIDTH), 0)
     queue_redraw()
+
+
+func get_position_at_slot(slot_num: int) -> Vector2:
+    return (get_child(slot_num) as Marker2D).global_position
 
 
 func get_card_size() -> Vector2i:

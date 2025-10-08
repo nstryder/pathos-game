@@ -49,5 +49,7 @@ _spawnable_scenes = PackedStringArray("uid://lfqkryekm4io")
 spawn_path = NodePath("../EffectCards")
 
 [node name="EntityCards" type="Node2D" parent="."]
+position = Vector2(10000, 10000)
 
 [node name="EffectCards" type="Node2D" parent="."]
+position = Vector2(10000, 10000)

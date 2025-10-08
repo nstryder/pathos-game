@@ -21,4 +21,4 @@ var has_shadow: bool = false:
 
 @rpc("authority", "call_local", "reliable")
 func hide_from_field() -> void:
-	global_position = Vector2() * 10000
+	global_position = Vector2() * 500
