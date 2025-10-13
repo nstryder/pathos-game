@@ -54,7 +54,6 @@ func attach_effect_to_entity(effect: EffectCard, entity: EntityCard) -> void:
 	var effect_idx := effect.current_idx
 	var entity_slot := entity.current_slot
 	battle_screen.attach_effect_to_entity_at_slot(effect_idx, entity_slot)
-	effect.slot_attachment_effects_enable()
 	effect_card_being_dragged = null
 
 

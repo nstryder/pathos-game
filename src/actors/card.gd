@@ -34,7 +34,7 @@ func drag_effects_disable() -> void:
 
 func slot_attachment_effects_enable() -> void:
 	scale = Vector2.ONE * Constants.ENTITY_SCALE
-	z_index = -1
+	z_index = Constants.MIN_ATTACHMENT_Z_INDEX
 
 
 func slot_attachment_effects_disable() -> void:

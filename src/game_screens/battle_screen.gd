@@ -22,6 +22,8 @@ var opposing_player: Player
 @onready var opp_entity_markers: EntitySlotMarkers = %OppEntitySlotMarkers
 @onready var opp_hand: PlayerHand = %OppHand
 
+@onready var button_undo: Button = %UndoButton
+
 
 # assign player ids
 # shuffle cards
@@ -31,7 +33,8 @@ var opposing_player: Player
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	button_undo.hide()
+	button_undo.pressed.connect(undo_attachment)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -167,13 +170,14 @@ var slot_attachment_history_stack: Array[int] = []
 
 
 func attach_effect_to_entity_at_slot(effect_idx: int, entity_slot: int) -> void:
-	var hand_idx_of_effect: int = controlled_player.effect_hand.find(effect_idx)
-	controlled_player.effect_hand.remove_at(hand_idx_of_effect)
+	var effect_card: EffectCard = controlled_player.get_effect_card_at_index(effect_idx)
+	your_hand.remove_card_from_hand(effect_card)
 	queued_effect_attachments[entity_slot].append(effect_idx)
 	slot_attachment_history_stack.append(entity_slot)
+	button_undo.show()
 	arrange_attached_effects()
 
-# TODO: Add undo button
+
 func undo_attachment() -> void:
 	if slot_attachment_history_stack.is_empty():
 		return
@@ -181,22 +185,36 @@ func undo_attachment() -> void:
 	var last_slot_used: int = slot_attachment_history_stack.pop_back()
 	var last_effect_used: int = queued_effect_attachments[last_slot_used].pop_back()
 	return_effect_back_to_hand(last_effect_used)
+	if slot_attachment_history_stack.is_empty():
+		button_undo.hide()
 
 
-# TODO: We need to make this look like a solitaire column
 func arrange_attached_effects() -> void:
 	pass
-	# combine both queue and current attachments into a temp preview
-	# realize this 
-	# disable draggability for all attached effects
+	const SLOT_COUNT = 3
+	const CARD_SPACING = 32
+	for slot_num in SLOT_COUNT:
+		var preview_slot: Array = []
+		preview_slot.append_array(controlled_player.attached_effects[slot_num])
+		preview_slot.append_array(queued_effect_attachments[slot_num])
+
+		for i in preview_slot.size():
+			var effect_idx: int = preview_slot[i]
+			var effect_card := controlled_player.get_effect_card_at_index(effect_idx)
+			effect_card.slot_attachment_effects_enable()
+			effect_card.z_index = Constants.MIN_ATTACHMENT_Z_INDEX + (i + 1)
+			effect_card.detectable = false
+			var target_entity := controlled_player.get_entity_card_at_slot(slot_num)
+			var offset := Vector2(0, CARD_SPACING * (i + 1))
+			var new_pos := target_entity.global_position + offset
+			effect_card.global_position = new_pos
 
 
-# TODO
 func return_effect_back_to_hand(effect_idx: int) -> void:
-	controlled_player.effect_hand.append(effect_idx)
 	var effect_card := controlled_player.get_effect_card_at_index(effect_idx)
+	effect_card.detectable = true
 	effect_card.slot_attachment_effects_disable()
-	your_hand.update_hand_positions()
+	your_hand.add_card_to_hand(effect_card)
 
 
 @rpc("authority", "call_local", "reliable")
@@ -218,9 +236,11 @@ func _setup_board() -> void:
 	opp_entity_deck.deck_player = opposing_player
 	opp_entity_deck.set_deck(opposing_player.entity_deck)
 	opp_entity_deck.set_entity_marker_node(opp_entity_markers)
+	opp_entity_deck.cards_are_draggable = false
 	
 	opp_effect_deck.set_deck(opposing_player.effect_deck)
 	opp_effect_deck.player_hand = opp_hand
+	opp_effect_deck.cards_are_draggable = false
 
 
 func _place_entities_on_field() -> void:

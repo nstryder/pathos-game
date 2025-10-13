@@ -80,3 +80,7 @@ func get_entity_card_at_index(idx: int) -> EntityCard:
 
 func get_effect_card_at_index(idx: int) -> EffectCard:
 	return effect_card_holder.get_child(idx)
+
+
+func get_entity_card_at_slot(slot_num: int) -> EntityCard:
+	return get_entity_card_at_index(entities_in_play[slot_num])

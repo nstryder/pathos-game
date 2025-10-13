@@ -51,6 +51,7 @@ position = Vector2(0, 300)
 
 [node name="YourEntitySlotMarkers" type="Node2D" parent="BoardCenter/YourSide"]
 unique_name_in_owner = true
+z_index = -100
 position = Vector2(0, 200)
 script = ExtResource("4_g8hex")
 gap = 40
@@ -81,6 +82,7 @@ unique_name_in_owner = true
 
 [node name="OppEntitySlotMarkers" type="Node2D" parent="BoardCenter/OppSide"]
 unique_name_in_owner = true
+z_index = -100
 position = Vector2(0, -200)
 script = ExtResource("4_g8hex")
 gap = 40
@@ -117,3 +119,14 @@ layout_mode = 2
 text = "Current Phase:"
 label_settings = SubResource("LabelSettings_g8hex")
 metadata/_edit_use_anchors_ = true
+
+[node name="Spacer" type="Control" parent="CanvasLayer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="UndoButton" type="Button" parent="CanvasLayer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 144)
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Undo"
