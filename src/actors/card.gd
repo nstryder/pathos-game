@@ -3,6 +3,7 @@ class_name Card
 
 var starting_position: Vector2
 var current_idx: int
+var is_enemy: bool = false
 
 var detectable: bool = true:
 	set(value):

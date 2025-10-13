@@ -1,18 +1,44 @@
 extends Node2D
 class_name BattleScreen
 
+signal attack_declared
+
+enum Timeline {
+	PLAYER1_OFFENSE,
+	PLAYER2_DEFENSE,
+	# +1 turn
+	PLAYER2_OFFENSE,
+	PLAYER1_DEFENSE
+	# +1 turn
+}
 
 @export var template_entity_deck: Array[String] = []
 @export var template_effect_deck: Array[String] = []
 
 
 # SERVER VARS
+var turn_count: int = 1
+@export var current_phase: Timeline:
+	set(value):
+		current_phase = value
+		var phase_text: String = str(Timeline.keys()[value]).capitalize()
+		(%PhaseLabel as Label).text = "Current phase: " + phase_text
+
+@export var attacking_player: Player
+@export var declared_attacker_slot: int
+@export var declared_target_slot: int
+
 @onready var player1: Player = $Players/Player1
 @onready var player2: Player = $Players/Player2
+
 
 # CLIENT VARS
 var controlled_player: Player
 var opposing_player: Player
+
+var queued_effect_attachments: Array[Array] = [[], [], []]
+var slot_attachment_history_stack: Array[int] = []
+
 @onready var your_entity_deck: Deck = %YourEntityDeck
 @onready var your_effect_deck: Deck = %YourEffectDeck
 @onready var your_entity_markers: EntitySlotMarkers = %YourEntitySlotMarkers
@@ -23,6 +49,7 @@ var opposing_player: Player
 @onready var opp_hand: PlayerHand = %OppHand
 
 @onready var button_undo: Button = %UndoButton
+@onready var button_skip: Button = %SkipButton
 
 
 # assign player ids
@@ -35,6 +62,8 @@ var opposing_player: Player
 func _ready() -> void:
 	button_undo.hide()
 	button_undo.pressed.connect(undo_attachment)
+	button_skip.hide()
+	button_skip.pressed.connect(skip_phase)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -56,22 +85,6 @@ func initialize_board() -> void:
 	start_game()
 
 
-enum Timeline {
-	PLAYER1_OFFENSE,
-	PLAYER2_DEFENSE,
-	# +1 turn
-	PLAYER2_OFFENSE,
-	PLAYER1_DEFENSE
-	# +1 turn
-}
-var turn_count: int = 1
-@export var current_phase: Timeline:
-	set(value):
-		current_phase = value
-		var phase_text: String = str(Timeline.keys()[value]).capitalize()
-		(%PhaseLabel as Label).text = "Current phase: " + phase_text
-
-
 func start_game() -> void:
 	if not multiplayer.is_server():
 		return
@@ -82,9 +95,11 @@ func start_game() -> void:
 func check_phase() -> void:
 	if current_phase == Timeline.PLAYER1_OFFENSE:
 		player1.draw_effects()
+		attacking_player = player1
 		start_client_offense.rpc_id(player1.id)
-		# await something..
-
+		await attack_declared
+		
+		
 		# FX cards get drawn if not 1st turn
 		# Enable FX cards to be dragged
 		# Enable Entities to declare attack
@@ -99,7 +114,27 @@ func check_phase() -> void:
 	# Advance turn counter
 	# Advance timeline
 	# Back to offense
-	
+
+
+# TODO
+@rpc("any_peer", "call_local", "reliable")
+func send_attack(attacker_slot: int, target_slot: int, effect_attachments: Array[Array]) -> void:
+	print("This is server...", attacker_slot, " ", target_slot, " ", effect_attachments)
+	declared_attacker_slot = attacker_slot
+	declared_target_slot = target_slot
+
+	if attacker_slot == -1:
+		# Skip was declared
+		return
+
+	# Merge attached effects
+	for slot_num: int in effect_attachments.size():
+		var effect_indexes: Array = effect_attachments[slot_num]
+		attacking_player.attached_effects[slot_num].append_array(effect_indexes)
+		for effect_idx: int in effect_indexes:
+			attacking_player.effect_hand.erase(effect_idx)
+	attack_declared.emit()
+
 
 func _assign_player_ids() -> void:
 	# NOTE: get_peers() does NOT include caller's own ID
@@ -138,7 +173,7 @@ func _assign_client_player_number(player_number: int) -> void:
 		controlled_player = player2
 		opposing_player = player1
 		(%PlayerNumberLabel as Label).text = "You are player 2"
-	
+
 
 #endregion
 #region CLIENT METHODS
@@ -151,22 +186,26 @@ func sync_client() -> void:
 @rpc("authority", "call_local", "reliable")
 func start_client_offense() -> void:
 	await sync_client()
+	button_skip.show()
 	your_effect_deck.realize_effect_state()
 
 
-# TODO
-@rpc("any_peer", "call_local", "reliable")
-func send_attack() -> void:
-	pass
+func declare_attack(attacker_slot: int, target_slot: int) -> void:
+	send_attack.rpc_id(1, attacker_slot, target_slot, queued_effect_attachments)
+	queued_effect_attachments = [[], [], []]
+	slot_attachment_history_stack = []
+	button_skip.hide()
+	button_undo.hide()
+
+
+func skip_phase() -> void:
+	if current_phase in [Timeline.PLAYER1_OFFENSE, Timeline.PLAYER2_OFFENSE]:
+		send_attack.rpc_id(1, -1, -1, [[]])
 
 
 # TODO
 func enable_effect_card_dragging() -> void:
 	pass
-
-
-var queued_effect_attachments: Array[Array] = [[], [], []]
-var slot_attachment_history_stack: Array[int] = []
 
 
 func attach_effect_to_entity_at_slot(effect_idx: int, entity_slot: int) -> void:
@@ -190,7 +229,6 @@ func undo_attachment() -> void:
 
 
 func arrange_attached_effects() -> void:
-	pass
 	const SLOT_COUNT = 3
 	const CARD_SPACING = 32
 	for slot_num in SLOT_COUNT:
@@ -201,9 +239,11 @@ func arrange_attached_effects() -> void:
 		for i in preview_slot.size():
 			var effect_idx: int = preview_slot[i]
 			var effect_card := controlled_player.get_effect_card_at_index(effect_idx)
+			
 			effect_card.slot_attachment_effects_enable()
 			effect_card.z_index = Constants.MIN_ATTACHMENT_Z_INDEX + (i + 1)
 			effect_card.detectable = false
+
 			var target_entity := controlled_player.get_entity_card_at_slot(slot_num)
 			var offset := Vector2(0, CARD_SPACING * (i + 1))
 			var new_pos := target_entity.global_position + offset
@@ -236,15 +276,13 @@ func _setup_board() -> void:
 	opp_entity_deck.deck_player = opposing_player
 	opp_entity_deck.set_deck(opposing_player.entity_deck)
 	opp_entity_deck.set_entity_marker_node(opp_entity_markers)
-	opp_entity_deck.cards_are_draggable = false
 	
 	opp_effect_deck.set_deck(opposing_player.effect_deck)
 	opp_effect_deck.player_hand = opp_hand
-	opp_effect_deck.cards_are_draggable = false
 
 
 func _place_entities_on_field() -> void:
 	your_entity_deck.realize_entity_state()
-	opp_entity_deck.realize_entity_state()
+	opp_entity_deck.realize_entity_state(true)
 
 #endregion

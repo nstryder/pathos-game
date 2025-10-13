@@ -20,7 +20,6 @@ var card_scene: PackedScene
 var deck_player: Player
 var entity_slot_markers: EntitySlotMarkers
 var player_hand: PlayerHand
-var cards_are_draggable: bool = true
 
 # @onready var card_manager: CardManager = %CardManager
 @onready var card_counter: Label = %CardCounter
@@ -52,7 +51,7 @@ func draw_card() -> void:
 	update_counter()
 
 
-func realize_entity_state() -> void:
+func realize_entity_state(is_enemy: bool = false) -> void:
 	if entity_slot_markers.current_idx_representation == deck_player.entities_in_play:
 		return
 	hide_old_entities_in_play()
@@ -64,14 +63,13 @@ func realize_entity_state() -> void:
 		entity_card.global_position = new_pos
 		entity_card.slot_attachment_effects_enable()
 		entity_card.current_slot = slot_num
-		entity_card.detectable = cards_are_draggable
+		entity_card.is_enemy = is_enemy
 
 
 func realize_effect_state() -> void:
 	for effect_idx: int in deck_player.effect_hand:
 		var effect_card: EffectCard = deck_player.get_effect_card_at_index(effect_idx)
 		effect_card.global_position = global_position
-		effect_card.detectable = cards_are_draggable
 		player_hand.add_card_to_hand(effect_card)
 
 

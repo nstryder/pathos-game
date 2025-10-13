@@ -5,6 +5,8 @@ const LAYER_EFFECT = 0b1
 const LAYER_ENTITY = 0b10
 
 var effect_card_being_dragged: EffectCard
+var entity_targeting_line_visual: Line2D
+var entity_card_to_declare: EntityCard
 
 @onready var battle_screen: BattleScreen = owner
 
@@ -24,22 +26,33 @@ func _process(_delta: float) -> void:
 		var mouse_pos := get_global_mouse_position()
 		var screen_bounds_clamped_pos := mouse_pos.clamp(Vector2.ZERO, get_viewport_rect().size)
 		effect_card_being_dragged.global_position = screen_bounds_clamped_pos
+	if entity_targeting_line_visual:
+		entity_targeting_line_visual.set_point_position(1, get_global_mouse_position())
 
 
 func on_press() -> void:
 	var effect_card := detect_effect_card()
-	if effect_card:
+	if effect_card and not effect_card.is_enemy:
 		start_drag(effect_card)
+	else:
+		var entity_card := detect_entity_card()
+		if entity_card and not entity_card.is_enemy:
+			start_declare_attack(entity_card)
 
 
 func on_release() -> void:
 	if effect_card_being_dragged:
 		var entity_card: EntityCard = detect_entity_card()
-		if entity_card:
+		if entity_card and not entity_card.is_enemy:
 			attach_effect_to_entity(effect_card_being_dragged, entity_card)
 		else:
 			reset_dragged_card_position()
 			end_drag()
+	elif entity_card_to_declare:
+		var target_entity: EntityCard = detect_entity_card()
+		if target_entity and target_entity.is_enemy:
+			send_declare_attack(entity_card_to_declare, target_entity)
+		end_declare_attack()
 
 
 func detect_effect_card() -> EffectCard:
@@ -59,14 +72,39 @@ func attach_effect_to_entity(effect: EffectCard, entity: EntityCard) -> void:
 
 func start_drag(card: Card) -> void:
 	effect_card_being_dragged = card
-	if effect_card_being_dragged:
-		effect_card_being_dragged.drag_effects_enable()
+	effect_card_being_dragged.drag_effects_enable()
 
 
 func end_drag() -> void:
 	if effect_card_being_dragged:
 		effect_card_being_dragged.drag_effects_disable()
 	effect_card_being_dragged = null
+
+# on click...
+# if selected your entity, mark it and start line
+# on release...
+# if released on enemy entity, mark it and end line
+# then call declare_attack from battle_screen
+
+func send_declare_attack(entity_card: EntityCard, target_entity: EntityCard) -> void:
+	var attacker_slot := entity_card.current_slot
+	var target_slot := target_entity.current_slot
+	battle_screen.declare_attack(attacker_slot, target_slot)
+
+
+func start_declare_attack(entity_card: EntityCard) -> void:
+	entity_card_to_declare = entity_card
+	entity_targeting_line_visual = Line2D.new()
+	entity_targeting_line_visual.antialiased = true
+	entity_targeting_line_visual.add_point(entity_card.global_position)
+	entity_targeting_line_visual.add_point(get_global_mouse_position())
+	entity_targeting_line_visual.default_color = Color8(224, 33, 33)
+	add_child(entity_targeting_line_visual)
+
+
+func end_declare_attack() -> void:
+	entity_card_to_declare = null
+	entity_targeting_line_visual.queue_free()
 
 
 func reset_dragged_card_position() -> void:
