@@ -6,6 +6,7 @@ const entity_card_scene = preload("uid://djf85mhy7rn64")
 const effect_card_scene = preload("uid://lfqkryekm4io")
 
 @export var id: int
+@export var hp: int = 10
 @export var base_entity_deck: Array[String] = []
 @export var base_effect_deck: Array[String] = []
 
@@ -15,6 +16,7 @@ const effect_card_scene = preload("uid://lfqkryekm4io")
 
 @export var entity_deck: Array[int] = []
 @export var entities_in_play: Array[int] = [-1, -1, -1]
+@export var attached_effects: Array[Array] = [[], [], []]
 @export var entity_graveyard: Array[int] = []
 @export var effect_deck: Array[int] = []
 @export var effect_hand: Array[int] = []
@@ -33,14 +35,18 @@ func initialize_decks() -> void:
 	if not multiplayer.is_server():
 		return
 
-	for entity_code in base_entity_deck:
+	for i in base_entity_deck.size():
+		var entity_code: String = base_entity_deck[i]
 		var entity_card: EntityCard = entity_card_scene.instantiate()
 		entity_card.entity_code = entity_code
+		entity_card.current_idx = i
 		entity_card_holder.add_child(entity_card, true)
 		
-	for effect_code in base_effect_deck:
+	for i in base_effect_deck.size():
+		var effect_code: String = base_effect_deck[i]
 		var effect_card: EffectCard = effect_card_scene.instantiate()
 		effect_card.effect_code = effect_code
+		effect_card.current_idx = i
 		effect_card_holder.add_child(effect_card, true)
 		
 	entity_deck.assign(range(base_entity_deck.size()))
@@ -59,5 +65,18 @@ func draw_entities() -> void:
 			entities_in_play[i] = drawn_entity_idx
 
 
+func draw_effects() -> void:
+	if not multiplayer.is_server():
+		return
+	for i in range(2):
+		if effect_deck.is_empty():
+			return
+		effect_hand.append(effect_deck.pop_back())
+
+
 func get_entity_card_at_index(idx: int) -> EntityCard:
 	return entity_card_holder.get_child(idx)
+
+
+func get_effect_card_at_index(idx: int) -> EffectCard:
+	return effect_card_holder.get_child(idx)

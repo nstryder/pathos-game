@@ -1,18 +1,97 @@
-[gd_scene load_steps=7 format=3 uid="uid://43uuxv7mhc08"]
+[gd_scene load_steps=10 format=3 uid="uid://43uuxv7mhc08"]
 
 [ext_resource type="Script" uid="uid://dr8a80niv2ae8" path="res://src/game_screens/battle_screen.gd" id="1_36hs7"]
 [ext_resource type="PackedScene" uid="uid://c3nn8w6dsajke" path="res://src/actors/player.tscn" id="2_gl2eh"]
+[ext_resource type="PackedScene" uid="uid://brojsgyxvag1" path="res://src/actors/card_manager.tscn" id="3_g8hex"]
 [ext_resource type="PackedScene" uid="uid://qbgnkpc4g0sa" path="res://src/actors/player_hand.tscn" id="3_j7by3"]
 [ext_resource type="Script" uid="uid://c3oox5b6qpuv4" path="res://src/game_screens/entity_slot_markers.gd" id="4_g8hex"]
 [ext_resource type="PackedScene" uid="uid://b5eojojjt7qk3" path="res://src/actors/deck.tscn" id="4_jpl4g"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_36hs7"]
+properties/0/path = NodePath(".:current_phase")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
 [sub_resource type="LabelSettings" id="LabelSettings_jpl4g"]
 font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_g8hex"]
+font_size = 24
 
 [node name="BattleScreen" type="Node2D"]
 script = ExtResource("1_36hs7")
 template_entity_deck = Array[String](["Ginko", "Golem", "Pixie", "Hibiki", "Haru"])
 template_effect_deck = Array[String](["Knife", "Mortar", "Bite", "Plate", "Medkit", "Parry", "Treasure", "Switcheroo", "Reshuffler"])
+
+[node name="ServerStateSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_36hs7")
+
+[node name="CardManager" parent="." instance=ExtResource("3_g8hex")]
+unique_name_in_owner = true
+
+[node name="BoardCenter" type="Marker2D" parent="."]
+position = Vector2(960, 540)
+
+[node name="YourSide" type="Node2D" parent="BoardCenter"]
+
+[node name="YourEffectDeck" parent="BoardCenter/YourSide" instance=ExtResource("4_jpl4g")]
+unique_name_in_owner = true
+position = Vector2(-754, 291)
+deck_type = 1
+
+[node name="YourEntityDeck" parent="BoardCenter/YourSide" instance=ExtResource("4_jpl4g")]
+unique_name_in_owner = true
+position = Vector2(-412, 202)
+scale = Vector2(0.6, 0.6)
+deck_type = 1
+
+[node name="YourHand" parent="BoardCenter/YourSide" instance=ExtResource("3_j7by3")]
+unique_name_in_owner = true
+position = Vector2(0, 300)
+
+[node name="YourEntitySlotMarkers" type="Node2D" parent="BoardCenter/YourSide"]
+unique_name_in_owner = true
+position = Vector2(0, 200)
+script = ExtResource("4_g8hex")
+gap = 40
+
+[node name="Slot1" type="Marker2D" parent="BoardCenter/YourSide/YourEntitySlotMarkers"]
+position = Vector2(200, 0)
+
+[node name="Slot2" type="Marker2D" parent="BoardCenter/YourSide/YourEntitySlotMarkers"]
+
+[node name="Slot3" type="Marker2D" parent="BoardCenter/YourSide/YourEntitySlotMarkers"]
+position = Vector2(-200, 0)
+
+[node name="OppSide" type="Node2D" parent="BoardCenter"]
+
+[node name="OppEntityDeck" parent="BoardCenter/OppSide" instance=ExtResource("4_jpl4g")]
+unique_name_in_owner = true
+position = Vector2(416, -204)
+scale = Vector2(0.6, 0.6)
+deck_type = 1
+
+[node name="OppEffectDeck" parent="BoardCenter/OppSide" instance=ExtResource("4_jpl4g")]
+unique_name_in_owner = true
+position = Vector2(770, -307)
+deck_type = 1
+
+[node name="OppHand" parent="BoardCenter/OppSide" instance=ExtResource("3_j7by3")]
+unique_name_in_owner = true
+
+[node name="OppEntitySlotMarkers" type="Node2D" parent="BoardCenter/OppSide"]
+unique_name_in_owner = true
+position = Vector2(0, -200)
+script = ExtResource("4_g8hex")
+gap = 40
+
+[node name="Slot1" type="Marker2D" parent="BoardCenter/OppSide/OppEntitySlotMarkers"]
+position = Vector2(200, 0)
+
+[node name="Slot2" type="Marker2D" parent="BoardCenter/OppSide/OppEntitySlotMarkers"]
+
+[node name="Slot3" type="Marker2D" parent="BoardCenter/OppSide/OppEntitySlotMarkers"]
+position = Vector2(-200, 0)
 
 [node name="Players" type="Node2D" parent="."]
 
@@ -20,72 +99,21 @@ template_effect_deck = Array[String](["Knife", "Mortar", "Bite", "Plate", "Medki
 
 [node name="Player2" parent="Players" instance=ExtResource("2_gl2eh")]
 
-[node name="CenterPoint" type="Marker2D" parent="."]
-position = Vector2(960, 540)
-
-[node name="YourSide" type="Node2D" parent="CenterPoint"]
-
-[node name="YourEffectDeck" parent="CenterPoint/YourSide" instance=ExtResource("4_jpl4g")]
-unique_name_in_owner = true
-position = Vector2(-754, 291)
-deck_type = 1
-
-[node name="YourEntityDeck" parent="CenterPoint/YourSide" instance=ExtResource("4_jpl4g")]
-unique_name_in_owner = true
-position = Vector2(-412, 202)
-scale = Vector2(0.6, 0.6)
-deck_type = 1
-
-[node name="YourHand" parent="CenterPoint/YourSide" instance=ExtResource("3_j7by3")]
-unique_name_in_owner = true
-position = Vector2(0, 300)
-
-[node name="YourEntitySlotMarkers" type="Node2D" parent="CenterPoint/YourSide"]
-unique_name_in_owner = true
-position = Vector2(0, 200)
-script = ExtResource("4_g8hex")
-gap = 40
-
-[node name="Slot1" type="Marker2D" parent="CenterPoint/YourSide/YourEntitySlotMarkers"]
-position = Vector2(200, 0)
-
-[node name="Slot2" type="Marker2D" parent="CenterPoint/YourSide/YourEntitySlotMarkers"]
-
-[node name="Slot3" type="Marker2D" parent="CenterPoint/YourSide/YourEntitySlotMarkers"]
-position = Vector2(-200, 0)
-
-[node name="OppSide" type="Node2D" parent="CenterPoint"]
-
-[node name="OppEntityDeck" parent="CenterPoint/OppSide" instance=ExtResource("4_jpl4g")]
-unique_name_in_owner = true
-position = Vector2(416, -204)
-scale = Vector2(0.6, 0.6)
-deck_type = 1
-
-[node name="OppEffectDeck" parent="CenterPoint/OppSide" instance=ExtResource("4_jpl4g")]
-unique_name_in_owner = true
-position = Vector2(770, -307)
-deck_type = 1
-
-[node name="OppEntitySlotMarkers" type="Node2D" parent="CenterPoint/OppSide"]
-unique_name_in_owner = true
-position = Vector2(0, -200)
-script = ExtResource("4_g8hex")
-gap = 40
-
-[node name="Slot1" type="Marker2D" parent="CenterPoint/OppSide/OppEntitySlotMarkers"]
-position = Vector2(200, 0)
-
-[node name="Slot2" type="Marker2D" parent="CenterPoint/OppSide/OppEntitySlotMarkers"]
-
-[node name="Slot3" type="Marker2D" parent="CenterPoint/OppSide/OppEntitySlotMarkers"]
-position = Vector2(-200, 0)
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="PlayerNumberLabel" type="Label" parent="CanvasLayer"]
-unique_name_in_owner = true
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
 offset_right = 40.0
-offset_bottom = 23.0
+offset_bottom = 40.0
+
+[node name="PlayerNumberLabel" type="Label" parent="CanvasLayer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 text = "You are player:"
 label_settings = SubResource("LabelSettings_jpl4g")
+
+[node name="PhaseLabel" type="Label" parent="CanvasLayer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Current Phase:"
+label_settings = SubResource("LabelSettings_g8hex")
+metadata/_edit_use_anchors_ = true

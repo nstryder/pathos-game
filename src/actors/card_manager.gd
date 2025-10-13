@@ -1,68 +1,81 @@
 extends Node2D
 class_name CardManager
 
-const COLLISION_MASK_CARD = 0b1
-const COLLISION_MASK_SLOT = 0b10
-const SLOT_SCALE = 0.6
+const LAYER_EFFECT = 0b1
+const LAYER_ENTITY = 0b10
 
-var card_being_dragged: Card
-var last_card_dragged: Card
+var effect_card_being_dragged: EffectCard
 
-@onready var player_hand: PlayerHand = %PlayerHand
-@onready var input_manager: InputManager = %InputManager
-@onready var card_slots: Node2D = %CardSlots
-@onready var card_slot_positions: Control = %CardSlotPositions
+@onready var battle_screen: BattleScreen = owner
 
 
-func _ready() -> void:
-	input_manager.released.connect(_on_input_manager_released)
-	# Need to await because containers only calculate at end of frame
-	await get_tree().process_frame
-	for slot_container: Control in card_slot_positions.get_children():
-		var slot_position := (slot_container.get_child(0) as Control
-			).global_position
-		const card_slot_scene := preload("uid://c1t6j0a6ap1jc")
-		var card_slot: CardSlot = card_slot_scene.instantiate()
-		card_slots.add_child(card_slot)
-		card_slot.position = slot_position
-		card_slot.scale *= SLOT_SCALE
-
-
-func start_drag(card: Card) -> void:
-	card_being_dragged = card
-	if last_card_dragged:
-		last_card_dragged.z_index = 1
-	if card_being_dragged:
-		card_being_dragged.z_index = 2
-		card_being_dragged.has_shadow = true
-		card_being_dragged.scale = Vector2.ONE * 1.05
-	last_card_dragged = card_being_dragged
-
-
-func end_drag() -> void:
-	if card_being_dragged:
-		card_being_dragged.has_shadow = false
-		card_being_dragged.scale = Vector2.ONE
-		var card_slot_found: CardSlot = raycast_check_for_card(COLLISION_MASK_SLOT)
-		if card_slot_found and not card_slot_found.card_is_in_slot:
-			player_hand.remove_card_from_hand(card_being_dragged)
-			card_being_dragged.global_position = card_slot_found.global_position
-			card_being_dragged.scale *= SLOT_SCALE
-			card_being_dragged.draggable = false
-			card_slot_found.card_is_in_slot = true
-		else:
-			player_hand.animate_card_to_position(card_being_dragged, card_being_dragged.starting_position)
-	card_being_dragged = null
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		var button_event := event as InputEventMouseButton
+		if button_event.button_index == MOUSE_BUTTON_LEFT:
+			if button_event.pressed:
+				on_press()
+			else:
+				on_release()
 
 
 func _process(_delta: float) -> void:
-	if card_being_dragged:
+	if effect_card_being_dragged:
 		var mouse_pos := get_global_mouse_position()
 		var screen_bounds_clamped_pos := mouse_pos.clamp(Vector2.ZERO, get_viewport_rect().size)
-		card_being_dragged.global_position = screen_bounds_clamped_pos
-		
+		effect_card_being_dragged.global_position = screen_bounds_clamped_pos
 
-func raycast_check_for_card(collision_mask: int) -> Node2D:
+
+func on_press() -> void:
+	var effect_card := detect_effect_card()
+	if effect_card:
+		start_drag(effect_card)
+
+
+func on_release() -> void:
+	if effect_card_being_dragged:
+		var entity_card: EntityCard = detect_entity_card()
+		if entity_card:
+			attach_effect_to_entity(effect_card_being_dragged, entity_card)
+		else:
+			reset_dragged_card_position()
+			end_drag()
+
+
+func detect_effect_card() -> EffectCard:
+	return raycast_check_for_card(LAYER_EFFECT)
+	
+
+func detect_entity_card() -> EntityCard:
+	return raycast_check_for_card(LAYER_ENTITY)
+
+
+func attach_effect_to_entity(effect: EffectCard, entity: EntityCard) -> void:
+	var effect_idx := effect.current_idx
+	var entity_slot := entity.current_slot
+	battle_screen.attach_effect_to_entity_at_slot(effect_idx, entity_slot)
+	effect.slot_attachment_effects_enable()
+	effect_card_being_dragged = null
+
+
+func start_drag(card: Card) -> void:
+	effect_card_being_dragged = card
+	if effect_card_being_dragged:
+		effect_card_being_dragged.drag_effects_enable()
+
+
+func end_drag() -> void:
+	if effect_card_being_dragged:
+		effect_card_being_dragged.drag_effects_disable()
+	effect_card_being_dragged = null
+
+
+func reset_dragged_card_position() -> void:
+	var player_hand: PlayerHand = battle_screen.your_hand
+	player_hand.animate_card_to_position(effect_card_being_dragged, effect_card_being_dragged.starting_position)
+
+
+func raycast_check_for_card(collision_mask: int) -> Card:
 	var space_state := get_world_2d().direct_space_state
 	var parameters := PhysicsPointQueryParameters2D.new()
 	parameters.position = get_global_mouse_position()
@@ -76,15 +89,9 @@ func raycast_check_for_card(collision_mask: int) -> Node2D:
 
 
 # Cards parameter should be from a dict returned by intersect_point()
-func get_card_with_highest_z_index(cards: Array[Dictionary]) -> Node2D:
-	return cards.map(func(x: Dictionary) -> Node2D:
-		print(x.collider.owner.z_index)
+func get_card_with_highest_z_index(cards: Array[Dictionary]) -> Card:
+	return cards.map(func(x: Dictionary) -> Card:
 		return x.collider.owner
-	).reduce(func(a: Node2D, b: Node2D) -> Node2D:
+	).reduce(func(a: Card, b: Card) -> Card:
 		return a if a.z_index > b.z_index else b
 	)
-
-
-func _on_input_manager_released() -> void:
-	if card_being_dragged:
-		end_drag()

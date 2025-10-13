@@ -3,6 +3,7 @@ class_name EntityCard
 
 @export var entity_code: String
 var entity_card_data: EntityCardData
+var current_slot: int = -1
 
 var max_attack: int
 var max_shield: int

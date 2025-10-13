@@ -14,9 +14,9 @@ Critiques:
 const CARD_WIDTH = 250
 const HAND_Y_POSITION = 890
 const ANIMATION_TWEEN_TIME = 0.2
-@export var card_manager: Node2D
 
 var player_hand: Array[Card] = []
+
 
 func _ready() -> void:
     pass
@@ -44,7 +44,7 @@ func calculate_card_position(index: int) -> float:
 
 func animate_card_to_position(card: Card, new_position: Vector2) -> void:
     var tween := create_tween()
-    tween.tween_property(card, "position", new_position, ANIMATION_TWEEN_TIME) \
+    tween.tween_property(card, "global_position", new_position, ANIMATION_TWEEN_TIME) \
         .set_trans(Tween.TRANS_SPRING) \
         .set_ease(Tween.EASE_OUT)
 

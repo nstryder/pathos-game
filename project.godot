@@ -44,8 +44,8 @@ theme/default_font_multichannel_signed_distance_field=true
 
 [layer_names]
 
-2d_physics/layer_1="Cards"
-2d_physics/layer_2="Slots"
+2d_physics/layer_1="Effects"
+2d_physics/layer_2="Entities"
 
 [rendering]
 

@@ -8,6 +8,7 @@
 script = ExtResource("1_gafqt")
 
 [node name="ConnectLayer" type="CanvasLayer" parent="."]
+layer = 2
 
 [node name="ColorRect" type="ColorRect" parent="ConnectLayer"]
 anchors_preset = 15
