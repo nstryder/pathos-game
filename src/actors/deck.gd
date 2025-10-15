@@ -47,10 +47,6 @@ func set_deck(new_deck: Array) -> void:
 	update_counter()
 
 
-func draw_card() -> void:
-	update_counter()
-
-
 func realize_entity_state(is_enemy: bool = false) -> void:
 	if entity_slot_markers.current_idx_representation == deck_player.entities_in_play:
 		return
@@ -64,6 +60,7 @@ func realize_entity_state(is_enemy: bool = false) -> void:
 		entity_card.slot_attachment_effects_enable()
 		entity_card.current_slot = slot_num
 		entity_card.is_enemy = is_enemy
+	update_counter()
 
 
 func realize_effect_state() -> void:
@@ -71,6 +68,7 @@ func realize_effect_state() -> void:
 		var effect_card: EffectCard = deck_player.get_effect_card_at_index(effect_idx)
 		effect_card.global_position = global_position
 		player_hand.add_card_to_hand(effect_card)
+	update_counter()
 
 
 func hide_old_entities_in_play() -> void:

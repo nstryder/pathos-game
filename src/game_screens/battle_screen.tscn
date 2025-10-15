@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://43uuxv7mhc08"]
+[gd_scene load_steps=12 format=3 uid="uid://43uuxv7mhc08"]
 
 [ext_resource type="Script" uid="uid://dr8a80niv2ae8" path="res://src/game_screens/battle_screen.gd" id="1_36hs7"]
 [ext_resource type="PackedScene" uid="uid://c3nn8w6dsajke" path="res://src/actors/player.tscn" id="2_gl2eh"]
@@ -6,11 +6,18 @@
 [ext_resource type="PackedScene" uid="uid://qbgnkpc4g0sa" path="res://src/actors/player_hand.tscn" id="3_j7by3"]
 [ext_resource type="Script" uid="uid://c3oox5b6qpuv4" path="res://src/game_screens/entity_slot_markers.gd" id="4_g8hex"]
 [ext_resource type="PackedScene" uid="uid://b5eojojjt7qk3" path="res://src/actors/deck.tscn" id="4_jpl4g"]
+[ext_resource type="PackedScene" uid="uid://cbewd7iaxbk52" path="res://src/actors/attack_indicator.tscn" id="7_36hs7"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_36hs7"]
 properties/0/path = NodePath(".:current_phase")
 properties/0/spawn = true
 properties/0/replication_mode = 2
+properties/1/path = NodePath(".:declared_attacker_slot")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:declared_target_slot")
+properties/2/spawn = true
+properties/2/replication_mode = 2
 
 [sub_resource type="LabelSettings" id="LabelSettings_jpl4g"]
 font_size = 32
@@ -18,16 +25,20 @@ font_size = 32
 [sub_resource type="LabelSettings" id="LabelSettings_g8hex"]
 font_size = 24
 
+[sub_resource type="LabelSettings" id="LabelSettings_36hs7"]
+font_size = 64
+
 [node name="BattleScreen" type="Node2D"]
 script = ExtResource("1_36hs7")
 template_entity_deck = Array[String](["Ginko", "Golem", "Pixie", "Hibiki", "Haru"])
 template_effect_deck = Array[String](["Knife", "Mortar", "Bite", "Plate", "Medkit", "Parry", "Treasure", "Switcheroo", "Reshuffler"])
 
-[node name="ServerStateSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_36hs7")
-
 [node name="CardManager" parent="." instance=ExtResource("3_g8hex")]
 unique_name_in_owner = true
+
+[node name="AttackIndicator" parent="." instance=ExtResource("7_36hs7")]
+unique_name_in_owner = true
+visible = false
 
 [node name="BoardCenter" type="Marker2D" parent="."]
 position = Vector2(960, 540)
@@ -101,6 +112,10 @@ position = Vector2(-200, 0)
 
 [node name="Player2" parent="Players" instance=ExtResource("2_gl2eh")]
 
+[node name="ServerStateSynchronizer" type="MultiplayerSynchronizer" parent="."]
+unique_name_in_owner = true
+replication_config = SubResource("SceneReplicationConfig_36hs7")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
@@ -138,3 +153,23 @@ custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Undo"
+
+[node name="ConfirmButton" type="Button" parent="CanvasLayer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 144)
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Confirm"
+
+[node name="StatusLabel" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Status..."
+label_settings = SubResource("LabelSettings_36hs7")
+horizontal_alignment = 1

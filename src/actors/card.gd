@@ -1,8 +1,8 @@
 extends Node2D
 class_name Card
 
+@export var current_idx: int
 var starting_position: Vector2
-var current_idx: int
 var is_enemy: bool = false
 
 var detectable: bool = true:

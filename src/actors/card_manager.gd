@@ -4,6 +4,8 @@ class_name CardManager
 const LAYER_EFFECT = 0b1
 const LAYER_ENTITY = 0b10
 
+var dragging_enabled: bool = false
+var attacking_enabled: bool = false
 var effect_card_being_dragged: EffectCard
 var entity_targeting_line_visual: Line2D
 var entity_card_to_declare: EntityCard
@@ -31,10 +33,11 @@ func _process(_delta: float) -> void:
 
 
 func on_press() -> void:
-	var effect_card := detect_effect_card()
-	if effect_card and not effect_card.is_enemy:
-		start_drag(effect_card)
-	else:
+	if dragging_enabled:
+		var effect_card := detect_effect_card()
+		if effect_card and not effect_card.is_enemy:
+			start_drag(effect_card)
+	if attacking_enabled and not effect_card_being_dragged:
 		var entity_card := detect_entity_card()
 		if entity_card and not entity_card.is_enemy:
 			start_declare_attack(entity_card)
@@ -66,6 +69,7 @@ func detect_entity_card() -> EntityCard:
 func attach_effect_to_entity(effect: EffectCard, entity: EntityCard) -> void:
 	var effect_idx := effect.current_idx
 	var entity_slot := entity.current_slot
+	print("attaching effect ", effect_idx, " to slot ", entity_slot)
 	battle_screen.attach_effect_to_entity_at_slot(effect_idx, entity_slot)
 	effect_card_being_dragged = null
 
@@ -80,11 +84,6 @@ func end_drag() -> void:
 		effect_card_being_dragged.drag_effects_disable()
 	effect_card_being_dragged = null
 
-# on click...
-# if selected your entity, mark it and start line
-# on release...
-# if released on enemy entity, mark it and end line
-# then call declare_attack from battle_screen
 
 func send_declare_attack(entity_card: EntityCard, target_entity: EntityCard) -> void:
 	var attacker_slot := entity_card.current_slot

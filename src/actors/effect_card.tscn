@@ -48,6 +48,9 @@ shadow_offset = Vector2(0, 9)
 properties/0/path = NodePath(".:effect_code")
 properties/0/spawn = true
 properties/0/replication_mode = 2
+properties/1/path = NodePath(".:current_idx")
+properties/1/spawn = true
+properties/1/replication_mode = 2
 
 [node name="EffectCard" instance=ExtResource("1_3iiqf")]
 script = ExtResource("2_1p6kf")
