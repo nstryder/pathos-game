@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://djf85mhy7rn64"]
+[gd_scene load_steps=10 format=3 uid="uid://djf85mhy7rn64"]
 
 [ext_resource type="PackedScene" uid="uid://bfb04tdppv0p2" path="res://src/actors/card.tscn" id="1_skp7o"]
 [ext_resource type="Script" uid="uid://220a8t7sh726" path="res://src/actors/entity_card.gd" id="2_ewlyu"]
@@ -27,6 +27,28 @@ MarginContainer/constants/margin_left = 12
 MarginContainer/constants/margin_right = 12
 MarginContainer/constants/margin_top = 12
 Panel/styles/panel = SubResource("StyleBoxFlat_ewlyu")
+
+[sub_resource type="LabelSettings" id="LabelSettings_ewlyu"]
+font_size = 24
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ilae"]
+bg_color = Color(0.86, 0.3354, 0.3354, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_vc8ps"]
+font_size = 36
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hbyfa"]
+bg_color = Color(0.51600003, 0.5676, 0.86, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ewlyu"]
 properties/0/path = NodePath(".:entity_code")
@@ -88,6 +110,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 text = "Card Nickname"
+label_settings = SubResource("LabelSettings_ewlyu")
 
 [node name="ArtPlaceholder" type="ColorRect" parent="Control/MarginContainer/VBoxContainer" index="1"]
 layout_mode = 2
@@ -111,16 +134,44 @@ autowrap_mode = 3
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer" index="5"]
 layout_mode = 2
 
-[node name="Attack" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
+[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3ilae")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer" index="0"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 0
+
+[node name="Attack" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "ATK: 0"
+text = "0"
+label_settings = SubResource("LabelSettings_vc8ps")
 
-[node name="Shield" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer" index="1"]
+[node name="Control" type="Control" parent="Control/MarginContainer/VBoxContainer/HBoxContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PanelContainer2" type="PanelContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer" index="2"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hbyfa")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2" index="0"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 0
+
+[node name="Shield" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/MarginContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "SHD: 0"
+text = "0"
+label_settings = SubResource("LabelSettings_vc8ps")
 
 [node name="Veil" type="ColorRect" parent="Control" index="2"]
 visible = false
@@ -133,6 +184,7 @@ grow_vertical = 2
 color = Color(0.136988, 0.136988, 0.136988, 1)
 
 [node name="Area2D" parent="." index="1"]
+visible = false
 collision_layer = 2
 collision_mask = 2
 

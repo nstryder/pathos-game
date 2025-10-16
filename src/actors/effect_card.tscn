@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://lfqkryekm4io"]
+[gd_scene load_steps=8 format=3 uid="uid://lfqkryekm4io"]
 
 [ext_resource type="PackedScene" uid="uid://bfb04tdppv0p2" path="res://src/actors/card.tscn" id="1_3iiqf"]
 [ext_resource type="Script" uid="uid://cnuqcbg0h5km2" path="res://src/actors/effect_card.gd" id="2_1p6kf"]
@@ -43,6 +43,10 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 corner_detail = 4
 shadow_offset = Vector2(0, 9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1p6kf"]
+font_size = 24
+font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1p6kf"]
 properties/0/path = NodePath(".:effect_code")
@@ -96,6 +100,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 text = "Card Nickname"
+label_settings = SubResource("LabelSettings_1p6kf")
 horizontal_alignment = 1
 
 [node name="ArtPlaceholder" type="ColorRect" parent="Control/MarginContainer/VBoxContainer" index="1"]

@@ -10,7 +10,7 @@ var effect_card_being_dragged: EffectCard
 var entity_targeting_line_visual: Line2D
 var entity_card_to_declare: EntityCard
 
-@onready var battle_screen: BattleScreen = owner
+@onready var client: ClientState = %ClientState
 
 
 func _input(event: InputEvent) -> void:
@@ -70,7 +70,7 @@ func attach_effect_to_entity(effect: EffectCard, entity: EntityCard) -> void:
 	var effect_idx := effect.current_idx
 	var entity_slot := entity.current_slot
 	print("attaching effect ", effect_idx, " to slot ", entity_slot)
-	battle_screen.attach_effect_to_entity_at_slot(effect_idx, entity_slot)
+	client.attach_effect_to_entity_at_slot(effect_idx, entity_slot)
 	effect_card_being_dragged = null
 
 
@@ -88,7 +88,7 @@ func end_drag() -> void:
 func send_declare_attack(entity_card: EntityCard, target_entity: EntityCard) -> void:
 	var attacker_slot := entity_card.current_slot
 	var target_slot := target_entity.current_slot
-	battle_screen.declare_attack(attacker_slot, target_slot)
+	client.declare_attack(attacker_slot, target_slot)
 
 
 func start_declare_attack(entity_card: EntityCard) -> void:
@@ -107,7 +107,7 @@ func end_declare_attack() -> void:
 
 
 func reset_dragged_card_position() -> void:
-	var player_hand: PlayerHand = battle_screen.your_hand
+	var player_hand: PlayerHand = client.your_hand
 	player_hand.animate_card_to_position(effect_card_being_dragged, effect_card_being_dragged.starting_position)
 
 

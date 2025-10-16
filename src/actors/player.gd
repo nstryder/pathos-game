@@ -74,6 +74,14 @@ func draw_effects() -> void:
 		effect_hand.append(effect_deck.pop_back())
 
 
+func merge_effect_attachments(effect_attachments: Array[Array]) -> void:
+	for slot_num: int in effect_attachments.size():
+		var effect_indexes: Array = effect_attachments[slot_num]
+		attached_effects[slot_num].append_array(effect_indexes)
+		for effect_idx: int in effect_indexes:
+			effect_hand.erase(effect_idx)
+
+
 func get_entity_card_at_index(idx: int) -> EntityCard:
 	return entity_card_holder.get_child(idx)
 

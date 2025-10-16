@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4yw8pmjy0bm8"]
+
+[ext_resource type="Script" uid="uid://cd6muk7oucr08" path="res://src/actors/server_state.gd" id="1_pejmc"]
+
+[node name="ServerState" type="Node2D"]
+script = ExtResource("1_pejmc")

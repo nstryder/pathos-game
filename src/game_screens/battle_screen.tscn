@@ -1,23 +1,28 @@
-[gd_scene load_steps=12 format=3 uid="uid://43uuxv7mhc08"]
+[gd_scene load_steps=17 format=3 uid="uid://43uuxv7mhc08"]
 
 [ext_resource type="Script" uid="uid://dr8a80niv2ae8" path="res://src/game_screens/battle_screen.gd" id="1_36hs7"]
+[ext_resource type="PackedScene" uid="uid://c4yw8pmjy0bm8" path="res://src/actors/server_state.tscn" id="2_6smmo"]
 [ext_resource type="PackedScene" uid="uid://c3nn8w6dsajke" path="res://src/actors/player.tscn" id="2_gl2eh"]
 [ext_resource type="PackedScene" uid="uid://brojsgyxvag1" path="res://src/actors/card_manager.tscn" id="3_g8hex"]
 [ext_resource type="PackedScene" uid="uid://qbgnkpc4g0sa" path="res://src/actors/player_hand.tscn" id="3_j7by3"]
+[ext_resource type="PackedScene" uid="uid://t1fyqqulf70r" path="res://src/actors/client_state.tscn" id="3_tlhb1"]
 [ext_resource type="Script" uid="uid://c3oox5b6qpuv4" path="res://src/game_screens/entity_slot_markers.gd" id="4_g8hex"]
 [ext_resource type="PackedScene" uid="uid://b5eojojjt7qk3" path="res://src/actors/deck.tscn" id="4_jpl4g"]
 [ext_resource type="PackedScene" uid="uid://cbewd7iaxbk52" path="res://src/actors/attack_indicator.tscn" id="7_36hs7"]
+[ext_resource type="PackedScene" uid="uid://dlb2lm2u28bug" path="res://src/actors/combat_manager.tscn" id="8_lp51r"]
+[ext_resource type="Script" uid="uid://rnvpy22wkv6l" path="res://src/game_screens/background_layer.gd" id="11_tlhb1"]
+[ext_resource type="Texture2D" uid="uid://n0hvdmpspajd" path="res://assets/scifibg.jpg" id="12_jsr4r"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_36hs7"]
-properties/0/path = NodePath(".:current_phase")
+properties/0/path = NodePath("CombatManager:declared_attacker_slot")
 properties/0/spawn = true
 properties/0/replication_mode = 2
-properties/1/path = NodePath(".:declared_attacker_slot")
+properties/1/path = NodePath("CombatManager:declared_target_slot")
 properties/1/spawn = true
 properties/1/replication_mode = 2
-properties/2/path = NodePath(".:declared_target_slot")
+properties/2/path = NodePath("CombatManager:current_phase")
 properties/2/spawn = true
-properties/2/replication_mode = 2
+properties/2/replication_mode = 1
 
 [sub_resource type="LabelSettings" id="LabelSettings_jpl4g"]
 font_size = 32
@@ -32,6 +37,15 @@ font_size = 64
 script = ExtResource("1_36hs7")
 template_entity_deck = Array[String](["Ginko", "Golem", "Pixie", "Hibiki", "Haru"])
 template_effect_deck = Array[String](["Knife", "Mortar", "Bite", "Plate", "Medkit", "Parry", "Treasure", "Switcheroo", "Reshuffler"])
+
+[node name="ServerState" parent="." instance=ExtResource("2_6smmo")]
+unique_name_in_owner = true
+
+[node name="ClientState" parent="." instance=ExtResource("3_tlhb1")]
+unique_name_in_owner = true
+
+[node name="CombatManager" parent="." instance=ExtResource("8_lp51r")]
+unique_name_in_owner = true
 
 [node name="CardManager" parent="." instance=ExtResource("3_g8hex")]
 unique_name_in_owner = true
@@ -107,6 +121,7 @@ position = Vector2(200, 0)
 position = Vector2(-200, 0)
 
 [node name="Players" type="Node2D" parent="."]
+unique_name_in_owner = true
 
 [node name="Player1" parent="Players" instance=ExtResource("2_gl2eh")]
 
@@ -115,6 +130,28 @@ position = Vector2(-200, 0)
 [node name="ServerStateSynchronizer" type="MultiplayerSynchronizer" parent="."]
 unique_name_in_owner = true
 replication_config = SubResource("SceneReplicationConfig_36hs7")
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -10
+script = ExtResource("11_tlhb1")
+
+[node name="Image" type="TextureRect" parent="BackgroundLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("12_jsr4r")
+expand_mode = 2
+stretch_mode = 3
+
+[node name="Video" type="VideoStreamPlayer" parent="BackgroundLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+loop = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
