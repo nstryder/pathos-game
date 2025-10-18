@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://43uuxv7mhc08"]
+[gd_scene load_steps=18 format=3 uid="uid://43uuxv7mhc08"]
 
 [ext_resource type="Script" uid="uid://dr8a80niv2ae8" path="res://src/game_screens/battle_screen.gd" id="1_36hs7"]
 [ext_resource type="PackedScene" uid="uid://c4yw8pmjy0bm8" path="res://src/actors/server_state.tscn" id="2_6smmo"]
@@ -22,7 +22,7 @@ properties/1/spawn = true
 properties/1/replication_mode = 2
 properties/2/path = NodePath("CombatManager:current_phase")
 properties/2/spawn = true
-properties/2/replication_mode = 1
+properties/2/replication_mode = 2
 
 [sub_resource type="LabelSettings" id="LabelSettings_jpl4g"]
 font_size = 32
@@ -31,6 +31,9 @@ font_size = 32
 font_size = 24
 
 [sub_resource type="LabelSettings" id="LabelSettings_36hs7"]
+font_size = 64
+
+[sub_resource type="LabelSettings" id="LabelSettings_tlhb1"]
 font_size = 64
 
 [node name="BattleScreen" type="Node2D"]
@@ -72,7 +75,7 @@ deck_type = 1
 
 [node name="YourHand" parent="BoardCenter/YourSide" instance=ExtResource("3_j7by3")]
 unique_name_in_owner = true
-position = Vector2(0, 300)
+position = Vector2(0, 550)
 
 [node name="YourEntitySlotMarkers" type="Node2D" parent="BoardCenter/YourSide"]
 unique_name_in_owner = true
@@ -153,52 +156,52 @@ grow_horizontal = 2
 grow_vertical = 2
 loop = true
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="."]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_constants/separation = 24
 
-[node name="PlayerNumberLabel" type="Label" parent="CanvasLayer/VBoxContainer"]
+[node name="PlayerNumberLabel" type="Label" parent="UI/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "You are player:"
 label_settings = SubResource("LabelSettings_jpl4g")
 
-[node name="PhaseLabel" type="Label" parent="CanvasLayer/VBoxContainer"]
+[node name="PhaseLabel" type="Label" parent="UI/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Current Phase:"
 label_settings = SubResource("LabelSettings_g8hex")
 metadata/_edit_use_anchors_ = true
 
-[node name="Spacer" type="Control" parent="CanvasLayer/VBoxContainer"]
+[node name="Spacer" type="Control" parent="UI/VBoxContainer"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 
-[node name="SkipButton" type="Button" parent="CanvasLayer/VBoxContainer"]
+[node name="SkipButton" type="Button" parent="UI/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Skip"
 
-[node name="UndoButton" type="Button" parent="CanvasLayer/VBoxContainer"]
+[node name="UndoButton" type="Button" parent="UI/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Undo"
 
-[node name="ConfirmButton" type="Button" parent="CanvasLayer/VBoxContainer"]
+[node name="ConfirmButton" type="Button" parent="UI/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Confirm"
 
-[node name="StatusLabel" type="Label" parent="CanvasLayer"]
+[node name="StatusLabel" type="Label" parent="UI"]
 unique_name_in_owner = true
 anchors_preset = 5
 anchor_left = 0.5
@@ -210,3 +213,44 @@ grow_horizontal = 2
 text = "Status..."
 label_settings = SubResource("LabelSettings_36hs7")
 horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -89.0
+offset_right = 357.0
+grow_vertical = 0
+
+[node name="Prefix" type="Label" parent="UI/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Your HP: "
+label_settings = SubResource("LabelSettings_tlhb1")
+
+[node name="YourHPLabel" type="Label" parent="UI/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "10"
+label_settings = SubResource("LabelSettings_tlhb1")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -362.0
+offset_bottom = 89.0
+grow_horizontal = 0
+
+[node name="Prefix" type="Label" parent="UI/HBoxContainer2"]
+layout_mode = 2
+text = "Enemy HP: "
+label_settings = SubResource("LabelSettings_tlhb1")
+horizontal_alignment = 2
+
+[node name="OppHPLabel" type="Label" parent="UI/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "10"
+label_settings = SubResource("LabelSettings_tlhb1")
+horizontal_alignment = 2

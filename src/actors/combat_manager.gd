@@ -9,10 +9,11 @@ enum Timeline {
 	PLAYER2_OFFENSE,
 	PLAYER1_DEFENSE,
 	# +1 turn
+	COMBAT,
 	NEUTRAL
 }
 
-var turn_count: int = 1
+var turn_count: int = 0
 @export var current_phase: Timeline = Timeline.NEUTRAL:
 	set(value):
 		current_phase = value
@@ -25,7 +26,7 @@ var turn_count: int = 1
 var attacking_player: Player
 var defending_player: Player
 
-@onready var battle_screen: BattleScreen = owner
+@onready var server: ServerState = %ServerState
 
 
 func phase_is_offense() -> bool:
@@ -36,15 +37,31 @@ func phase_is_defense() -> bool:
 	return current_phase in [Timeline.PLAYER1_DEFENSE, Timeline.PLAYER2_DEFENSE]
 
 
-func resolve_combat() -> void:
-	pass
-
-
-# TODO
-func resolve_deaths() -> void:
-	pass
+func skip_was_declared() -> bool:
+	return declared_attacker_slot == -1
 
 
 # TODO
 func player_has_won() -> bool:
 	return false
+
+
+func start_combat() -> void:
+	_resolve_effects()
+	_resolve_combat()
+	_resolve_deaths()
+
+# TODO
+func _resolve_effects() -> void:
+	pass
+
+
+func _resolve_combat() -> void:
+	var attacking_entity: EntityCard = attacking_player.get_entity_card_at_slot(declared_attacker_slot)
+	var target_entity: EntityCard = defending_player.get_entity_card_at_slot(declared_target_slot)
+	target_entity.current_shield -= attacking_entity.current_attack
+
+
+func _resolve_deaths() -> void:
+	server.player1.check_entity_deaths()
+	server.player2.check_entity_deaths()

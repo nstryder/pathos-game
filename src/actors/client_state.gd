@@ -7,6 +7,8 @@ const CARD_SPACING = 32
 var controlled_player: Player
 var opposing_player: Player
 
+var is_attacker: bool = false
+
 var queued_effect_attachments: Array[Array] = [[], [], []]
 var slot_attachment_history_stack: Array[int] = []
 
@@ -14,10 +16,12 @@ var slot_attachment_history_stack: Array[int] = []
 @onready var your_effect_deck: Deck = %YourEffectDeck
 @onready var your_entity_markers: EntitySlotMarkers = %YourEntitySlotMarkers
 @onready var your_hand: PlayerHand = %YourHand
+@onready var your_hp_label: Label = %YourHPLabel
 @onready var opp_entity_deck: Deck = %OppEntityDeck
 @onready var opp_effect_deck: Deck = %OppEffectDeck
 @onready var opp_entity_markers: EntitySlotMarkers = %OppEntitySlotMarkers
 @onready var opp_hand: PlayerHand = %OppHand
+@onready var opp_hp_label: Label = %OppHPLabel
 
 @onready var button_undo: Button = %UndoButton
 @onready var button_skip: Button = %SkipButton
@@ -78,10 +82,51 @@ func show_attack_indicator_via_players(attacker_player: Player, target_player: P
 	show_attack_indicator(attacker_pos, target_pos)
 
 
+# TODO
+@rpc("authority", "call_local", "reliable")
+func visualize_combat() -> void:
+	await client_sync_server_state()
+	set_status("Resolving Combat")
+	var attacking_player: Player
+	var target_entity_slots: EntitySlotMarkers
+	if is_attacker:
+		attacking_player = controlled_player
+		target_entity_slots = opp_entity_markers
+	else:
+		attacking_player = opposing_player
+		target_entity_slots = your_entity_markers
+		
+	var attacking_entity: EntityCard = attacking_player.get_entity_card_at_slot(combat_manager.declared_attacker_slot)
+	var target_position: Vector2 = target_entity_slots.get_position_at_slot(combat_manager.declared_target_slot)
+	var tween := create_tween() \
+		.set_ease(Tween.EASE_OUT) \
+		.set_trans(Tween.TRANS_QUAD)
+
+	var original_position: Vector2 = attacking_entity.global_position
+	tween.tween_property(attacking_entity, "global_position", target_position, 0.1)
+	tween.tween_property(attacking_entity, "global_position", original_position, 0.1)
+	await tween.finished
+	attack_indicator.hide()
+	await Utils.sleep(1)
+	place_entities_on_field()
+	check_endgame()
+
+
+func check_endgame() -> void:
+	if server.player1.hp <= 0 or server.player2.hp <= 0:
+		card_manager.dragging_enabled = false
+		card_manager.attacking_enabled = false
+		if controlled_player.hp <= 0:
+			set_status('YOU LOSE. GAME OVER.')
+		else:
+			set_status('YOU WIN!')
+
+
 @rpc("authority", "call_local", "reliable")
 func start_client_offense() -> void:
 	await client_sync_server_state()
 	start_turn()
+	is_attacker = true
 	card_manager.dragging_enabled = true
 	card_manager.attacking_enabled = true
 	button_skip.show()
@@ -101,6 +146,7 @@ func end_client_offense() -> void:
 func start_client_defense() -> void:
 	await client_sync_server_state()
 	start_turn()
+	is_attacker = false
 	card_manager.dragging_enabled = true
 	card_manager.attacking_enabled = false
 	show_attack_indicator_via_players(
@@ -126,11 +172,11 @@ func end_client_defense() -> void:
 
 func declare_attack(attacker_slot: int, target_slot: int) -> void:
 	server.send_attack.rpc_id(1, attacker_slot, target_slot, queued_effect_attachments)
-	show_attack_indicator_via_players(controlled_player, opposing_player, attacker_slot, target_slot)
+	if attacker_slot != -1:
+		show_attack_indicator_via_players(controlled_player, opposing_player, attacker_slot, target_slot)
 	end_client_offense()
 
 
-# TODO
 func declare_defense() -> void:
 	server.send_defense.rpc_id(1, queued_effect_attachments)
 	end_client_defense()
@@ -208,11 +254,20 @@ func return_effect_back_to_hand(effect_idx: int) -> void:
 	your_hand.add_card_to_hand(effect_card)
 
 
+func update_hp_label(new_hp: int, target_label: Label) -> void:
+	target_label.text = str(new_hp)
+
+
+func place_entities_on_field() -> void:
+	your_entity_deck.realize_entity_state()
+	opp_entity_deck.realize_entity_state(true)
+
+
 @rpc("authority", "call_local", "reliable")
 func _finish_client_side_setup() -> void:
 	await client_sync_player_state()
 	_setup_board()
-	_place_entities_on_field()
+	place_entities_on_field()
 
 
 @rpc("authority", "call_local", "reliable")
@@ -235,6 +290,8 @@ func _setup_board() -> void:
 	your_effect_deck.deck_player = controlled_player
 	your_effect_deck.set_deck(controlled_player.effect_deck)
 	your_effect_deck.player_hand = your_hand
+	controlled_player.hp_changed.connect(update_hp_label.bind(your_hp_label))
+	update_hp_label(controlled_player.hp, your_hp_label)
 	
 	opp_entity_deck.deck_player = opposing_player
 	opp_entity_deck.set_deck(opposing_player.entity_deck)
@@ -242,10 +299,8 @@ func _setup_board() -> void:
 	
 	opp_effect_deck.set_deck(opposing_player.effect_deck)
 	opp_effect_deck.player_hand = opp_hand
+	opposing_player.hp_changed.connect(update_hp_label.bind(opp_hp_label))
+	update_hp_label(opposing_player.hp, opp_hp_label)
 
-
-func _place_entities_on_field() -> void:
-	your_entity_deck.realize_entity_state()
-	opp_entity_deck.realize_entity_state(true)
 
 #endregion

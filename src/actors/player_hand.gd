@@ -12,7 +12,6 @@ Critiques:
 """
 
 const CARD_WIDTH = 250
-const HAND_Y_POSITION = 890
 const ANIMATION_TWEEN_TIME = 0.2
 
 var player_hand: Array[Card] = []
@@ -23,13 +22,14 @@ func _ready() -> void:
 
 
 func add_card_to_hand(card: Card) -> void:
-    player_hand.insert(0, card)
-    update_hand_positions()
+    if card not in player_hand:
+        player_hand.insert(0, card)
+        update_hand_positions()
 
 
 func update_hand_positions() -> void:
     for i in range(player_hand.size()):
-        var new_position := Vector2(calculate_card_position(i), HAND_Y_POSITION)
+        var new_position := Vector2(calculate_card_position(i), global_position.y)
         var card := player_hand[i]
         card.starting_position = new_position
         animate_card_to_position(card, new_position)

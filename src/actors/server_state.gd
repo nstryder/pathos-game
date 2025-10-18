@@ -24,7 +24,7 @@ func initialize_board() -> void:
 	_setup_player_decks()
 	_draw_initial_entities()
 	client._finish_client_side_setup.rpc()
-	await get_tree().create_timer(1.0).timeout
+	await Utils.sleep(1)
 	# At this point, assume game state is synced and ready to start
 	start_game()
 
@@ -35,35 +35,51 @@ func start_game() -> void:
 
 # TODO
 func start_timeline() -> void:
-	combat_manager.current_phase = Timeline.PLAYER1_OFFENSE
-	player1.draw_effects()
-	combat_manager.attacking_player = player1
-	combat_manager.defending_player = player2
-	client.start_client_offense.rpc_id(player1.id)
-	client.wait_for_turn.rpc_id(player2.id)
-	await attack_declared
-	# TODO: Check for skip
-
-	combat_manager.current_phase = Timeline.PLAYER2_DEFENSE
-	client.start_client_defense.rpc_id(player2.id)
-	await defense_declared
-	
-	combat_manager.resolve_combat()
+	while true:
+		combat_manager.current_phase = Timeline.PLAYER1_OFFENSE
+		await execute_offense_phase(player1, player2)
 		
-		# FX cards get drawn if not 1st turn
-		# Enable FX cards to be dragged
-		# Enable Entities to declare attack
-		# await attack declaration
-		# - Player sends: FX placed & attack declared (or skip declared)
-		# - Advance the timeline
-	# For defensive phase:
-		# Enable FX cards to be dragged
-		# await confirm
-		# Player sends: FX placed (or skip declared)
-	# Resolve combat
-	# Advance turn counter
-	# Advance timeline
-	# Back to offense
+		if not combat_manager.skip_was_declared():
+			combat_manager.current_phase = Timeline.PLAYER2_DEFENSE
+			await execute_defense_phase()
+			await execute_combat_phase()
+
+		if player1.hp <= 0 or player2.hp <= 0:
+			break
+		
+		combat_manager.current_phase = Timeline.PLAYER2_OFFENSE
+		await execute_offense_phase(player2, player1)
+
+		if not combat_manager.skip_was_declared():
+			combat_manager.current_phase = Timeline.PLAYER1_DEFENSE
+			await execute_defense_phase()
+			await execute_combat_phase()
+		
+		if player1.hp <= 0 or player2.hp <= 0:
+			break
+
+
+func execute_offense_phase(attacker: Player, defender: Player) -> void:
+	combat_manager.turn_count += 1
+	if combat_manager.turn_count > 1:
+		attacker.draw_effects()
+	combat_manager.attacking_player = attacker
+	combat_manager.defending_player = defender
+	client.start_client_offense.rpc_id(attacker.id)
+	client.wait_for_turn.rpc_id(defender.id)
+	await attack_declared
+
+
+func execute_defense_phase() -> void:
+	client.start_client_defense.rpc_id(combat_manager.defending_player.id)
+	await defense_declared
+
+
+func execute_combat_phase() -> void:
+	combat_manager.current_phase = Timeline.COMBAT
+	combat_manager.start_combat()
+	client.visualize_combat.rpc()
+	await Utils.sleep(3)
 
 
 @rpc("any_peer", "call_local", "reliable")

@@ -48,18 +48,25 @@ func set_deck(new_deck: Array) -> void:
 
 
 func realize_entity_state(is_enemy: bool = false) -> void:
-	if entity_slot_markers.current_idx_representation == deck_player.entities_in_play:
-		return
-	hide_old_entities_in_play()
+	await hide_dead_entities()
+	var tween: Tween = null
 	for slot_num: int in deck_player.entities_in_play.size():
 		var entity_idx: int = deck_player.entities_in_play[slot_num]
 		if entity_idx == -1: continue
 		var entity_card: EntityCard = deck_player.get_entity_card_at_index(entity_idx)
+		var entity_is_already_in_play := entity_card.current_slot != -1
+		if entity_is_already_in_play:
+			continue
 		var new_pos: Vector2 = entity_slot_markers.get_position_at_slot(slot_num)
-		entity_card.global_position = new_pos
+		entity_card.activate()
 		entity_card.slot_attachment_effects_enable()
 		entity_card.current_slot = slot_num
 		entity_card.is_enemy = is_enemy
+
+		if not tween:
+			tween = create_tween()
+		entity_card.global_position = global_position
+		tween.tween_property(entity_card, "global_position", new_pos, 0.1)
 	update_counter()
 
 
@@ -71,8 +78,13 @@ func realize_effect_state() -> void:
 	update_counter()
 
 
-func hide_old_entities_in_play() -> void:
-	for entity_idx: int in entity_slot_markers.current_idx_representation:
-		if entity_idx == -1: continue
+func hide_dead_entities() -> void:
+	if deck_player.entity_graveyard.is_empty():
+		return
+	var tween := create_tween()
+	for entity_idx: int in deck_player.entity_graveyard:
 		var current_card: EntityCard = deck_player.get_entity_card_at_index(entity_idx)
-		current_card.hide_from_field()
+		current_card.current_idx = -1
+		tween.tween_property(current_card, "global_position", Vector2.ZERO, 0.1)
+		tween.tween_callback(current_card.hide_from_field)
+	await tween.finished

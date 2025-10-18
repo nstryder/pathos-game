@@ -1,12 +1,17 @@
 extends Node2D
 class_name Player
 
+signal hp_changed(new_hp: int)
+
 const ENTITY_LIMIT = 3
 const entity_card_scene = preload("uid://djf85mhy7rn64")
 const effect_card_scene = preload("uid://lfqkryekm4io")
 
 @export var id: int
-@export var hp: int = 10
+@export var hp: int = 4:
+	set(value):
+		hp = value
+		hp_changed.emit(value)
 @export var base_entity_deck: Array[String] = []
 @export var base_effect_deck: Array[String] = []
 
@@ -58,7 +63,7 @@ func initialize_decks() -> void:
 func draw_entities() -> void:
 	if not multiplayer.is_server():
 		return
-	for i in range(ENTITY_LIMIT):
+	for i in ENTITY_LIMIT:
 		var current_slot_idx: int = entities_in_play[i]
 		if current_slot_idx == -1 and not entity_deck.is_empty():
 			var drawn_entity_idx: int = entity_deck.pop_back()
@@ -68,7 +73,8 @@ func draw_entities() -> void:
 func draw_effects() -> void:
 	if not multiplayer.is_server():
 		return
-	for i in range(2):
+	const DRAW_QUANTITY = 2
+	for i in DRAW_QUANTITY:
 		if effect_deck.is_empty():
 			return
 		effect_hand.append(effect_deck.pop_back())
@@ -92,3 +98,17 @@ func get_effect_card_at_index(idx: int) -> EffectCard:
 
 func get_entity_card_at_slot(slot_num: int) -> EntityCard:
 	return get_entity_card_at_index(entities_in_play[slot_num])
+
+
+func check_entity_deaths() -> void:
+	for i in entities_in_play.size():
+		var entity_idx: int = entities_in_play[i]
+		if entity_idx == -1:
+			continue
+		var entity: EntityCard = get_entity_card_at_index(entity_idx)
+		if entity.current_shield <= 0:
+			entity_graveyard.append(entity_idx)
+			entities_in_play[i] = -1
+			var overdamage: int = abs(entity.current_shield)
+			hp -= (2 + overdamage)
+	draw_entities()

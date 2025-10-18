@@ -45,4 +45,4 @@ func slot_attachment_effects_disable() -> void:
 
 @rpc("authority", "call_local", "reliable")
 func hide_from_field() -> void:
-	global_position = Vector2() * 500
+	position = Vector2.ZERO
