@@ -12,15 +12,9 @@ var is_attacker: bool = false
 var queued_effect_attachments: Array[Array] = [[], [], []]
 var slot_attachment_history_stack: Array[int] = []
 
-@onready var your_entity_deck: Deck = %YourEntityDeck
-@onready var your_effect_deck: Deck = %YourEffectDeck
-@onready var your_entity_markers: EntitySlotMarkers = %YourEntitySlotMarkers
-@onready var your_hand: PlayerHand = %YourHand
+@onready var your_side: PlayerSide = %YourSide
 @onready var your_hp_label: Label = %YourHPLabel
-@onready var opp_entity_deck: Deck = %OppEntityDeck
-@onready var opp_effect_deck: Deck = %OppEffectDeck
-@onready var opp_entity_markers: EntitySlotMarkers = %OppEntitySlotMarkers
-@onready var opp_hand: PlayerHand = %OppHand
+@onready var opp_side: PlayerSide = %OppSide
 @onready var opp_hp_label: Label = %OppHPLabel
 
 @onready var button_undo: Button = %UndoButton
@@ -91,10 +85,10 @@ func visualize_combat() -> void:
 	var target_entity_slots: EntitySlotMarkers
 	if is_attacker:
 		attacking_player = controlled_player
-		target_entity_slots = opp_entity_markers
+		target_entity_slots = opp_side.entity_slot_markers
 	else:
 		attacking_player = opposing_player
-		target_entity_slots = your_entity_markers
+		target_entity_slots = your_side.entity_slot_markers
 		
 	var attacking_entity: EntityCard = attacking_player.get_entity_card_at_slot(combat_manager.declared_attacker_slot)
 	var target_position: Vector2 = target_entity_slots.get_position_at_slot(combat_manager.declared_target_slot)
@@ -132,7 +126,7 @@ func start_client_offense() -> void:
 	button_skip.show()
 	button_undo.hide()
 	reset_queued_attachments()
-	your_effect_deck.realize_effect_state()
+	your_side.realize_effect_state()
 
 
 func end_client_offense() -> void:
@@ -196,7 +190,7 @@ func reset_queued_attachments() -> void:
 
 func attach_effect_to_entity_at_slot(effect_idx: int, entity_slot: int) -> void:
 	var effect_card: EffectCard = controlled_player.get_effect_card_at_index(effect_idx)
-	your_hand.remove_card_from_hand(effect_card)
+	your_side.hand.remove_card_from_hand(effect_card)
 	queued_effect_attachments[entity_slot].append(effect_idx)
 	slot_attachment_history_stack.append(entity_slot)
 	if combat_manager.phase_is_defense():
@@ -251,7 +245,7 @@ func return_effect_back_to_hand(effect_idx: int) -> void:
 	var effect_card := controlled_player.get_effect_card_at_index(effect_idx)
 	effect_card.detectable = true
 	effect_card.slot_attachment_effects_disable()
-	your_hand.add_card_to_hand(effect_card)
+	your_side.hand.add_card_to_hand(effect_card)
 
 
 func update_hp_label(new_hp: int, target_label: Label) -> void:
@@ -259,8 +253,8 @@ func update_hp_label(new_hp: int, target_label: Label) -> void:
 
 
 func place_entities_on_field() -> void:
-	your_entity_deck.realize_entity_state()
-	opp_entity_deck.realize_entity_state(true)
+	your_side.realize_entity_state()
+	opp_side.realize_entity_state(true)
 
 
 @rpc("authority", "call_local", "reliable")
@@ -283,22 +277,11 @@ func _assign_client_player_number(player_number: int) -> void:
 
 
 func _setup_board() -> void:
-	your_entity_deck.deck_player = controlled_player
-	your_entity_deck.set_deck(controlled_player.entity_deck)
-	your_entity_deck.set_entity_marker_node(your_entity_markers)
-	
-	your_effect_deck.deck_player = controlled_player
-	your_effect_deck.set_deck(controlled_player.effect_deck)
-	your_effect_deck.player_hand = your_hand
+	your_side.player = controlled_player
 	controlled_player.hp_changed.connect(update_hp_label.bind(your_hp_label))
 	update_hp_label(controlled_player.hp, your_hp_label)
 	
-	opp_entity_deck.deck_player = opposing_player
-	opp_entity_deck.set_deck(opposing_player.entity_deck)
-	opp_entity_deck.set_entity_marker_node(opp_entity_markers)
-	
-	opp_effect_deck.set_deck(opposing_player.effect_deck)
-	opp_effect_deck.player_hand = opp_hand
+	opp_side.player = opposing_player
 	opposing_player.hp_changed.connect(update_hp_label.bind(opp_hp_label))
 	update_hp_label(opposing_player.hp, opp_hp_label)
 

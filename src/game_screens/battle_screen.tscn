@@ -1,14 +1,12 @@
-[gd_scene load_steps=18 format=3 uid="uid://43uuxv7mhc08"]
+[gd_scene load_steps=16 format=3 uid="uid://43uuxv7mhc08"]
 
 [ext_resource type="Script" uid="uid://dr8a80niv2ae8" path="res://src/game_screens/battle_screen.gd" id="1_36hs7"]
 [ext_resource type="PackedScene" uid="uid://c4yw8pmjy0bm8" path="res://src/actors/server_state.tscn" id="2_6smmo"]
 [ext_resource type="PackedScene" uid="uid://c3nn8w6dsajke" path="res://src/actors/player.tscn" id="2_gl2eh"]
 [ext_resource type="PackedScene" uid="uid://brojsgyxvag1" path="res://src/actors/card_manager.tscn" id="3_g8hex"]
-[ext_resource type="PackedScene" uid="uid://qbgnkpc4g0sa" path="res://src/actors/player_hand.tscn" id="3_j7by3"]
 [ext_resource type="PackedScene" uid="uid://t1fyqqulf70r" path="res://src/actors/client_state.tscn" id="3_tlhb1"]
-[ext_resource type="Script" uid="uid://c3oox5b6qpuv4" path="res://src/game_screens/entity_slot_markers.gd" id="4_g8hex"]
-[ext_resource type="PackedScene" uid="uid://b5eojojjt7qk3" path="res://src/actors/deck.tscn" id="4_jpl4g"]
 [ext_resource type="PackedScene" uid="uid://cbewd7iaxbk52" path="res://src/actors/attack_indicator.tscn" id="7_36hs7"]
+[ext_resource type="PackedScene" uid="uid://dqjvo8kvgo7iy" path="res://src/game_screens/player_side.tscn" id="7_jsr4r"]
 [ext_resource type="PackedScene" uid="uid://dlb2lm2u28bug" path="res://src/actors/combat_manager.tscn" id="8_lp51r"]
 [ext_resource type="Script" uid="uid://rnvpy22wkv6l" path="res://src/game_screens/background_layer.gd" id="11_tlhb1"]
 [ext_resource type="Texture2D" uid="uid://n0hvdmpspajd" path="res://assets/scifibg.jpg" id="12_jsr4r"]
@@ -60,68 +58,12 @@ visible = false
 [node name="BoardCenter" type="Marker2D" parent="."]
 position = Vector2(960, 540)
 
-[node name="YourSide" type="Node2D" parent="BoardCenter"]
-
-[node name="YourEffectDeck" parent="BoardCenter/YourSide" instance=ExtResource("4_jpl4g")]
-unique_name_in_owner = true
-position = Vector2(-754, 291)
-deck_type = 1
-
-[node name="YourEntityDeck" parent="BoardCenter/YourSide" instance=ExtResource("4_jpl4g")]
-unique_name_in_owner = true
-position = Vector2(-412, 202)
-scale = Vector2(0.6, 0.6)
-deck_type = 1
-
-[node name="YourHand" parent="BoardCenter/YourSide" instance=ExtResource("3_j7by3")]
-unique_name_in_owner = true
-position = Vector2(0, 550)
-
-[node name="YourEntitySlotMarkers" type="Node2D" parent="BoardCenter/YourSide"]
-unique_name_in_owner = true
-z_index = -100
-position = Vector2(0, 200)
-script = ExtResource("4_g8hex")
-gap = 40
-
-[node name="Slot1" type="Marker2D" parent="BoardCenter/YourSide/YourEntitySlotMarkers"]
-position = Vector2(200, 0)
-
-[node name="Slot2" type="Marker2D" parent="BoardCenter/YourSide/YourEntitySlotMarkers"]
-
-[node name="Slot3" type="Marker2D" parent="BoardCenter/YourSide/YourEntitySlotMarkers"]
-position = Vector2(-200, 0)
-
-[node name="OppSide" type="Node2D" parent="BoardCenter"]
-
-[node name="OppEntityDeck" parent="BoardCenter/OppSide" instance=ExtResource("4_jpl4g")]
-unique_name_in_owner = true
-position = Vector2(416, -204)
-scale = Vector2(0.6, 0.6)
-deck_type = 1
-
-[node name="OppEffectDeck" parent="BoardCenter/OppSide" instance=ExtResource("4_jpl4g")]
-unique_name_in_owner = true
-position = Vector2(770, -307)
-deck_type = 1
-
-[node name="OppHand" parent="BoardCenter/OppSide" instance=ExtResource("3_j7by3")]
+[node name="YourSide" parent="BoardCenter" instance=ExtResource("7_jsr4r")]
 unique_name_in_owner = true
 
-[node name="OppEntitySlotMarkers" type="Node2D" parent="BoardCenter/OppSide"]
+[node name="OppSide" parent="BoardCenter" instance=ExtResource("7_jsr4r")]
 unique_name_in_owner = true
-z_index = -100
-position = Vector2(0, -200)
-script = ExtResource("4_g8hex")
-gap = 40
-
-[node name="Slot1" type="Marker2D" parent="BoardCenter/OppSide/OppEntitySlotMarkers"]
-position = Vector2(200, 0)
-
-[node name="Slot2" type="Marker2D" parent="BoardCenter/OppSide/OppEntitySlotMarkers"]
-
-[node name="Slot3" type="Marker2D" parent="BoardCenter/OppSide/OppEntitySlotMarkers"]
-position = Vector2(-200, 0)
+rotation = 3.1415927
 
 [node name="Players" type="Node2D" parent="."]
 unique_name_in_owner = true

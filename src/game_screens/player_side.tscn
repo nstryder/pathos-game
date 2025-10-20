@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://dqjvo8kvgo7iy"]
+
+[ext_resource type="PackedScene" uid="uid://b5eojojjt7qk3" path="res://src/actors/deck.tscn" id="1_56qvi"]
+[ext_resource type="Script" uid="uid://i84ooqacrr5k" path="res://src/game_screens/player_side.gd" id="1_canyk"]
+[ext_resource type="PackedScene" uid="uid://qbgnkpc4g0sa" path="res://src/actors/player_hand.tscn" id="2_canyk"]
+[ext_resource type="Script" uid="uid://c3oox5b6qpuv4" path="res://src/game_screens/entity_slot_markers.gd" id="3_85fbd"]
+
+[node name="PlayerSide" type="Node2D"]
+script = ExtResource("1_canyk")
+
+[node name="EffectDeck" parent="." instance=ExtResource("1_56qvi")]
+unique_name_in_owner = true
+position = Vector2(-754, 291)
+rotation = 3.1415925
+deck_type = 1
+
+[node name="EntityDeck" parent="." instance=ExtResource("1_56qvi")]
+unique_name_in_owner = true
+position = Vector2(-412, 202)
+rotation = 3.1415925
+scale = Vector2(0.6, 0.6)
+deck_type = 1
+
+[node name="Hand" parent="." instance=ExtResource("2_canyk")]
+unique_name_in_owner = true
+position = Vector2(0, 550)
+rotation = 3.1415925
+
+[node name="EntitySlotMarkers" type="Node2D" parent="."]
+unique_name_in_owner = true
+z_index = -100
+position = Vector2(0, 200)
+rotation = 3.1415925
+script = ExtResource("3_85fbd")
+gap = 40
+
+[node name="Slot1" type="Marker2D" parent="EntitySlotMarkers"]
+position = Vector2(200, 0)
+
+[node name="Slot2" type="Marker2D" parent="EntitySlotMarkers"]
+
+[node name="Slot3" type="Marker2D" parent="EntitySlotMarkers"]
+position = Vector2(-200, 0)

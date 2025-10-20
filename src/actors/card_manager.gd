@@ -107,7 +107,7 @@ func end_declare_attack() -> void:
 
 
 func reset_dragged_card_position() -> void:
-	var player_hand: PlayerHand = client.your_hand
+	var player_hand: PlayerHand = client.your_side.hand
 	player_hand.animate_card_to_position(effect_card_being_dragged, effect_card_being_dragged.starting_position)
 
 
