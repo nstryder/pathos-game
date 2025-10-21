@@ -1,32 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://lfqkryekm4io"]
+[gd_scene load_steps=6 format=3 uid="uid://lfqkryekm4io"]
 
 [ext_resource type="PackedScene" uid="uid://bfb04tdppv0p2" path="res://src/actors/card.tscn" id="1_3iiqf"]
 [ext_resource type="Script" uid="uid://cnuqcbg0h5km2" path="res://src/actors/effect_card.gd" id="2_1p6kf"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gj0d"]
-resource_local_to_scene = true
-bg_color = Color(0.878431, 0.788235, 0.65098, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.29, 0.174, 0, 1)
-border_blend = true
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-corner_detail = 4
-shadow_offset = Vector2(0, 9)
-
-[sub_resource type="Theme" id="Theme_1p6kf"]
-resource_local_to_scene = true
-Label/colors/font_color = Color(0, 0, 0, 1)
-MarginContainer/constants/margin_bottom = 12
-MarginContainer/constants/margin_left = 12
-MarginContainer/constants/margin_right = 12
-MarginContainer/constants/margin_top = 12
-Panel/styles/panel = SubResource("StyleBoxFlat_1gj0d")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1p6kf"]
 resource_local_to_scene = true
@@ -60,63 +35,33 @@ properties/1/replication_mode = 2
 script = ExtResource("2_1p6kf")
 effect_code = ""
 
-[node name="Control" type="Control" parent="." index="0"]
-custom_minimum_size = Vector2(240, 360)
-layout_mode = 3
-anchor_right = 0.125
-anchor_bottom = 0.333333
-offset_left = -120.0
-offset_top = -180.0
-offset_right = 120.0
-offset_bottom = 180.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme = SubResource("Theme_1p6kf")
-metadata/_edit_use_anchors_ = true
-
-[node name="Background" type="Panel" parent="Control" index="0"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Background" parent="Visuals" index="0"]
 theme_override_styles/panel = SubResource("StyleBoxFlat_1p6kf")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control" index="1"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Visuals/Info" index="0"]
 layout_mode = 2
 
-[node name="Nickname" type="Label" parent="Control/MarginContainer/VBoxContainer" index="0"]
+[node name="Nickname" type="Label" parent="Visuals/Info/VBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Card Nickname"
 label_settings = SubResource("LabelSettings_1p6kf")
 horizontal_alignment = 1
 
-[node name="ArtPlaceholder" type="ColorRect" parent="Control/MarginContainer/VBoxContainer" index="1"]
+[node name="ArtPlaceholder" type="ColorRect" parent="Visuals/Info/VBoxContainer" index="1"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer" index="2"]
+[node name="Label" type="Label" parent="Visuals/Info/VBoxContainer" index="2"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Description"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Control/MarginContainer/VBoxContainer" index="3"]
+[node name="HSeparator" type="HSeparator" parent="Visuals/Info/VBoxContainer" index="3"]
 layout_mode = 2
 
-[node name="Description" type="Label" parent="Control/MarginContainer/VBoxContainer" index="4"]
+[node name="Description" type="Label" parent="Visuals/Info/VBoxContainer" index="4"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -124,24 +69,21 @@ text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="HSeparator2" type="HSeparator" parent="Control/MarginContainer/VBoxContainer" index="5"]
+[node name="HSeparator2" type="HSeparator" parent="Visuals/Info/VBoxContainer" index="5"]
 layout_mode = 2
 
-[node name="EffectType" type="Label" parent="Control/MarginContainer/VBoxContainer" index="6"]
+[node name="EffectType" type="Label" parent="Visuals/Info/VBoxContainer" index="6"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Category: Attack"
 horizontal_alignment = 1
 
-[node name="Veil" type="ColorRect" parent="Control" index="2"]
+[node name="Veil" parent="Visuals" index="2"]
 visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.136988, 0.136988, 0.136988, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_1p6kf")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="2"]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="1"]
 replication_config = SubResource("SceneReplicationConfig_1p6kf")
+
+[node name="Area2D" parent="." index="2"]
+visible = false

@@ -2,6 +2,8 @@
 extends Node2D
 class_name PlayerSide
 
+@export var is_enemy: bool = false
+
 ## Player MUST be set during game setup
 var player: Player
 @onready var effect_deck: Deck = %EffectDeck
@@ -17,7 +19,7 @@ func _ready() -> void:
 		node.global_rotation -= node.global_rotation
 
 
-func realize_entity_state(is_enemy: bool = false) -> void:
+func realize_entity_state() -> void:
 	await hide_dead_entities()
 	var tween: Tween = null
 	for slot_num: int in player.entities_in_play.size():
@@ -32,6 +34,7 @@ func realize_entity_state(is_enemy: bool = false) -> void:
 		entity_card.slot_attachment_effects_enable()
 		entity_card.current_slot = slot_num
 		entity_card.is_enemy = is_enemy
+		entity_card.is_veiled = is_enemy
 
 		if not tween:
 			tween = create_tween()
@@ -56,5 +59,6 @@ func realize_effect_state() -> void:
 	for effect_idx: int in player.effect_hand:
 		var effect_card: EffectCard = player.get_effect_card_at_index(effect_idx)
 		effect_card.global_position = global_position
+		effect_card.is_veiled = is_enemy
 		hand.add_card_to_hand(effect_card)
 	effect_deck.update_counter(player.effect_deck)

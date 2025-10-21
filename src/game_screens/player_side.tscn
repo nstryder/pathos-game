@@ -7,30 +7,25 @@
 
 [node name="PlayerSide" type="Node2D"]
 script = ExtResource("1_canyk")
+is_enemy = null
 
 [node name="EffectDeck" parent="." instance=ExtResource("1_56qvi")]
 unique_name_in_owner = true
 position = Vector2(-754, 291)
-rotation = 3.1415925
-deck_type = 1
 
 [node name="EntityDeck" parent="." instance=ExtResource("1_56qvi")]
 unique_name_in_owner = true
 position = Vector2(-412, 202)
-rotation = 3.1415925
 scale = Vector2(0.6, 0.6)
-deck_type = 1
 
 [node name="Hand" parent="." instance=ExtResource("2_canyk")]
 unique_name_in_owner = true
 position = Vector2(0, 550)
-rotation = 3.1415925
 
 [node name="EntitySlotMarkers" type="Node2D" parent="."]
 unique_name_in_owner = true
 z_index = -100
 position = Vector2(0, 200)
-rotation = 3.1415925
 script = ExtResource("3_85fbd")
 gap = 40
 

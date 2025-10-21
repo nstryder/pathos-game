@@ -66,7 +66,7 @@ func execute_offense_phase(attacker: Player, defender: Player) -> void:
 	combat_manager.attacking_player = attacker
 	combat_manager.defending_player = defender
 	client.start_client_offense.rpc_id(attacker.id)
-	client.wait_for_turn.rpc_id(defender.id)
+	client.wait_for_offense.rpc_id(defender.id)
 	await attack_declared
 
 

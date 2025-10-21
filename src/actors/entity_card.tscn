@@ -19,15 +19,6 @@ corner_radius_bottom_left = 6
 corner_detail = 4
 shadow_offset = Vector2(0, 9)
 
-[sub_resource type="Theme" id="Theme_ewlyu"]
-resource_local_to_scene = true
-Label/colors/font_color = Color(0, 0, 0, 1)
-MarginContainer/constants/margin_bottom = 12
-MarginContainer/constants/margin_left = 12
-MarginContainer/constants/margin_right = 12
-MarginContainer/constants/margin_top = 12
-Panel/styles/panel = SubResource("StyleBoxFlat_ewlyu")
-
 [sub_resource type="LabelSettings" id="LabelSettings_ewlyu"]
 font_size = 24
 font_color = Color(0, 0, 0, 1)
@@ -50,6 +41,22 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vc8ps"]
+resource_local_to_scene = true
+bg_color = Color(0.878431, 0.788235, 0.65098, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.29, 0.174, 0, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 4
+shadow_offset = Vector2(0, 9)
+
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ewlyu"]
 properties/0/path = NodePath(".:entity_code")
 properties/0/spawn = true
@@ -71,122 +78,87 @@ current_slot = -1
 current_attack = 0
 current_shield = 0
 
-[node name="Control" type="Control" parent="." index="0"]
-custom_minimum_size = Vector2(240, 360)
-layout_mode = 3
-anchor_right = 0.125
-anchor_bottom = 0.333333
-offset_left = -120.0
-offset_top = -180.0
-offset_right = 120.0
-offset_bottom = 180.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme = SubResource("Theme_ewlyu")
-metadata/_edit_use_anchors_ = true
+[node name="Background" parent="Visuals" index="0"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_ewlyu")
 
-[node name="Background" type="Panel" parent="Control" index="0"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="Control" index="1"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Visuals/Info" index="0"]
 layout_mode = 2
 
-[node name="Nickname" type="Label" parent="Control/MarginContainer/VBoxContainer" index="0"]
+[node name="Nickname" type="Label" parent="Visuals/Info/VBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Card Nickname"
 label_settings = SubResource("LabelSettings_ewlyu")
 
-[node name="ArtPlaceholder" type="ColorRect" parent="Control/MarginContainer/VBoxContainer" index="1"]
+[node name="ArtPlaceholder" type="ColorRect" parent="Visuals/Info/VBoxContainer" index="1"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer" index="2"]
+[node name="Label" type="Label" parent="Visuals/Info/VBoxContainer" index="2"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Description"
 
-[node name="HSeparator" type="HSeparator" parent="Control/MarginContainer/VBoxContainer" index="3"]
+[node name="HSeparator" type="HSeparator" parent="Visuals/Info/VBoxContainer" index="3"]
 layout_mode = 2
 
-[node name="Description" type="Label" parent="Control/MarginContainer/VBoxContainer" index="4"]
+[node name="Description" type="Label" parent="Visuals/Info/VBoxContainer" index="4"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
 autowrap_mode = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer" index="5"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Visuals/Info/VBoxContainer" index="5"]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
+[node name="PanelContainer" type="PanelContainer" parent="Visuals/Info/VBoxContainer/HBoxContainer" index="0"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_3ilae")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="Visuals/Info/VBoxContainer/HBoxContainer/PanelContainer" index="0"]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 0
 
-[node name="Attack" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer" index="0"]
+[node name="Attack" type="Label" parent="Visuals/Info/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 label_settings = SubResource("LabelSettings_vc8ps")
 
-[node name="Control" type="Control" parent="Control/MarginContainer/VBoxContainer/HBoxContainer" index="1"]
+[node name="Control" type="Control" parent="Visuals/Info/VBoxContainer/HBoxContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PanelContainer2" type="PanelContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer" index="2"]
+[node name="PanelContainer2" type="PanelContainer" parent="Visuals/Info/VBoxContainer/HBoxContainer" index="2"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_hbyfa")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="Visuals/Info/VBoxContainer/HBoxContainer/PanelContainer2" index="0"]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 0
 
-[node name="Shield" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/MarginContainer" index="0"]
+[node name="Shield" type="Label" parent="Visuals/Info/VBoxContainer/HBoxContainer/PanelContainer2/MarginContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 label_settings = SubResource("LabelSettings_vc8ps")
 
-[node name="Veil" type="ColorRect" parent="Control" index="2"]
+[node name="Veil" parent="Visuals" index="2"]
 visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.136988, 0.136988, 0.136988, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_vc8ps")
 
-[node name="Area2D" parent="." index="1"]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="1"]
+replication_config = SubResource("SceneReplicationConfig_ewlyu")
+
+[node name="Area2D" parent="." index="2"]
 visible = false
 collision_layer = 2
 collision_mask = 2
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="2"]
-replication_config = SubResource("SceneReplicationConfig_ewlyu")

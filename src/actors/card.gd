@@ -14,11 +14,28 @@ var detectable: bool = true:
 var has_shadow: bool = false:
 	set(value):
 		has_shadow = value
-		var card_background := ($Control as Control).theme.get_stylebox("panel", "Panel") as StyleBoxFlat
+		# var card_background := (%Background as Control).theme.get_stylebox("panel", "Panel") as StyleBoxFlat
+		var card_background: StyleBoxFlat = (%Background as Control)["theme_override_styles/panel"]
 		if has_shadow:
 			card_background.shadow_size = 6
 		else:
 			card_background.shadow_size = 0
+
+
+var is_veiled: bool = false:
+	set(value):
+		if is_revealed_permanently:
+			is_veiled = false
+		else:
+			is_veiled = value
+		(%Veil as Control).visible = is_veiled
+
+
+var is_revealed_permanently: bool = false:
+	set(value):
+		is_revealed_permanently = value
+		if value:
+			is_veiled = true
 
 
 func drag_effects_enable() -> void:

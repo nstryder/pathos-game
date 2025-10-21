@@ -54,10 +54,20 @@ func start_turn() -> void:
 
 
 @rpc("authority", "call_local", "reliable")
+func wait_for_offense() -> void:
+	await client_sync_player_state()
+	sync_opponent()
+	wait_for_turn()
+
+
 func wait_for_turn() -> void:
 	set_status("Waiting for opponent's action...")
 	card_manager.dragging_enabled = false
 	card_manager.attacking_enabled = false
+
+
+func sync_opponent() -> void:
+	opp_side.realize_effect_state()
 
 
 func set_status(text: String) -> void:
@@ -70,9 +80,9 @@ func show_attack_indicator(from: Vector2, to: Vector2) -> void:
 	attack_indicator.set_point_position(1, to)
 
 
-func show_attack_indicator_via_players(attacker_player: Player, target_player: Player, attacker_slot: int, target_slot: int) -> void:
-	var attacker_pos := attacker_player.get_entity_card_at_slot(attacker_slot).global_position
-	var target_pos := target_player.get_entity_card_at_slot(target_slot).global_position
+func show_attack_indicator_via_players(attacker_markers: EntitySlotMarkers, target_markers: EntitySlotMarkers, attacker_slot: int, target_slot: int) -> void:
+	var attacker_pos := attacker_markers.get_position_at_slot(attacker_slot)
+	var target_pos := target_markers.get_position_at_slot(target_slot)
 	show_attack_indicator(attacker_pos, target_pos)
 
 
@@ -144,8 +154,8 @@ func start_client_defense() -> void:
 	card_manager.dragging_enabled = true
 	card_manager.attacking_enabled = false
 	show_attack_indicator_via_players(
-		opposing_player,
-		controlled_player,
+		your_side.entity_slot_markers,
+		opp_side.entity_slot_markers,
 		combat_manager.declared_attacker_slot,
 		combat_manager.declared_target_slot
 	)
@@ -154,6 +164,8 @@ func start_client_defense() -> void:
 	button_undo.hide()
 	button_confirm.hide()
 	reset_queued_attachments()
+	opp_side.realize_effect_state()
+	reveal_opponent_hidden_cards()
 	
 
 func end_client_defense() -> void:
@@ -167,13 +179,26 @@ func end_client_defense() -> void:
 func declare_attack(attacker_slot: int, target_slot: int) -> void:
 	server.send_attack.rpc_id(1, attacker_slot, target_slot, queued_effect_attachments)
 	if attacker_slot != -1:
-		show_attack_indicator_via_players(controlled_player, opposing_player, attacker_slot, target_slot)
+		show_attack_indicator_via_players(
+			your_side.entity_slot_markers,
+			opp_side.entity_slot_markers,
+			attacker_slot,
+			target_slot
+		)
 	end_client_offense()
 
 
 func declare_defense() -> void:
 	server.send_defense.rpc_id(1, queued_effect_attachments)
 	end_client_defense()
+
+
+func reveal_opponent_hidden_cards() -> void:
+	var attacking_entity: EntityCard = opposing_player.get_entity_card_at_index(combat_manager.declared_attacker_slot)
+	attacking_entity.is_revealed_permanently = true
+	var effect_cards := opposing_player.get_effect_cards_at_slot(combat_manager.declared_target_slot)
+	for effect_card in effect_cards:
+		effect_card.is_veiled = false
 
 
 func skip_phase() -> void:
@@ -254,7 +279,7 @@ func update_hp_label(new_hp: int, target_label: Label) -> void:
 
 func place_entities_on_field() -> void:
 	your_side.realize_entity_state()
-	opp_side.realize_entity_state(true)
+	opp_side.realize_entity_state()
 
 
 @rpc("authority", "call_local", "reliable")

@@ -1,12 +1,73 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfb04tdppv0p2"]
+[gd_scene load_steps=5 format=3 uid="uid://bfb04tdppv0p2"]
 
 [ext_resource type="Script" uid="uid://40ynm75xhfg0" path="res://src/actors/card.gd" id="1_juwcs"]
+
+[sub_resource type="Theme" id="Theme_juwcs"]
+Label/colors/font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_juwcs"]
+resource_local_to_scene = true
+bg_color = Color(0.60969996, 0.884975, 0.91, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.1242644, 0.412225, 0.7319335, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 4
+shadow_offset = Vector2(0, 9)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p56sn"]
 size = Vector2(240, 360)
 
 [node name="Card" type="Node2D"]
 script = ExtResource("1_juwcs")
+
+[node name="Visuals" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -120.0
+offset_top = -180.0
+offset_right = 120.0
+offset_bottom = 180.0
+theme = SubResource("Theme_juwcs")
+
+[node name="Background" type="Panel" parent="Visuals"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_juwcs")
+
+[node name="Info" type="MarginContainer" parent="Visuals"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Veil" type="Panel" parent="Visuals"]
+unique_name_in_owner = true
+modulate = Color(0.69, 0.69, 0.69, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_juwcs")
 
 [node name="Area2D" type="Area2D" parent="."]
 

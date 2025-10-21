@@ -100,6 +100,13 @@ func get_entity_card_at_slot(slot_num: int) -> EntityCard:
 	return get_entity_card_at_index(entities_in_play[slot_num])
 
 
+func get_effect_cards_at_slot(slot_num: int) -> Array[EffectCard]:
+	var effect_cards: Array[EffectCard] = []
+	for effect_idx: int in attached_effects[slot_num]:
+		effect_cards.append(get_effect_card_at_index(effect_idx))
+	return effect_cards
+
+
 func check_entity_deaths() -> void:
 	for i in entities_in_play.size():
 		var entity_idx: int = entities_in_play[i]
