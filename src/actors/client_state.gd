@@ -55,7 +55,7 @@ func start_turn() -> void:
 
 @rpc("authority", "call_local", "reliable")
 func wait_for_offense() -> void:
-	await client_sync_player_state()
+	await client_sync_server_state()
 	sync_opponent()
 	wait_for_turn()
 
@@ -154,10 +154,10 @@ func start_client_defense() -> void:
 	card_manager.dragging_enabled = true
 	card_manager.attacking_enabled = false
 	show_attack_indicator_via_players(
-		your_side.entity_slot_markers,
 		opp_side.entity_slot_markers,
+		your_side.entity_slot_markers,
 		combat_manager.declared_attacker_slot,
-		combat_manager.declared_target_slot
+		combat_manager.declared_target_slot,
 	)
 	arrange_attached_effects(opposing_player, opposing_player.attached_effects)
 	button_skip.show()
@@ -194,9 +194,9 @@ func declare_defense() -> void:
 
 
 func reveal_opponent_hidden_cards() -> void:
-	var attacking_entity: EntityCard = opposing_player.get_entity_card_at_index(combat_manager.declared_attacker_slot)
+	var attacking_entity: EntityCard = opposing_player.get_entity_card_at_slot(combat_manager.declared_attacker_slot)
 	attacking_entity.is_revealed_permanently = true
-	var effect_cards := opposing_player.get_effect_cards_at_slot(combat_manager.declared_target_slot)
+	var effect_cards := opposing_player.get_effect_cards_at_slot(combat_manager.declared_attacker_slot)
 	for effect_card in effect_cards:
 		effect_card.is_veiled = false
 

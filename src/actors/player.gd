@@ -8,7 +8,7 @@ const entity_card_scene = preload("uid://djf85mhy7rn64")
 const effect_card_scene = preload("uid://lfqkryekm4io")
 
 @export var id: int
-@export var hp: int = 4:
+@export var hp: int = 10:
 	set(value):
 		hp = value
 		hp_changed.emit(value)
