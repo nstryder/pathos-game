@@ -257,12 +257,12 @@ func arrange_attached_effects(from_player: Player, attachments: Array[Array]) ->
 			var effect_card := from_player.get_effect_card_at_index(effect_idx)
 			
 			effect_card.slot_attachment_effects_enable()
-			effect_card.z_index = Constants.MIN_ATTACHMENT_Z_INDEX + (i + 1)
+			effect_card.z_index = Constants.MIN_ATTACHMENT_Z_INDEX - (i + 1)
 			effect_card.detectable = false
 
 			var target_entity := from_player.get_entity_card_at_slot(slot_num)
 			var offset := Vector2(0, CARD_SPACING * (i + 1))
-			var new_pos := target_entity.global_position + offset
+			var new_pos := target_entity.global_position - offset
 			effect_card.global_position = new_pos
 
 

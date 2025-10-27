@@ -48,6 +48,10 @@ theme/default_font_multichannel_signed_distance_field=true
 2d_physics/layer_1="Effects"
 2d_physics/layer_2="Entities"
 
+[physics]
+
+common/physics_interpolation=true
+
 [rendering]
 
 renderer/rendering_method="mobile"
