@@ -2,7 +2,6 @@ extends Card
 class_name EntityCard
 
 @export var entity_code: String
-@export var current_slot: int = -1
 var entity_card_data: EntityCardData
 
 var max_attack: int
@@ -27,12 +26,20 @@ var max_shield: int
 @onready var attack_label: Label = %Attack
 @onready var shield_label: Label = %Shield
 
+var current_slot: int:
+	get:
+		return player.entities_in_play.find(current_idx)
+
 
 func _ready() -> void:
+	super._ready()
+	
 	entity_card_data = CardDb.get_entity_by_code(entity_code)
 	max_attack = entity_card_data.base_attack
 	max_shield = entity_card_data.base_shield
 	nickname.text = entity_card_data.nickname
+
+	Utils.validate_vars(self, entity_code, entity_card_data)
 
 
 func activate() -> void:

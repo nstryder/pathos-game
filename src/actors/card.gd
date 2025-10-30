@@ -2,8 +2,9 @@ extends Node2D
 class_name Card
 
 @export var current_idx: int
-var starting_position: Vector2
 var is_enemy: bool = false
+var starting_position: Vector2
+var player: Player
 
 var detectable: bool = true:
 	set(value):
@@ -36,6 +37,11 @@ var is_revealed_permanently: bool = false:
 		is_revealed_permanently = value
 		if value:
 			is_veiled = true
+
+
+func _ready() -> void:
+	player = get_parent().get_parent()
+	Utils.validate_vars(self, player, current_idx)
 
 
 func drag_effects_enable() -> void:

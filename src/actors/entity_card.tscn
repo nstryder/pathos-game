@@ -74,7 +74,6 @@ properties/3/replication_mode = 2
 [node name="EntityCard" instance=ExtResource("1_skp7o")]
 script = ExtResource("2_ewlyu")
 entity_code = ""
-current_slot = -1
 current_attack = 0
 current_shield = 0
 

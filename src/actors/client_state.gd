@@ -1,8 +1,6 @@
 extends Node2D
 class_name ClientState
 
-const SLOT_COUNT = 3
-const CARD_SPACING = 32
 
 var controlled_player: Player
 var opposing_player: Player
@@ -159,7 +157,7 @@ func start_client_defense() -> void:
 		combat_manager.declared_attacker_slot,
 		combat_manager.declared_target_slot,
 	)
-	arrange_attached_effects(opposing_player, opposing_player.attached_effects)
+	opp_side.arrange_attached_effects(opposing_player.attached_effects)
 	button_skip.show()
 	button_undo.hide()
 	button_confirm.hide()
@@ -214,8 +212,6 @@ func reset_queued_attachments() -> void:
 
 
 func attach_effect_to_entity_at_slot(effect_idx: int, entity_slot: int) -> void:
-	var effect_card: EffectCard = controlled_player.get_effect_card_at_index(effect_idx)
-	your_side.hand.remove_card_from_hand(effect_card)
 	queued_effect_attachments[entity_slot].append(effect_idx)
 	slot_attachment_history_stack.append(entity_slot)
 	if combat_manager.phase_is_defense():
@@ -223,7 +219,8 @@ func attach_effect_to_entity_at_slot(effect_idx: int, entity_slot: int) -> void:
 	button_undo.show()
 	button_skip.hide()
 	var preview_attachments := build_preview_attachments()
-	arrange_attached_effects(controlled_player, preview_attachments)
+	your_side.hand.update_hand_positions(preview_attachments)
+	your_side.arrange_attached_effects(preview_attachments)
 
 
 func undo_attachment() -> void:
@@ -241,7 +238,7 @@ func undo_attachment() -> void:
 
 func build_preview_attachments() -> Array[Array]:
 	var preview_attachments: Array[Array] = [[], [], []]
-	for slot_num in SLOT_COUNT:
+	for slot_num in preview_attachments.size():
 		var preview_slot: Array = []
 		preview_slot.append_array(controlled_player.attached_effects[slot_num])
 		preview_slot.append_array(queued_effect_attachments[slot_num])
@@ -249,28 +246,12 @@ func build_preview_attachments() -> Array[Array]:
 	return preview_attachments
 
 
-func arrange_attached_effects(from_player: Player, attachments: Array[Array]) -> void:
-	for slot_num in SLOT_COUNT:
-		var slot_attachments: Array = attachments[slot_num]
-		for i in slot_attachments.size():
-			var effect_idx: int = slot_attachments[i]
-			var effect_card := from_player.get_effect_card_at_index(effect_idx)
-			
-			effect_card.slot_attachment_effects_enable()
-			effect_card.z_index = Constants.MIN_ATTACHMENT_Z_INDEX - (i + 1)
-			effect_card.detectable = false
-
-			var target_entity := from_player.get_entity_card_at_slot(slot_num)
-			var offset := Vector2(0, CARD_SPACING * (i + 1))
-			var new_pos := target_entity.global_position - offset
-			effect_card.global_position = new_pos
-
-
 func return_effect_back_to_hand(effect_idx: int) -> void:
 	var effect_card := controlled_player.get_effect_card_at_index(effect_idx)
 	effect_card.detectable = true
 	effect_card.slot_attachment_effects_disable()
-	your_side.hand.add_card_to_hand(effect_card)
+	var preview_attachments := build_preview_attachments()
+	your_side.hand.update_hand_positions(preview_attachments)
 
 
 func update_hp_label(new_hp: int, target_label: Label) -> void:

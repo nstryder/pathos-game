@@ -14,23 +14,24 @@ Critiques:
 const CARD_WIDTH = 250
 const ANIMATION_TWEEN_TIME = 0.2
 
-var player_hand: Array[Card] = []
+var player_hand: Array[int]:
+    get:
+        return player_side.player.effect_hand
 
 
-func _ready() -> void:
-    pass
+@onready var player_side: PlayerSide = owner
 
 
-func add_card_to_hand(card: Card) -> void:
-    if card not in player_hand:
-        player_hand.insert(0, card)
-        update_hand_positions()
-
-
-func update_hand_positions() -> void:
-    for i in range(player_hand.size()):
+func update_hand_positions(excluded_preview_slots: Array[Array] = []) -> void:
+    var collapsed_preview: Array = []
+    for slot in excluded_preview_slots:
+        collapsed_preview.append_array(slot)
+    for i in player_hand.size():
+        var effect_idx := player_hand[i]
+        if effect_idx in collapsed_preview:
+            continue
         var new_position := Vector2(calculate_card_position(i), global_position.y)
-        var card := player_hand[i]
+        var card := player_side.player.get_effect_card_at_index(effect_idx)
         card.starting_position = new_position
         animate_card_to_position(card, new_position)
 
@@ -47,12 +48,6 @@ func animate_card_to_position(card: Card, new_position: Vector2) -> void:
     tween.tween_property(card, "global_position", new_position, ANIMATION_TWEEN_TIME) \
         .set_trans(Tween.TRANS_SPRING) \
         .set_ease(Tween.EASE_OUT)
-
-
-func remove_card_from_hand(card: Card) -> void:
-    if card in player_hand:
-        player_hand.erase(card)
-        update_hand_positions()
 
 
 func get_screen_center_x() -> float:
