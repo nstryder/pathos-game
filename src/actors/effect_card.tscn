@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://lfqkryekm4io"]
+[gd_scene format=3 uid="uid://lfqkryekm4io"]
 
 [ext_resource type="PackedScene" uid="uid://bfb04tdppv0p2" path="res://src/actors/card.tscn" id="1_3iiqf"]
 [ext_resource type="Script" uid="uid://cnuqcbg0h5km2" path="res://src/actors/effect_card.gd" id="2_1p6kf"]
@@ -31,37 +31,37 @@ properties/1/path = NodePath(".:current_idx")
 properties/1/spawn = true
 properties/1/replication_mode = 2
 
-[node name="EffectCard" instance=ExtResource("1_3iiqf")]
+[node name="EffectCard" unique_id=161658768 instance=ExtResource("1_3iiqf")]
 script = ExtResource("2_1p6kf")
 effect_code = ""
 
 [node name="Background" parent="Visuals" index="0"]
 theme_override_styles/panel = SubResource("StyleBoxFlat_1p6kf")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Visuals/Info" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Visuals/Info" index="0" unique_id=423269876]
 layout_mode = 2
 
-[node name="Nickname" type="Label" parent="Visuals/Info/VBoxContainer" index="0"]
+[node name="Nickname" type="Label" parent="Visuals/Info/VBoxContainer" index="0" unique_id=347054794]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Card Nickname"
 label_settings = SubResource("LabelSettings_1p6kf")
 horizontal_alignment = 1
 
-[node name="ArtPlaceholder" type="ColorRect" parent="Visuals/Info/VBoxContainer" index="1"]
+[node name="ArtPlaceholder" type="ColorRect" parent="Visuals/Info/VBoxContainer" index="1" unique_id=20965659]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="Visuals/Info/VBoxContainer" index="2"]
+[node name="Label" type="Label" parent="Visuals/Info/VBoxContainer" index="2" unique_id=1366815692]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Description"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Visuals/Info/VBoxContainer" index="3"]
+[node name="HSeparator" type="HSeparator" parent="Visuals/Info/VBoxContainer" index="3" unique_id=1067651188]
 layout_mode = 2
 
-[node name="Description" type="Label" parent="Visuals/Info/VBoxContainer" index="4"]
+[node name="Description" type="Label" parent="Visuals/Info/VBoxContainer" index="4" unique_id=677102858]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -69,10 +69,10 @@ text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="HSeparator2" type="HSeparator" parent="Visuals/Info/VBoxContainer" index="5"]
+[node name="HSeparator2" type="HSeparator" parent="Visuals/Info/VBoxContainer" index="5" unique_id=1018252676]
 layout_mode = 2
 
-[node name="EffectType" type="Label" parent="Visuals/Info/VBoxContainer" index="6"]
+[node name="EffectType" type="Label" parent="Visuals/Info/VBoxContainer" index="6" unique_id=1770343014]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Category: Attack"
@@ -82,7 +82,7 @@ horizontal_alignment = 1
 visible = false
 theme_override_styles/panel = SubResource("StyleBoxFlat_1p6kf")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="1"]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="1" unique_id=1369536857]
 replication_config = SubResource("SceneReplicationConfig_1p6kf")
 
 [node name="Area2D" parent="." index="2"]

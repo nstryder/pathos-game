@@ -4,9 +4,13 @@ class_name EffectBehavior
 
 @warning_ignore("unused_parameter")
 func on_entry(effect_card: EffectCard) -> void:
-    pass
+	pass
 
 
 @warning_ignore("unused_parameter")
 func on_discard(effect_card: EffectCard) -> void:
-    pass
+	pass
+
+
+func modify_damage(incoming_damage: int) -> int:
+	return incoming_damage

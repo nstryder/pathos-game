@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://43uuxv7mhc08"]
+[gd_scene format=3 uid="uid://43uuxv7mhc08"]
 
 [ext_resource type="Script" uid="uid://dr8a80niv2ae8" path="res://src/game_screens/battle_screen.gd" id="1_36hs7"]
 [ext_resource type="PackedScene" uid="uid://c4yw8pmjy0bm8" path="res://src/actors/server_state.tscn" id="2_6smmo"]
@@ -34,55 +34,55 @@ font_size = 64
 [sub_resource type="LabelSettings" id="LabelSettings_tlhb1"]
 font_size = 64
 
-[node name="BattleScreen" type="Node2D"]
+[node name="BattleScreen" type="Node2D" unique_id=935212692]
 script = ExtResource("1_36hs7")
 template_entity_deck = Array[String](["Ginko", "Golem", "Pixie", "Hibiki", "Haru"])
 template_effect_deck = Array[String](["Knife", "Mortar", "Bite", "Plate", "Medkit", "Parry", "Treasure", "Switcheroo", "Reshuffler"])
 
-[node name="ServerState" parent="." instance=ExtResource("2_6smmo")]
+[node name="ServerState" parent="." unique_id=1478185525 instance=ExtResource("2_6smmo")]
 unique_name_in_owner = true
 
-[node name="ClientState" parent="." instance=ExtResource("3_tlhb1")]
+[node name="ClientState" parent="." unique_id=1605554048 instance=ExtResource("3_tlhb1")]
 unique_name_in_owner = true
 
-[node name="CombatManager" parent="." instance=ExtResource("8_lp51r")]
+[node name="CombatManager" parent="." unique_id=88729818 instance=ExtResource("8_lp51r")]
 unique_name_in_owner = true
 
-[node name="CardManager" parent="." instance=ExtResource("3_g8hex")]
+[node name="CardManager" parent="." unique_id=2066685396 instance=ExtResource("3_g8hex")]
 unique_name_in_owner = true
 
-[node name="AttackIndicator" parent="." instance=ExtResource("7_36hs7")]
+[node name="AttackIndicator" parent="." unique_id=1557642468 instance=ExtResource("7_36hs7")]
 unique_name_in_owner = true
 visible = false
 
-[node name="BoardCenter" type="Marker2D" parent="."]
+[node name="BoardCenter" type="Marker2D" parent="." unique_id=1465864018]
 position = Vector2(960, 540)
 
-[node name="YourSide" parent="BoardCenter" instance=ExtResource("7_jsr4r")]
+[node name="YourSide" parent="BoardCenter" unique_id=1698511803 instance=ExtResource("7_jsr4r")]
 unique_name_in_owner = true
 is_enemy = false
 
-[node name="OppSide" parent="BoardCenter" instance=ExtResource("7_jsr4r")]
+[node name="OppSide" parent="BoardCenter" unique_id=1578482435 instance=ExtResource("7_jsr4r")]
 unique_name_in_owner = true
 rotation = 3.1415927
 is_enemy = true
 
-[node name="Players" type="Node2D" parent="."]
+[node name="Players" type="Node2D" parent="." unique_id=1495689938]
 unique_name_in_owner = true
 
-[node name="Player1" parent="Players" instance=ExtResource("2_gl2eh")]
+[node name="Player1" parent="Players" unique_id=533443679 instance=ExtResource("2_gl2eh")]
 
-[node name="Player2" parent="Players" instance=ExtResource("2_gl2eh")]
+[node name="Player2" parent="Players" unique_id=1250268155 instance=ExtResource("2_gl2eh")]
 
-[node name="ServerStateSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="ServerStateSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=608551555]
 unique_name_in_owner = true
 replication_config = SubResource("SceneReplicationConfig_36hs7")
 
-[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+[node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=855148378]
 layer = -10
 script = ExtResource("11_tlhb1")
 
-[node name="Image" type="TextureRect" parent="BackgroundLayer"]
+[node name="Image" type="TextureRect" parent="BackgroundLayer" unique_id=273171085]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -92,7 +92,7 @@ texture = ExtResource("12_jsr4r")
 expand_mode = 2
 stretch_mode = 3
 
-[node name="Video" type="VideoStreamPlayer" parent="BackgroundLayer"]
+[node name="Video" type="VideoStreamPlayer" parent="BackgroundLayer" unique_id=564904287]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -100,52 +100,52 @@ grow_horizontal = 2
 grow_vertical = 2
 loop = true
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=1284769508]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI" unique_id=863780745]
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_constants/separation = 24
 
-[node name="PlayerNumberLabel" type="Label" parent="UI/VBoxContainer"]
+[node name="PlayerNumberLabel" type="Label" parent="UI/VBoxContainer" unique_id=1010010013]
 unique_name_in_owner = true
 layout_mode = 2
 text = "You are player:"
 label_settings = SubResource("LabelSettings_jpl4g")
 
-[node name="PhaseLabel" type="Label" parent="UI/VBoxContainer"]
+[node name="PhaseLabel" type="Label" parent="UI/VBoxContainer" unique_id=1926209084]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Current Phase:"
 label_settings = SubResource("LabelSettings_g8hex")
 metadata/_edit_use_anchors_ = true
 
-[node name="Spacer" type="Control" parent="UI/VBoxContainer"]
+[node name="Spacer" type="Control" parent="UI/VBoxContainer" unique_id=1744464498]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 
-[node name="SkipButton" type="Button" parent="UI/VBoxContainer"]
+[node name="SkipButton" type="Button" parent="UI/VBoxContainer" unique_id=1876364867]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Skip"
 
-[node name="UndoButton" type="Button" parent="UI/VBoxContainer"]
+[node name="UndoButton" type="Button" parent="UI/VBoxContainer" unique_id=420210840]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Undo"
 
-[node name="ConfirmButton" type="Button" parent="UI/VBoxContainer"]
+[node name="ConfirmButton" type="Button" parent="UI/VBoxContainer" unique_id=1113935397]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Confirm"
 
-[node name="StatusLabel" type="Label" parent="UI"]
+[node name="StatusLabel" type="Label" parent="UI" unique_id=544002931]
 unique_name_in_owner = true
 anchors_preset = 5
 anchor_left = 0.5
@@ -158,7 +158,7 @@ text = "Status..."
 label_settings = SubResource("LabelSettings_36hs7")
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI" unique_id=1797893215]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -166,19 +166,19 @@ offset_top = -89.0
 offset_right = 357.0
 grow_vertical = 0
 
-[node name="Prefix" type="Label" parent="UI/HBoxContainer"]
+[node name="Prefix" type="Label" parent="UI/HBoxContainer" unique_id=729394623]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Your HP: "
 label_settings = SubResource("LabelSettings_tlhb1")
 
-[node name="YourHPLabel" type="Label" parent="UI/HBoxContainer"]
+[node name="YourHPLabel" type="Label" parent="UI/HBoxContainer" unique_id=1997865972]
 unique_name_in_owner = true
 layout_mode = 2
 text = "10"
 label_settings = SubResource("LabelSettings_tlhb1")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="UI"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="UI" unique_id=1949378194]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -186,13 +186,13 @@ offset_left = -362.0
 offset_bottom = 89.0
 grow_horizontal = 0
 
-[node name="Prefix" type="Label" parent="UI/HBoxContainer2"]
+[node name="Prefix" type="Label" parent="UI/HBoxContainer2" unique_id=991948550]
 layout_mode = 2
 text = "Enemy HP: "
 label_settings = SubResource("LabelSettings_tlhb1")
 horizontal_alignment = 2
 
-[node name="OppHPLabel" type="Label" parent="UI/HBoxContainer2"]
+[node name="OppHPLabel" type="Label" parent="UI/HBoxContainer2" unique_id=1223303375]
 unique_name_in_owner = true
 layout_mode = 2
 text = "10"

@@ -8,6 +8,5 @@ class_name BattleScreen
 @onready var server_state: ServerState = %ServerState
 @onready var client_state: ClientState = %ClientState
 
-
 func initialize_board() -> void:
 	server_state.initialize_board()

@@ -2,32 +2,32 @@ extends Resource
 class_name EffectCardData
 
 enum EffectType {
-    OFFENSIVE,
-    DEFENSIVE,
-    SPECIAL
+	OFFENSIVE,
+	DEFENSIVE,
+	SPECIAL
 }
 
 enum Identifier {
-    ITEM,
-    SKILL,
-    STATUS
+	ITEM,
+	SKILL,
+	STATUS
 }
 
 enum AbilityPhase {
-    BOTH,
-    OFFENSE,
-    DEFENSE,
-    NONE
+	BOTH,
+	OFFENSE,
+	DEFENSE,
+	NONE
 }
 
 enum TimelineCondition {
-    NONE,
-    IMMEDIATE
+	NONE,
+	IMMEDIATE
 }
 
 enum UsageType {
-    USE,
-    ATTACH
+	USE,
+	ATTACH
 }
 
 @export var effect_name: String
