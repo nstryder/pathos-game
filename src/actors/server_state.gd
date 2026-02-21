@@ -4,7 +4,7 @@ class_name ServerState
 signal attack_declared
 signal defense_declared
 
-const Timeline = CombatManager.Timeline
+const Phases = CombatManager.Phases
 
 @onready var player1: Player = %Players/Player1
 @onready var player2: Player = %Players/Player2
@@ -31,27 +31,27 @@ func initialize_board() -> void:
 
 func start_game() -> void:
 	if multiplayer.is_server():
-		start_timeline()
+		execute_phase_flow()
 
-# TODO
-func start_timeline() -> void:
+
+func execute_phase_flow() -> void:
 	while true:
-		combat_manager.current_phase = Timeline.PLAYER1_OFFENSE
+		combat_manager.current_phase = Phases.PLAYER1_OFFENSE
 		await execute_offense_phase(player1, player2)
 		
 		if not combat_manager.skip_was_declared():
-			combat_manager.current_phase = Timeline.PLAYER2_DEFENSE
+			combat_manager.current_phase = Phases.PLAYER2_DEFENSE
 			await execute_defense_phase()
 			await execute_combat_phase()
 
 		if player1.hp <= 0 or player2.hp <= 0:
 			break
 		
-		combat_manager.current_phase = Timeline.PLAYER2_OFFENSE
+		combat_manager.current_phase = Phases.PLAYER2_OFFENSE
 		await execute_offense_phase(player2, player1)
 
 		if not combat_manager.skip_was_declared():
-			combat_manager.current_phase = Timeline.PLAYER1_DEFENSE
+			combat_manager.current_phase = Phases.PLAYER1_DEFENSE
 			await execute_defense_phase()
 			await execute_combat_phase()
 		
@@ -61,8 +61,8 @@ func start_timeline() -> void:
 
 func execute_offense_phase(attacker: Player, defender: Player) -> void:
 	combat_manager.turn_count += 1
-	if combat_manager.turn_count > 1:
-		attacker.draw_effects()
+	# if combat_manager.turn_count > 1:
+	attacker.draw_effects()
 	combat_manager.attacking_player = attacker
 	combat_manager.defending_player = defender
 	client.start_client_offense.rpc_id(attacker.id)
@@ -76,7 +76,7 @@ func execute_defense_phase() -> void:
 
 
 func execute_combat_phase() -> void:
-	combat_manager.current_phase = Timeline.COMBAT
+	combat_manager.current_phase = Phases.COMBAT
 	combat_manager.start_combat()
 	client.visualize_combat.rpc()
 	await Utils.sleep(3)
@@ -94,8 +94,6 @@ func send_attack(attacker_slot: int, target_slot: int, effect_attachments: Array
 		# Skip was declared
 		attack_declared.emit()
 		return
-
-	combat_manager.attacking_player.merge_effect_attachments(effect_attachments)
 	attack_declared.emit()
 
 
@@ -104,7 +102,6 @@ func send_defense(effect_attachments: Array[Array]) -> void:
 	if not multiplayer.is_server():
 		return
 	print("This is server...", effect_attachments)
-	combat_manager.defending_player.merge_effect_attachments(effect_attachments)
 	defense_declared.emit()
 
 

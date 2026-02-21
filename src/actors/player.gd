@@ -21,7 +21,6 @@ const effect_card_scene = preload("uid://lfqkryekm4io")
 
 @export var entity_deck: Array[int] = []
 @export var entities_in_play: Array[int] = [-1, -1, -1]
-@export var attached_effects: Array[Array] = [[], [], []]
 @export var entity_graveyard: Array[int] = []
 @export var effect_deck: Array[int] = []
 @export var effect_hand: Array[int] = []
@@ -80,12 +79,13 @@ func draw_effects() -> void:
 		effect_hand.append(effect_deck.pop_back())
 
 
-func merge_effect_attachments(effect_attachments: Array[Array]) -> void:
-	for slot_num: int in effect_attachments.size():
-		var effect_indexes: Array = effect_attachments[slot_num]
-		attached_effects[slot_num].append_array(effect_indexes)
-		for effect_idx: int in effect_indexes:
-			effect_hand.erase(effect_idx)
+func remove_effect_from_hand(effect_idx: int) -> void:
+	assert(effect_idx in effect_hand, "Effect is not present in hand.")
+	effect_hand.erase(effect_idx)
+
+func add_effect_to_hand(effect_idx: int) -> void:
+	assert(effect_idx not in effect_hand, "Effect was already present in hand.")
+	effect_hand.append(effect_idx)
 
 
 func get_entity_card_at_index(idx: int) -> EntityCard:
@@ -100,11 +100,11 @@ func get_entity_card_at_slot(slot_num: int) -> EntityCard:
 	return get_entity_card_at_index(entities_in_play[slot_num])
 
 
-func get_effect_cards_at_slot(slot_num: int) -> Array[EffectCard]:
-	var effect_cards: Array[EffectCard] = []
-	for effect_idx: int in attached_effects[slot_num]:
-		effect_cards.append(get_effect_card_at_index(effect_idx))
-	return effect_cards
+# func get_effect_cards_at_slot(slot_num: int) -> Array[EffectCard]:
+# 	var effect_cards: Array[EffectCard] = []
+# 	for effect_idx: int in attached_effects[slot_num]:
+# 		effect_cards.append(get_effect_card_at_index(effect_idx))
+# 	return effect_cards
 
 
 func check_entity_deaths() -> void:

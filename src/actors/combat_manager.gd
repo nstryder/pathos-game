@@ -2,7 +2,7 @@ extends Node2D
 class_name CombatManager
 
 
-enum Timeline {
+enum Phases {
 	PLAYER1_OFFENSE,
 	PLAYER2_DEFENSE,
 	# +1 turn
@@ -14,10 +14,10 @@ enum Timeline {
 }
 
 var turn_count: int = 0
-@export var current_phase: Timeline = Timeline.NEUTRAL:
+@export var current_phase: Phases = Phases.NEUTRAL:
 	set(value):
 		current_phase = value
-		var phase_text: String = str(Timeline.keys()[value]).capitalize()
+		var phase_text: String = str(Phases.keys()[value]).capitalize()
 		(%PhaseLabel as Label).text = "Current phase: " + phase_text
 
 @export var declared_attacker_slot: int
@@ -30,11 +30,11 @@ var defending_player: Player
 
 
 func phase_is_offense() -> bool:
-	return current_phase in [Timeline.PLAYER1_OFFENSE, Timeline.PLAYER2_OFFENSE]
+	return current_phase in [Phases.PLAYER1_OFFENSE, Phases.PLAYER2_OFFENSE]
 
 
 func phase_is_defense() -> bool:
-	return current_phase in [Timeline.PLAYER1_DEFENSE, Timeline.PLAYER2_DEFENSE]
+	return current_phase in [Phases.PLAYER1_DEFENSE, Phases.PLAYER2_DEFENSE]
 
 
 func skip_was_declared() -> bool:

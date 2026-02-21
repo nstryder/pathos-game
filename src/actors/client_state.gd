@@ -7,9 +7,6 @@ var opposing_player: Player
 
 var is_attacker: bool = false
 
-var queued_effect_attachments: Array[Array] = [[], [], []]
-var slot_attachment_history_stack: Array[int] = []
-
 @onready var your_side: PlayerSide = %YourSide
 @onready var your_hp_label: Label = %YourHPLabel
 @onready var opp_side: PlayerSide = %OppSide
@@ -24,12 +21,13 @@ var slot_attachment_history_stack: Array[int] = []
 
 @onready var server: ServerState = %ServerState
 @onready var server_state_syncer: MultiplayerSynchronizer = %ServerStateSynchronizer
+@onready var timeline: Timeline = %Timeline
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	button_undo.hide()
-	button_undo.pressed.connect(undo_attachment)
+	button_undo.pressed.connect(undo_action)
 	button_skip.hide()
 	button_skip.pressed.connect(skip_phase)
 	button_confirm.hide()
@@ -84,7 +82,6 @@ func show_attack_indicator_via_players(attacker_markers: EntitySlotMarkers, targ
 	show_attack_indicator(attacker_pos, target_pos)
 
 
-# TODO
 @rpc("authority", "call_local", "reliable")
 func visualize_combat() -> void:
 	await client_sync_server_state()
@@ -133,12 +130,10 @@ func start_client_offense() -> void:
 	card_manager.attacking_enabled = true
 	button_skip.show()
 	button_undo.hide()
-	reset_queued_attachments()
 	your_side.realize_effect_state()
 
 
 func end_client_offense() -> void:
-	reset_queued_attachments()
 	button_skip.hide()
 	button_undo.hide()
 	wait_for_turn()
@@ -157,25 +152,24 @@ func start_client_defense() -> void:
 		combat_manager.declared_attacker_slot,
 		combat_manager.declared_target_slot,
 	)
-	opp_side.arrange_attached_effects(opposing_player.attached_effects)
 	button_skip.show()
 	button_undo.hide()
 	button_confirm.hide()
-	reset_queued_attachments()
 	opp_side.realize_effect_state()
 	reveal_opponent_hidden_cards()
 	
 
 func end_client_defense() -> void:
-	reset_queued_attachments()
 	button_skip.hide()
 	button_undo.hide()
 	button_confirm.hide()
 	wait_for_turn()
 
 
+#region Player Actions
+# TODO: Update
 func declare_attack(attacker_slot: int, target_slot: int) -> void:
-	server.send_attack.rpc_id(1, attacker_slot, target_slot, queued_effect_attachments)
+	server.send_attack.rpc_id(1, attacker_slot, target_slot)
 	if attacker_slot != -1:
 		show_attack_indicator_via_players(
 			your_side.entity_slot_markers,
@@ -187,16 +181,8 @@ func declare_attack(attacker_slot: int, target_slot: int) -> void:
 
 
 func declare_defense() -> void:
-	server.send_defense.rpc_id(1, queued_effect_attachments)
+	# server.send_defense.rpc_id(1, queued_effect_attachments)
 	end_client_defense()
-
-
-func reveal_opponent_hidden_cards() -> void:
-	var attacking_entity: EntityCard = opposing_player.get_entity_card_at_slot(combat_manager.declared_attacker_slot)
-	attacking_entity.is_revealed_permanently = true
-	var effect_cards := opposing_player.get_effect_cards_at_slot(combat_manager.declared_attacker_slot)
-	for effect_card in effect_cards:
-		effect_card.is_veiled = false
 
 
 func skip_phase() -> void:
@@ -205,53 +191,51 @@ func skip_phase() -> void:
 	else:
 		declare_defense()
 
-
-func reset_queued_attachments() -> void:
-	queued_effect_attachments = [[], [], []]
-	slot_attachment_history_stack = []
-
-
-func attach_effect_to_entity_at_slot(effect_idx: int, entity_slot: int) -> void:
-	queued_effect_attachments[entity_slot].append(effect_idx)
-	slot_attachment_history_stack.append(entity_slot)
+# TODO: Update
+func attach_effect_to_entity(effect: EffectCard, entity: EntityCard) -> void:
+	# Must break up variables into non-object variants for RPC
+	var players: Node2D = %Players
+	var effect_idx: int = effect.current_idx
+	var owner_player_path: NodePath = players.get_path_to(effect.player)
+	if effect.effect_card_data.usage_type == EffectCardData.UsageType.ATTACH:
+		var entity_idx: int = entity.current_idx
+		var target_player_path: NodePath = players.get_path_to(entity.player)
+		timeline.register_effect_attachment.rpc(owner_player_path, effect_idx, target_player_path, entity_idx)
+	else:
+		timeline.register_effect_use.rpc(owner_player_path, effect_idx)
 	if combat_manager.phase_is_defense():
 		button_confirm.show()
+		
 	button_undo.show()
 	button_skip.hide()
-	var preview_attachments := build_preview_attachments()
-	your_side.hand.update_hand_positions(preview_attachments)
-	your_side.arrange_attached_effects(preview_attachments)
 
 
-func undo_attachment() -> void:
-	if slot_attachment_history_stack.is_empty():
-		return
+# TODO
+func undo_action() -> void:
+	timeline.undo.rpc()
+
+
+# func undo_attachment() -> void:
+# 	if slot_attachment_history_stack.is_empty():
+# 		return
 	
-	var last_slot_used: int = slot_attachment_history_stack.pop_back()
-	var last_effect_used: int = queued_effect_attachments[last_slot_used].pop_back()
-	return_effect_back_to_hand(last_effect_used)
-	if slot_attachment_history_stack.is_empty():
-		button_skip.show()
-		button_undo.hide()
-		button_confirm.hide()
+# 	var last_slot_used: int = slot_attachment_history_stack.pop_back()
+# 	var last_effect_used: int = queued_effect_attachments[last_slot_used].pop_back()
+# 	return_effect_back_to_hand(last_effect_used)
+# 	if slot_attachment_history_stack.is_empty():
+# 		button_skip.show()
+# 		button_undo.hide()
+# 		button_confirm.hide()
+
+#endregion
 
 
-func build_preview_attachments() -> Array[Array]:
-	var preview_attachments: Array[Array] = [[], [], []]
-	for slot_num in preview_attachments.size():
-		var preview_slot: Array = []
-		preview_slot.append_array(controlled_player.attached_effects[slot_num])
-		preview_slot.append_array(queued_effect_attachments[slot_num])
-		preview_attachments[slot_num] = preview_slot
-	return preview_attachments
-
-
-func return_effect_back_to_hand(effect_idx: int) -> void:
-	var effect_card := controlled_player.get_effect_card_at_index(effect_idx)
-	effect_card.detectable = true
-	effect_card.slot_attachment_effects_disable()
-	var preview_attachments := build_preview_attachments()
-	your_side.hand.update_hand_positions(preview_attachments)
+func reveal_opponent_hidden_cards() -> void:
+	var attacking_entity: EntityCard = opposing_player.get_entity_card_at_slot(combat_manager.declared_attacker_slot)
+	attacking_entity.is_revealed_permanently = true
+	# var effect_cards := opposing_player.get_effect_cards_at_slot(combat_manager.declared_attacker_slot)
+	# for effect_card in effect_cards:
+	# 	effect_card.is_veiled = false
 
 
 func update_hp_label(new_hp: int, target_label: Label) -> void:
@@ -261,6 +245,33 @@ func update_hp_label(new_hp: int, target_label: Label) -> void:
 func place_entities_on_field() -> void:
 	your_side.realize_entity_state()
 	opp_side.realize_entity_state()
+
+
+# TODO: Finish adapting this to new timeline system
+func arrange_attached_effects() -> void:
+	const CARD_SPACING = 32
+	var attachments: Dictionary[EntityCard, int] = {}
+
+	print(timeline.main_timeline_queue)
+	for action in timeline.main_timeline_queue:
+		if action.type != EffectCardData.UsageType.ATTACH:
+			continue
+		# Take the entity from the target
+		# Place effect on entity
+		var effect_card: EffectCard = action.effect
+		var target_entity: EntityCard = action.entity
+		if target_entity in attachments:
+			attachments[target_entity] += 1
+		else:
+			attachments[target_entity] = 1
+		var offset_idx: int = attachments[target_entity]
+		var offset := Vector2(0, CARD_SPACING * (offset_idx))
+		effect_card.slot_attachment_effects_enable()
+		effect_card.z_index = Constants.MIN_ATTACHMENT_Z_INDEX - (offset_idx)
+		effect_card.detectable = false
+
+		var new_pos := target_entity.global_position - offset
+		effect_card.global_position = new_pos
 
 
 @rpc("authority", "call_local", "reliable")
@@ -292,4 +303,11 @@ func _setup_board() -> void:
 	update_hp_label(opposing_player.hp, opp_hp_label)
 
 
-#endregion
+func _on_timeline_timeline_modified() -> void:
+	your_side.hand.update_hand_positions()
+	opp_side.hand.update_hand_positions()
+	arrange_attached_effects()
+	if timeline.main_timeline_queue.is_empty():
+		button_skip.show()
+		button_undo.hide()
+		button_confirm.hide()

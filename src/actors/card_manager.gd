@@ -46,8 +46,9 @@ func on_press() -> void:
 func on_release() -> void:
 	if effect_card_being_dragged:
 		var entity_card: EntityCard = detect_entity_card()
-		if entity_card and not entity_card.is_enemy:
-			attach_effect_to_entity(effect_card_being_dragged, entity_card)
+		if entity_card:
+			client.attach_effect_to_entity(effect_card_being_dragged, entity_card)
+			effect_card_being_dragged = null
 		else:
 			reset_dragged_card_position()
 			end_drag()
@@ -64,14 +65,6 @@ func detect_effect_card() -> EffectCard:
 
 func detect_entity_card() -> EntityCard:
 	return raycast_check_for_card(LAYER_ENTITY)
-
-
-func attach_effect_to_entity(effect: EffectCard, entity: EntityCard) -> void:
-	var effect_idx := effect.current_idx
-	var entity_slot := entity.current_slot
-	print("attaching effect ", effect_idx, " to slot ", entity_slot)
-	client.attach_effect_to_entity_at_slot(effect_idx, entity_slot)
-	effect_card_being_dragged = null
 
 
 func start_drag(card: Card) -> void:
@@ -120,13 +113,13 @@ func raycast_check_for_card(collision_mask: int) -> Card:
 	parameters.collision_mask = collision_mask
 	var result := space_state.intersect_point(parameters)
 	if result:
-		return get_card_with_highest_z_index(result)
+		return _get_card_with_highest_z_index(result)
 	else:
 		return null
 
 
 # Cards parameter should be from a dict returned by intersect_point()
-func get_card_with_highest_z_index(cards: Array[Dictionary]) -> Card:
+func _get_card_with_highest_z_index(cards: Array[Dictionary]) -> Card:
 	return cards.map(func(x: Dictionary) -> Card:
 		return x.collider.owner
 	).reduce(func(a: Card, b: Card) -> Card:

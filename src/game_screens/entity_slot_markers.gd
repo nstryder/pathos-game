@@ -33,7 +33,7 @@ func get_card_size() -> Vector2i:
 
 func _draw() -> void:
 	var card_size: Vector2i = get_card_size()
-	var center_offset: Vector2 = card_size / 2
+	var center_offset: Vector2 = card_size / 2.0
 	for slot: Marker2D in get_children():
 		var slot_rect := Rect2i(slot.position - center_offset, card_size)
 		draw_rect(slot_rect, Color.WHITE_SMOKE, false, 2)

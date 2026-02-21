@@ -10,6 +10,7 @@ var player: Player
 @onready var entity_deck: Deck = %EntityDeck
 @onready var hand: PlayerHand = %Hand
 @onready var entity_slot_markers: EntitySlotMarkers = %EntitySlotMarkers
+@onready var timeline: Timeline = %Timeline
 
 
 # Called when the node enters the scene tree for the first time.
@@ -66,21 +67,5 @@ func realize_effect_state() -> void:
 		hand.update_hand_positions()
 	effect_deck.update_counter(player.effect_deck)
 
-
-func arrange_attached_effects(attachments: Array[Array]) -> void:
-	const CARD_SPACING = 32
-	for slot_num in attachments.size():
-		var slot_attachments: Array = attachments[slot_num]
-		for i in slot_attachments.size():
-			var effect_idx: int = slot_attachments[i]
-			var effect_card := player.get_effect_card_at_index(effect_idx)
-			effect_card.slot_attachment_effects_enable()
-			effect_card.z_index = Constants.MIN_ATTACHMENT_Z_INDEX - (i + 1)
-			effect_card.detectable = false
-
-			var target_entity := player.get_entity_card_at_slot(slot_num)
-			var offset := Vector2(0, CARD_SPACING * (i + 1))
-			var new_pos := target_entity.global_position - offset
-			effect_card.global_position = new_pos
 
 #endregion

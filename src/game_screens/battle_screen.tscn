@@ -5,11 +5,13 @@
 [ext_resource type="PackedScene" uid="uid://c3nn8w6dsajke" path="res://src/actors/player.tscn" id="2_gl2eh"]
 [ext_resource type="PackedScene" uid="uid://brojsgyxvag1" path="res://src/actors/card_manager.tscn" id="3_g8hex"]
 [ext_resource type="PackedScene" uid="uid://t1fyqqulf70r" path="res://src/actors/client_state.tscn" id="3_tlhb1"]
+[ext_resource type="PackedScene" uid="uid://d4cfhjo1gggn1" path="res://src/game_screens/timeline.tscn" id="5_tlhb1"]
 [ext_resource type="PackedScene" uid="uid://cbewd7iaxbk52" path="res://src/actors/attack_indicator.tscn" id="7_36hs7"]
 [ext_resource type="PackedScene" uid="uid://dqjvo8kvgo7iy" path="res://src/game_screens/player_side.tscn" id="7_jsr4r"]
 [ext_resource type="PackedScene" uid="uid://dlb2lm2u28bug" path="res://src/actors/combat_manager.tscn" id="8_lp51r"]
 [ext_resource type="Script" uid="uid://rnvpy22wkv6l" path="res://src/game_screens/background_layer.gd" id="11_tlhb1"]
 [ext_resource type="Texture2D" uid="uid://n0hvdmpspajd" path="res://assets/scifibg.jpg" id="12_jsr4r"]
+[ext_resource type="Script" uid="uid://k65eqsm5txx3" path="res://src/game_screens/timeline_ui.gd" id="12_tlhb1"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_36hs7"]
 properties/0/path = NodePath("CombatManager:declared_attacker_slot")
@@ -46,6 +48,9 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 
 [node name="CombatManager" parent="." unique_id=88729818 instance=ExtResource("8_lp51r")]
+unique_name_in_owner = true
+
+[node name="Timeline" parent="." unique_id=152600920 instance=ExtResource("5_tlhb1")]
 unique_name_in_owner = true
 
 [node name="CardManager" parent="." unique_id=2066685396 instance=ExtResource("3_g8hex")]
@@ -198,3 +203,20 @@ layout_mode = 2
 text = "10"
 label_settings = SubResource("LabelSettings_tlhb1")
 horizontal_alignment = 2
+
+[node name="TimelineUI" type="HBoxContainer" parent="UI" unique_id=1391784842]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_right = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("12_tlhb1")
+
+[connection signal="timeline_modified" from="Timeline" to="ClientState" method="_on_timeline_timeline_modified"]
+[connection signal="timeline_modified" from="Timeline" to="UI/TimelineUI" method="_on_timeline_timeline_modified"]

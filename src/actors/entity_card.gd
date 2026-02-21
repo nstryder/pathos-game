@@ -4,6 +4,7 @@ class_name EntityCard
 @export var entity_code: String
 var entity_card_data: EntityCardData
 
+
 var max_attack: int
 var max_shield: int
 @export var current_attack: int:
@@ -39,7 +40,7 @@ func _ready() -> void:
 	max_shield = entity_card_data.base_shield
 	nickname.text = entity_card_data.nickname
 
-	Utils.validate_vars(self, entity_code, entity_card_data)
+	Utils.validate_vars(self , entity_code, entity_card_data)
 
 
 func activate() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://c3nn8w6dsajke"]
+[gd_scene format=3 uid="uid://c3nn8w6dsajke"]
 
 [ext_resource type="Script" uid="uid://dmc8vgmbll6jh" path="res://src/actors/player.gd" id="1_iairh"]
 
@@ -36,26 +36,23 @@ properties/9/replication_mode = 2
 properties/10/path = NodePath(".:hp")
 properties/10/spawn = true
 properties/10/replication_mode = 2
-properties/11/path = NodePath(".:attached_effects")
-properties/11/spawn = true
-properties/11/replication_mode = 2
 
-[node name="Player" type="Node2D"]
+[node name="Player" type="Node2D" unique_id=1515954978]
 script = ExtResource("1_iairh")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=595768675]
 replication_config = SubResource("SceneReplicationConfig_iairh")
 
-[node name="EntitySpawner" type="MultiplayerSpawner" parent="."]
+[node name="EntitySpawner" type="MultiplayerSpawner" parent="." unique_id=325733916]
 _spawnable_scenes = PackedStringArray("uid://djf85mhy7rn64")
 spawn_path = NodePath("../EntityCards")
 
-[node name="EffectSpawner" type="MultiplayerSpawner" parent="."]
+[node name="EffectSpawner" type="MultiplayerSpawner" parent="." unique_id=1713749885]
 _spawnable_scenes = PackedStringArray("uid://lfqkryekm4io")
 spawn_path = NodePath("../EffectCards")
 
-[node name="EntityCards" type="Node2D" parent="."]
+[node name="EntityCards" type="Node2D" parent="." unique_id=185373872]
 position = Vector2(10000, 10000)
 
-[node name="EffectCards" type="Node2D" parent="."]
+[node name="EffectCards" type="Node2D" parent="." unique_id=6522325]
 position = Vector2(10000, 10000)
