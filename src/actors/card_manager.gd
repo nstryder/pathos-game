@@ -1,8 +1,12 @@
 extends Node2D
 class_name CardManager
 
+signal use_fx_dragged
+signal use_fx_released
+
 const LAYER_EFFECT = 0b1
 const LAYER_ENTITY = 0b10
+const LAYER_USE = 0b100
 
 var dragging_enabled: bool = false
 var attacking_enabled: bool = false
@@ -36,27 +40,55 @@ func on_press() -> void:
 	if dragging_enabled:
 		var effect_card := detect_effect_card()
 		if effect_card and not effect_card.is_enemy:
-			start_drag(effect_card)
+			drag_effect(effect_card)
 	if attacking_enabled and not effect_card_being_dragged:
-		var entity_card := detect_entity_card()
-		if entity_card and not entity_card.is_enemy:
-			start_declare_attack(entity_card)
+		drag_entity()
+
+
+func drag_effect(effect_card: EffectCard) -> void:
+	effect_card_being_dragged = effect_card
+	effect_card_being_dragged.drag_effects_enable()
+	if effect_card.data.usage_type == EffectCardData.UsageType.USE:
+		use_fx_dragged.emit()
+
+
+func drag_entity() -> void:
+	var entity_card := detect_entity_card()
+	if entity_card and not entity_card.is_enemy:
+		start_declare_attack(entity_card)
 
 
 func on_release() -> void:
 	if effect_card_being_dragged:
-		var entity_card: EntityCard = detect_entity_card()
-		if entity_card:
-			client.attach_effect_to_entity(effect_card_being_dragged, entity_card)
-			effect_card_being_dragged = null
+		if effect_card_being_dragged.data.usage_type == EffectCardData.UsageType.USE:
+			release_use_effect()
 		else:
-			reset_dragged_card_position()
-			end_drag()
+			release_attach_effect()
 	elif entity_card_to_declare:
 		var target_entity: EntityCard = detect_entity_card()
 		if target_entity and target_entity.is_enemy:
 			send_declare_attack(entity_card_to_declare, target_entity)
 		end_declare_attack()
+
+
+func release_use_effect() -> void:
+	var wants_to_use: bool = detect_fx_use_box()
+	if wants_to_use:
+		client.use_effect(effect_card_being_dragged)
+	else:
+		reset_dragged_card_position()
+	effect_card_being_dragged = null
+	use_fx_released.emit()
+
+
+func release_attach_effect() -> void:
+	# Only ATTACH-type fx care about entities
+	var entity_card: EntityCard = detect_entity_card()
+	if entity_card:
+		client.attach_effect_to_entity(effect_card_being_dragged, entity_card)
+	else:
+		reset_dragged_card_position()
+	effect_card_being_dragged = null
 
 
 func detect_effect_card() -> EffectCard:
@@ -67,15 +99,20 @@ func detect_entity_card() -> EntityCard:
 	return raycast_check_for_card(LAYER_ENTITY)
 
 
-func start_drag(card: Card) -> void:
-	effect_card_being_dragged = card
-	effect_card_being_dragged.drag_effects_enable()
-
-
-func end_drag() -> void:
-	if effect_card_being_dragged:
-		effect_card_being_dragged.drag_effects_disable()
-	effect_card_being_dragged = null
+func detect_fx_use_box() -> bool:
+	# Have to use Ray instead of Point for this
+	# Why? Because Godot currently has a bug with points vs shapes in CanvasLayers
+	# Relevant issue: https://github.com/godotengine/godot/issues/105068
+	var space_state := get_world_2d().direct_space_state
+	var parameters := PhysicsRayQueryParameters2D.new()
+	parameters.from = get_global_mouse_position()
+	parameters.to = parameters.from
+	parameters.hit_from_inside = true
+	parameters.collide_with_areas = true
+	parameters.collision_mask = LAYER_USE
+	var result := space_state.intersect_ray(parameters)
+	print(result)
+	return not result.is_empty()
 
 
 func send_declare_attack(entity_card: EntityCard, target_entity: EntityCard) -> void:
@@ -103,6 +140,7 @@ func end_declare_attack() -> void:
 func reset_dragged_card_position() -> void:
 	var player_hand: PlayerHand = client.your_side.hand
 	player_hand.animate_card_to_position(effect_card_being_dragged, effect_card_being_dragged.starting_position)
+	effect_card_being_dragged.drag_effects_disable()
 
 
 func raycast_check_for_card(collision_mask: int) -> Card:

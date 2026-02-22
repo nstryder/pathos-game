@@ -191,41 +191,33 @@ func skip_phase() -> void:
 	else:
 		declare_defense()
 
-# TODO: Update
+
 func attach_effect_to_entity(effect: EffectCard, entity: EntityCard) -> void:
 	# Must break up variables into non-object variants for RPC
+	assert(effect.data.usage_type == EffectCardData.UsageType.ATTACH, "Attach was attempted on a non-attach FX")
 	var players: Node2D = %Players
-	var effect_idx: int = effect.current_idx
 	var owner_player_path: NodePath = players.get_path_to(effect.player)
-	if effect.effect_card_data.usage_type == EffectCardData.UsageType.ATTACH:
-		var entity_idx: int = entity.current_idx
-		var target_player_path: NodePath = players.get_path_to(entity.player)
-		timeline.register_effect_attachment.rpc(owner_player_path, effect_idx, target_player_path, entity_idx)
-	else:
-		timeline.register_effect_use.rpc(owner_player_path, effect_idx)
+	var effect_idx: int = effect.current_idx
+	var entity_idx: int = entity.current_idx
+	var target_player_path: NodePath = players.get_path_to(entity.player)
+	timeline.register_effect_attachment.rpc(owner_player_path, effect_idx, target_player_path, entity_idx)
 	if combat_manager.phase_is_defense():
 		button_confirm.show()
-		
 	button_undo.show()
 	button_skip.hide()
 
 
-# TODO
+func use_effect(effect: EffectCard) -> void:
+	assert(effect.data.usage_type == EffectCardData.UsageType.USE, "Use was attempted on a non-use FX")
+	var players: Node2D = %Players
+	var owner_player_path: NodePath = players.get_path_to(effect.player)
+	var effect_idx: int = effect.current_idx
+	timeline.register_effect_use.rpc(owner_player_path, effect_idx)
+	
+
 func undo_action() -> void:
 	timeline.undo.rpc()
 
-
-# func undo_attachment() -> void:
-# 	if slot_attachment_history_stack.is_empty():
-# 		return
-	
-# 	var last_slot_used: int = slot_attachment_history_stack.pop_back()
-# 	var last_effect_used: int = queued_effect_attachments[last_slot_used].pop_back()
-# 	return_effect_back_to_hand(last_effect_used)
-# 	if slot_attachment_history_stack.is_empty():
-# 		button_skip.show()
-# 		button_undo.hide()
-# 		button_confirm.hide()
 
 #endregion
 
@@ -308,6 +300,10 @@ func _on_timeline_timeline_modified() -> void:
 	opp_side.hand.update_hand_positions()
 	arrange_attached_effects()
 	if timeline.main_timeline_queue.is_empty():
-		button_skip.show()
+		# button_skip.show()
 		button_undo.hide()
-		button_confirm.hide()
+		# button_confirm.hide()
+	else:
+		# button_skip.show()
+		button_undo.show()
+		# button_confirm.hide()

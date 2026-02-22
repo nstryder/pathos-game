@@ -1,944 +1,769 @@
-[gd_scene load_steps=109 format=3 uid="uid://cbmgb0ubkngdf"]
+[gd_scene format=3 uid="uid://cbmgb0ubkngdf"]
 
 [ext_resource type="Script" uid="uid://rs44lwk8injo" path="res://src/globals/card_db.gd" id="1_p485w"]
 [ext_resource type="Script" uid="uid://d3iqhcpkdtq6i" path="res://src/resources/entity_card_data/entity_card_data.gd" id="2_msm5g"]
 [ext_resource type="Script" uid="uid://bsj6kvr5i23qw" path="res://src/resources/effect_card_data/effect_card_data.gd" id="3_kwtlh"]
 
-[sub_resource type="Resource" id="Resource_a6co2"]
+[sub_resource type="Resource" id="Resource_msm5g"]
 script = ExtResource("2_msm5g")
 nickname = "Kei"
 base_attack = 3
 base_shield = 2
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_8de20"]
+[sub_resource type="Resource" id="Resource_kwtlh"]
 script = ExtResource("2_msm5g")
 nickname = "Shin"
-base_attack = 0
 base_shield = 5
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_qmtx6"]
+[sub_resource type="Resource" id="Resource_a6co2"]
 script = ExtResource("2_msm5g")
 nickname = "Ginko"
 base_attack = 1
 base_shield = 2
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_athid"]
+[sub_resource type="Resource" id="Resource_8de20"]
 script = ExtResource("2_msm5g")
 nickname = "Hibiki"
 base_attack = 2
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_lx601"]
+[sub_resource type="Resource" id="Resource_qmtx6"]
 script = ExtResource("2_msm5g")
 nickname = "Mira"
-base_attack = 0
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_2048x"]
+[sub_resource type="Resource" id="Resource_athid"]
 script = ExtResource("2_msm5g")
 nickname = "Haru"
 base_attack = 1
 base_shield = 2
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_1xg4a"]
+[sub_resource type="Resource" id="Resource_lx601"]
 script = ExtResource("2_msm5g")
 nickname = "Akari"
 base_attack = 1
 base_shield = 2
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_twsnr"]
+[sub_resource type="Resource" id="Resource_2048x"]
 script = ExtResource("2_msm5g")
 nickname = "Kumiko"
 base_attack = 2
 base_shield = 2
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_mhwae"]
+[sub_resource type="Resource" id="Resource_1xg4a"]
 script = ExtResource("2_msm5g")
 nickname = "Golem"
 base_attack = 1
 base_shield = 3
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_vfoi8"]
+[sub_resource type="Resource" id="Resource_twsnr"]
 script = ExtResource("2_msm5g")
 nickname = "Pixie"
 base_attack = 3
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_k4ouw"]
+[sub_resource type="Resource" id="Resource_mhwae"]
 script = ExtResource("2_msm5g")
 nickname = "Bumi"
 base_attack = 1
 base_shield = 3
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_3jn8v"]
+[sub_resource type="Resource" id="Resource_vfoi8"]
 script = ExtResource("2_msm5g")
 nickname = "Doc"
 base_attack = 2
 base_shield = 2
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_kdbkt"]
+[sub_resource type="Resource" id="Resource_k4ouw"]
 script = ExtResource("2_msm5g")
 nickname = "Domino"
 base_attack = 2
 base_shield = 2
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_t6o0s"]
+[sub_resource type="Resource" id="Resource_3jn8v"]
 script = ExtResource("2_msm5g")
 nickname = "Responder"
-base_attack = 0
 base_shield = 3
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_r70u0"]
+[sub_resource type="Resource" id="Resource_kdbkt"]
 script = ExtResource("2_msm5g")
 nickname = "Ryoko"
-base_attack = 0
 base_shield = 3
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_45ctj"]
+[sub_resource type="Resource" id="Resource_t6o0s"]
 script = ExtResource("2_msm5g")
 nickname = "Dango"
-base_attack = 0
 base_shield = 3
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_6nlc3"]
+[sub_resource type="Resource" id="Resource_r70u0"]
 script = ExtResource("2_msm5g")
 nickname = "Moriko"
 base_attack = 1
 base_shield = 2
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_jpc08"]
+[sub_resource type="Resource" id="Resource_45ctj"]
 script = ExtResource("2_msm5g")
 nickname = "Frederick"
 base_attack = 2
 base_shield = 3
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_d42lx"]
+[sub_resource type="Resource" id="Resource_6nlc3"]
 script = ExtResource("2_msm5g")
 nickname = "Princess Medic"
 base_attack = 1
 base_shield = 3
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_7smhx"]
+[sub_resource type="Resource" id="Resource_jpc08"]
 script = ExtResource("2_msm5g")
 nickname = "Captain Locust"
 base_attack = 3
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_kakiq"]
+[sub_resource type="Resource" id="Resource_d42lx"]
 script = ExtResource("2_msm5g")
 nickname = "Fabian"
 base_attack = 2
 base_shield = 2
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_a8a2o"]
+[sub_resource type="Resource" id="Resource_7smhx"]
 script = ExtResource("2_msm5g")
 nickname = "Kelvin"
 base_attack = 2
 base_shield = 2
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_bcmp5"]
+[sub_resource type="Resource" id="Resource_kakiq"]
 script = ExtResource("2_msm5g")
 nickname = "Shizumi"
 base_attack = 5
 base_shield = 1
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_vw076"]
+[sub_resource type="Resource" id="Resource_a8a2o"]
 script = ExtResource("2_msm5g")
 nickname = "Infiltrator"
 base_attack = 3
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_wg4wy"]
+[sub_resource type="Resource" id="Resource_bcmp5"]
 script = ExtResource("2_msm5g")
 nickname = "Commander"
 base_attack = 2
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_tywj4"]
+[sub_resource type="Resource" id="Resource_vw076"]
 script = ExtResource("2_msm5g")
 nickname = "Vivilie"
 base_attack = 2
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_q10mk"]
+[sub_resource type="Resource" id="Resource_wg4wy"]
 script = ExtResource("2_msm5g")
 nickname = "Tesallia"
 base_attack = 3
 base_shield = 5
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_enhqo"]
+[sub_resource type="Resource" id="Resource_tywj4"]
 script = ExtResource("2_msm5g")
 nickname = "Cuckoo"
 base_attack = 3
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_coghr"]
+[sub_resource type="Resource" id="Resource_q10mk"]
 script = ExtResource("2_msm5g")
 nickname = "Mercer"
 base_attack = 1
 base_shield = 3
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_ptguh"]
+[sub_resource type="Resource" id="Resource_enhqo"]
 script = ExtResource("2_msm5g")
 nickname = "Dory"
 base_attack = 3
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_x4ynt"]
+[sub_resource type="Resource" id="Resource_coghr"]
 script = ExtResource("2_msm5g")
 nickname = "Bastion"
-base_attack = 0
 base_shield = 5
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_ybc5s"]
+[sub_resource type="Resource" id="Resource_ptguh"]
 script = ExtResource("2_msm5g")
 nickname = "Machina"
 base_attack = 2
 base_shield = 2
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_of7r8"]
+[sub_resource type="Resource" id="Resource_x4ynt"]
 script = ExtResource("2_msm5g")
 nickname = "Justitia"
-base_attack = 0
 base_shield = 5
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_hrrb0"]
+[sub_resource type="Resource" id="Resource_ybc5s"]
 script = ExtResource("2_msm5g")
 nickname = "Guild"
 base_attack = 1
 base_shield = 3
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_wmuac"]
+[sub_resource type="Resource" id="Resource_of7r8"]
 script = ExtResource("2_msm5g")
 nickname = "Coroner"
 base_attack = 1
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_23euk"]
+[sub_resource type="Resource" id="Resource_hrrb0"]
 script = ExtResource("2_msm5g")
 nickname = "Trek"
 base_attack = 1
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_40lh0"]
+[sub_resource type="Resource" id="Resource_wmuac"]
 script = ExtResource("2_msm5g")
 nickname = "Petal"
-base_attack = 0
 base_shield = 2
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_dfsrt"]
+[sub_resource type="Resource" id="Resource_23euk"]
 script = ExtResource("2_msm5g")
 nickname = "Stim"
-base_attack = 0
 base_shield = 5
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_lf6gj"]
+[sub_resource type="Resource" id="Resource_40lh0"]
 script = ExtResource("2_msm5g")
 nickname = "Madman"
 base_attack = 1
 base_shield = 3
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_2q84f"]
+[sub_resource type="Resource" id="Resource_dfsrt"]
 script = ExtResource("2_msm5g")
 nickname = "Ronin"
 base_attack = 3
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_e5gdm"]
+[sub_resource type="Resource" id="Resource_lf6gj"]
 script = ExtResource("2_msm5g")
 nickname = "Yuno"
 base_attack = 2
 base_shield = 2
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_5hnwd"]
+[sub_resource type="Resource" id="Resource_2q84f"]
 script = ExtResource("2_msm5g")
 nickname = "Yoru"
 base_attack = 1
 base_shield = 2
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_hgsuf"]
+[sub_resource type="Resource" id="Resource_e5gdm"]
 script = ExtResource("2_msm5g")
 nickname = "Natsuki"
-base_attack = 0
 base_shield = 5
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_jve08"]
+[sub_resource type="Resource" id="Resource_5hnwd"]
 script = ExtResource("2_msm5g")
 nickname = "Nikita"
 base_attack = 1
 base_shield = 3
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_4tr6p"]
+[sub_resource type="Resource" id="Resource_hgsuf"]
 script = ExtResource("2_msm5g")
 nickname = "Shoto"
 base_attack = 2
 base_shield = 2
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_vkb60"]
+[sub_resource type="Resource" id="Resource_jve08"]
 script = ExtResource("2_msm5g")
 nickname = "Mei"
-base_attack = 0
 base_shield = 2
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_7b3kp"]
+[sub_resource type="Resource" id="Resource_4tr6p"]
 script = ExtResource("2_msm5g")
 nickname = "Akira"
 base_attack = 1
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_n58vc"]
+[sub_resource type="Resource" id="Resource_vkb60"]
 script = ExtResource("2_msm5g")
 nickname = "Sensei"
 base_attack = 2
 base_shield = 2
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_xam46"]
+[sub_resource type="Resource" id="Resource_7b3kp"]
 script = ExtResource("2_msm5g")
 nickname = "Macho"
 base_attack = 1
 base_shield = 3
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_3mpii"]
+[sub_resource type="Resource" id="Resource_n58vc"]
 script = ExtResource("2_msm5g")
 nickname = "Gyaru"
 base_attack = 3
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_vh8n7"]
+[sub_resource type="Resource" id="Resource_xam46"]
 script = ExtResource("2_msm5g")
 nickname = "Noire"
 base_attack = 2
 base_shield = 2
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_d4m4r"]
+[sub_resource type="Resource" id="Resource_3mpii"]
 script = ExtResource("2_msm5g")
 nickname = "Capo"
 base_attack = 2
 base_shield = 2
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_x2n1p"]
+[sub_resource type="Resource" id="Resource_vh8n7"]
 script = ExtResource("2_msm5g")
 nickname = "Salvatore"
 base_attack = 2
 base_shield = 3
 rarity = 1
 
-[sub_resource type="Resource" id="Resource_dq1tq"]
+[sub_resource type="Resource" id="Resource_d4m4r"]
 script = ExtResource("2_msm5g")
 nickname = "Tito"
 base_attack = 1
 base_shield = 2
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_lj7ks"]
+[sub_resource type="Resource" id="Resource_x2n1p"]
 script = ExtResource("2_msm5g")
 nickname = "Raggedy"
 base_attack = 2
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_0oaj6"]
+[sub_resource type="Resource" id="Resource_dq1tq"]
 script = ExtResource("2_msm5g")
 nickname = "Lovely"
 base_attack = 2
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_xgx8m"]
+[sub_resource type="Resource" id="Resource_lj7ks"]
 script = ExtResource("2_msm5g")
 nickname = "Giacomo"
 base_attack = 2
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_axath"]
+[sub_resource type="Resource" id="Resource_0oaj6"]
 script = ExtResource("2_msm5g")
 nickname = "Nonna"
 base_attack = 2
 base_shield = 1
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_uvpr3"]
+[sub_resource type="Resource" id="Resource_xgx8m"]
 script = ExtResource("2_msm5g")
 nickname = "Muscle"
 base_attack = 1
 base_shield = 3
-rarity = 0
 
-[sub_resource type="Resource" id="Resource_xplnt"]
+[sub_resource type="Resource" id="Resource_axath"]
 script = ExtResource("2_msm5g")
 nickname = "Henchman"
 base_attack = 3
 base_shield = 1
-rarity = 0
+
+[sub_resource type="Resource" id="Resource_uvpr3"]
+script = ExtResource("3_kwtlh")
+effect_name = "Knife"
+usage_type = 1
+
+[sub_resource type="Resource" id="Resource_xplnt"]
+script = ExtResource("3_kwtlh")
+effect_name = "Snipe"
+identifier = 1
+ability_phase = 1
+usage_type = 1
 
 [sub_resource type="Resource" id="Resource_xanpn"]
 script = ExtResource("3_kwtlh")
-effect_name = "Knife"
-effect_type = 0
-identifier = 0
-ability_phase = 0
-usage_type = 1
-timeline_condition = 0
+effect_name = "Mortar"
+ability_phase = 1
 
 [sub_resource type="Resource" id="Resource_hyilf"]
 script = ExtResource("3_kwtlh")
-effect_name = "Snipe"
-effect_type = 0
+effect_name = "Bite"
 identifier = 1
-ability_phase = 1
 usage_type = 1
-timeline_condition = 0
 
 [sub_resource type="Resource" id="Resource_rjcci"]
 script = ExtResource("3_kwtlh")
-effect_name = "Mortar"
-effect_type = 0
-identifier = 0
+effect_name = "Lance"
 ability_phase = 1
-usage_type = 0
-timeline_condition = 0
+usage_type = 1
 
 [sub_resource type="Resource" id="Resource_1o5e6"]
 script = ExtResource("3_kwtlh")
-effect_name = "Bite"
-effect_type = 0
+effect_name = "Arsenal"
 identifier = 1
-ability_phase = 0
-usage_type = 1
-timeline_condition = 0
 
 [sub_resource type="Resource" id="Resource_l8yri"]
 script = ExtResource("3_kwtlh")
-effect_name = "Lance"
-effect_type = 0
-identifier = 0
+effect_name = "Energizer"
 ability_phase = 1
-usage_type = 1
-timeline_condition = 0
+timeline_condition = 1
 
 [sub_resource type="Resource" id="Resource_b2rcc"]
 script = ExtResource("3_kwtlh")
-effect_name = "Arsenal"
-effect_type = 0
-identifier = 1
-ability_phase = 0
-usage_type = 0
-timeline_condition = 0
+effect_name = "Shotgun"
+ability_phase = 1
+usage_type = 1
 
 [sub_resource type="Resource" id="Resource_tcit7"]
 script = ExtResource("3_kwtlh")
-effect_name = "Energizer"
-effect_type = 0
-identifier = 0
-ability_phase = 1
-usage_type = 0
+effect_name = "Self-Destruct"
+identifier = 1
 timeline_condition = 1
 
 [sub_resource type="Resource" id="Resource_yjtmn"]
 script = ExtResource("3_kwtlh")
-effect_name = "Shotgun"
-effect_type = 0
-identifier = 0
+effect_name = "Nitro"
 ability_phase = 1
-usage_type = 1
-timeline_condition = 0
 
 [sub_resource type="Resource" id="Resource_34ibc"]
 script = ExtResource("3_kwtlh")
-effect_name = "Self-Destruct"
-effect_type = 0
+effect_name = "Stinger"
 identifier = 1
-ability_phase = 0
-usage_type = 0
+usage_type = 1
 timeline_condition = 1
 
 [sub_resource type="Resource" id="Resource_dypvt"]
 script = ExtResource("3_kwtlh")
-effect_name = "Nitro"
-effect_type = 0
-identifier = 0
+effect_name = "Dart"
+identifier = 2
 ability_phase = 1
-usage_type = 0
-timeline_condition = 0
+usage_type = 1
 
 [sub_resource type="Resource" id="Resource_yym0f"]
 script = ExtResource("3_kwtlh")
-effect_name = "Stinger"
-effect_type = 0
-identifier = 1
-ability_phase = 0
+effect_name = "Sludge"
+identifier = 2
+ability_phase = 1
 usage_type = 1
-timeline_condition = 1
 
 [sub_resource type="Resource" id="Resource_0ch6o"]
 script = ExtResource("3_kwtlh")
-effect_name = "Dart"
-effect_type = 0
+effect_name = "Flash Freeze"
 identifier = 2
 ability_phase = 1
 usage_type = 1
-timeline_condition = 0
 
 [sub_resource type="Resource" id="Resource_vvdjw"]
 script = ExtResource("3_kwtlh")
-effect_name = "Sludge"
-effect_type = 0
+effect_name = "Taunt"
 identifier = 2
-ability_phase = 1
 usage_type = 1
-timeline_condition = 0
 
 [sub_resource type="Resource" id="Resource_y1edv"]
 script = ExtResource("3_kwtlh")
-effect_name = "Flash Freeze"
-effect_type = 0
-identifier = 2
-ability_phase = 1
+effect_name = "Plate"
+effect_type = 1
 usage_type = 1
-timeline_condition = 0
 
 [sub_resource type="Resource" id="Resource_u1rwj"]
 script = ExtResource("3_kwtlh")
-effect_name = "Taunt"
-effect_type = 0
-identifier = 2
-ability_phase = 0
+effect_name = "Syringe"
+effect_type = 1
 usage_type = 1
-timeline_condition = 0
 
 [sub_resource type="Resource" id="Resource_stky8"]
 script = ExtResource("3_kwtlh")
-effect_name = "Plate"
+effect_name = "Barricade"
 effect_type = 1
-identifier = 0
-ability_phase = 0
 usage_type = 1
-timeline_condition = 0
 
 [sub_resource type="Resource" id="Resource_o207p"]
 script = ExtResource("3_kwtlh")
-effect_name = "Syringe"
+effect_name = "Medkit"
 effect_type = 1
-identifier = 0
-ability_phase = 0
 usage_type = 1
-timeline_condition = 0
 
 [sub_resource type="Resource" id="Resource_p5vq7"]
 script = ExtResource("3_kwtlh")
-effect_name = "Barricade"
+effect_name = "Mask"
 effect_type = 1
-identifier = 0
-ability_phase = 0
-usage_type = 1
-timeline_condition = 0
+ability_phase = 2
 
 [sub_resource type="Resource" id="Resource_8c2ox"]
 script = ExtResource("3_kwtlh")
-effect_name = "Medkit"
-effect_type = 1
-identifier = 0
-ability_phase = 0
-usage_type = 1
-timeline_condition = 0
-
-[sub_resource type="Resource" id="Resource_epr82"]
-script = ExtResource("3_kwtlh")
-effect_name = "Mask"
-effect_type = 1
-identifier = 0
-ability_phase = 2
-usage_type = 0
-timeline_condition = 0
-
-[sub_resource type="Resource" id="Resource_jh0gj"]
-script = ExtResource("3_kwtlh")
 effect_name = "Dome"
 effect_type = 1
-identifier = 0
 ability_phase = 2
 usage_type = 1
-timeline_condition = 0
 
-[sub_resource type="Resource" id="Resource_1s51u"]
+[sub_resource type="Resource" id="Resource_epr82"]
 script = ExtResource("3_kwtlh")
 effect_name = "Rally"
 effect_type = 1
 identifier = 1
 ability_phase = 2
-usage_type = 0
-timeline_condition = 0
 
-[sub_resource type="Resource" id="Resource_dhyqs"]
+[sub_resource type="Resource" id="Resource_jh0gj"]
 script = ExtResource("3_kwtlh")
 effect_name = "Whistle"
 effect_type = 1
-identifier = 0
 ability_phase = 2
 usage_type = 1
-timeline_condition = 0
 
-[sub_resource type="Resource" id="Resource_6qubv"]
+[sub_resource type="Resource" id="Resource_1s51u"]
 script = ExtResource("3_kwtlh")
 effect_name = "Stop Sign"
 effect_type = 1
-identifier = 0
 ability_phase = 2
-usage_type = 0
-timeline_condition = 0
 
-[sub_resource type="Resource" id="Resource_5d4k0"]
+[sub_resource type="Resource" id="Resource_dhyqs"]
 script = ExtResource("3_kwtlh")
 effect_name = "Payback"
 effect_type = 1
 identifier = 1
 ability_phase = 2
-usage_type = 0
-timeline_condition = 0
 
-[sub_resource type="Resource" id="Resource_yfu6o"]
+[sub_resource type="Resource" id="Resource_6qubv"]
 script = ExtResource("3_kwtlh")
 effect_name = "Turret"
 effect_type = 1
 identifier = 1
 ability_phase = 1
-usage_type = 0
 timeline_condition = 1
 
-[sub_resource type="Resource" id="Resource_oss3d"]
+[sub_resource type="Resource" id="Resource_5d4k0"]
 script = ExtResource("3_kwtlh")
 effect_name = "Helmet"
 effect_type = 1
-identifier = 0
-ability_phase = 0
 usage_type = 1
-timeline_condition = 0
 
-[sub_resource type="Resource" id="Resource_3cnwl"]
+[sub_resource type="Resource" id="Resource_yfu6o"]
 script = ExtResource("3_kwtlh")
 effect_name = "Bear Trap"
 effect_type = 1
-identifier = 0
-ability_phase = 0
 usage_type = 1
-timeline_condition = 0
 
-[sub_resource type="Resource" id="Resource_3iy4b"]
+[sub_resource type="Resource" id="Resource_oss3d"]
 script = ExtResource("3_kwtlh")
 effect_name = "Parry"
 effect_type = 1
 identifier = 1
 ability_phase = 3
 usage_type = 1
-timeline_condition = 0
 
-[sub_resource type="Resource" id="Resource_ru1fi"]
+[sub_resource type="Resource" id="Resource_3cnwl"]
 script = ExtResource("3_kwtlh")
 effect_name = "Pills"
 effect_type = 1
 identifier = 2
 ability_phase = 1
 usage_type = 1
-timeline_condition = 0
 
-[sub_resource type="Resource" id="Resource_yn1dr"]
+[sub_resource type="Resource" id="Resource_3iy4b"]
 script = ExtResource("3_kwtlh")
 effect_name = "Switcheroo"
 effect_type = 2
 identifier = 1
-ability_phase = 0
 usage_type = 1
-timeline_condition = 0
 
-[sub_resource type="Resource" id="Resource_vgp0b"]
+[sub_resource type="Resource" id="Resource_ru1fi"]
 script = ExtResource("3_kwtlh")
 effect_name = "Cape"
 effect_type = 2
-identifier = 0
-ability_phase = 0
-usage_type = 0
-timeline_condition = 0
 
-[sub_resource type="Resource" id="Resource_1nh26"]
+[sub_resource type="Resource" id="Resource_yn1dr"]
 script = ExtResource("3_kwtlh")
 effect_name = "Smoke Grenade"
 effect_type = 2
-identifier = 0
-ability_phase = 0
 usage_type = 1
-timeline_condition = 0
 
-[sub_resource type="Resource" id="Resource_usy5s"]
+[sub_resource type="Resource" id="Resource_vgp0b"]
 script = ExtResource("3_kwtlh")
 effect_name = "Magnifying Glass"
 effect_type = 2
-identifier = 0
-ability_phase = 0
-usage_type = 0
 timeline_condition = 1
 
-[sub_resource type="Resource" id="Resource_wluvd"]
+[sub_resource type="Resource" id="Resource_1nh26"]
 script = ExtResource("3_kwtlh")
 effect_name = "Recon"
 effect_type = 2
 identifier = 1
-ability_phase = 0
-usage_type = 0
+timeline_condition = 1
+
+[sub_resource type="Resource" id="Resource_usy5s"]
+script = ExtResource("3_kwtlh")
+effect_name = "Reshuffler"
+effect_type = 2
+timeline_condition = 1
+
+[sub_resource type="Resource" id="Resource_wluvd"]
+script = ExtResource("3_kwtlh")
+effect_name = "Treasure"
+effect_type = 2
+ability_phase = 1
 timeline_condition = 1
 
 [sub_resource type="Resource" id="Resource_mlvoq"]
 script = ExtResource("3_kwtlh")
-effect_name = "Reshuffler"
+effect_name = "Scepter"
 effect_type = 2
-identifier = 0
-ability_phase = 0
-usage_type = 0
-timeline_condition = 1
+ability_phase = 2
 
 [sub_resource type="Resource" id="Resource_l4cgx"]
 script = ExtResource("3_kwtlh")
-effect_name = "Treasure"
+effect_name = "Disguise"
 effect_type = 2
-identifier = 0
-ability_phase = 1
-usage_type = 0
-timeline_condition = 1
+usage_type = 1
 
 [sub_resource type="Resource" id="Resource_yclab"]
 script = ExtResource("3_kwtlh")
-effect_name = "Scepter"
+effect_name = "Gem"
 effect_type = 2
-identifier = 0
-ability_phase = 2
-usage_type = 0
-timeline_condition = 0
 
 [sub_resource type="Resource" id="Resource_62s5d"]
 script = ExtResource("3_kwtlh")
-effect_name = "Disguise"
+effect_name = "Plug-in"
 effect_type = 2
-identifier = 0
-ability_phase = 0
-usage_type = 1
-timeline_condition = 0
 
 [sub_resource type="Resource" id="Resource_kg8rn"]
 script = ExtResource("3_kwtlh")
-effect_name = "Gem"
+effect_name = "Stun Grenade"
 effect_type = 2
-identifier = 0
-ability_phase = 0
-usage_type = 0
-timeline_condition = 0
+ability_phase = 2
+usage_type = 1
 
 [sub_resource type="Resource" id="Resource_gcq81"]
 script = ExtResource("3_kwtlh")
-effect_name = "Plug-in"
-effect_type = 2
-identifier = 0
-ability_phase = 0
-usage_type = 0
-timeline_condition = 0
-
-[sub_resource type="Resource" id="Resource_qqfnu"]
-script = ExtResource("3_kwtlh")
-effect_name = "Stun Grenade"
-effect_type = 2
-identifier = 0
-ability_phase = 2
-usage_type = 1
-timeline_condition = 0
-
-[sub_resource type="Resource" id="Resource_tl8ol"]
-script = ExtResource("3_kwtlh")
 effect_name = "Trash Can"
 effect_type = 2
-identifier = 0
-ability_phase = 0
-usage_type = 0
-timeline_condition = 0
 
-[sub_resource type="Resource" id="Resource_4w8tb"]
+[sub_resource type="Resource" id="Resource_qqfnu"]
 script = ExtResource("3_kwtlh")
 effect_name = "Recycle"
 effect_type = 2
 identifier = 1
-ability_phase = 0
-usage_type = 0
 timeline_condition = 1
 
-[sub_resource type="Resource" id="Resource_s70o0"]
+[sub_resource type="Resource" id="Resource_tl8ol"]
 script = ExtResource("3_kwtlh")
 effect_name = "Recall"
 effect_type = 2
 identifier = 1
-ability_phase = 0
-usage_type = 0
 timeline_condition = 1
 
-[node name="CardDB" type="Node"]
+[node name="CardDB" type="Node" unique_id=452699192]
 script = ExtResource("1_p485w")
 entity_cards = Dictionary[String, ExtResource("2_msm5g")]({
-"S001-E01-N001": SubResource("Resource_a6co2"),
-"S001-E01-N002": SubResource("Resource_8de20"),
-"S001-E01-N003": SubResource("Resource_qmtx6"),
-"S001-E01-N004": SubResource("Resource_athid"),
-"S001-E01-N005": SubResource("Resource_lx601"),
-"S001-E01-N006": SubResource("Resource_2048x"),
-"S001-E01-N007": SubResource("Resource_1xg4a"),
-"S001-E01-N008": SubResource("Resource_twsnr"),
-"S001-E01-N009": SubResource("Resource_mhwae"),
-"S001-E01-N010": SubResource("Resource_vfoi8"),
-"S002-E01-N001": SubResource("Resource_k4ouw"),
-"S002-E01-N002": SubResource("Resource_3jn8v"),
-"S002-E01-N003": SubResource("Resource_kdbkt"),
-"S002-E01-N004": SubResource("Resource_t6o0s"),
-"S002-E01-N005": SubResource("Resource_r70u0"),
-"S002-E01-N006": SubResource("Resource_45ctj"),
-"S002-E01-N007": SubResource("Resource_6nlc3"),
-"S002-E01-N008": SubResource("Resource_jpc08"),
-"S002-E01-N009": SubResource("Resource_d42lx"),
-"S002-E01-N010": SubResource("Resource_7smhx"),
-"S003-E01-N001": SubResource("Resource_kakiq"),
-"S003-E01-N002": SubResource("Resource_a8a2o"),
-"S003-E01-N003": SubResource("Resource_bcmp5"),
-"S003-E01-N004": SubResource("Resource_vw076"),
-"S003-E01-N005": SubResource("Resource_wg4wy"),
-"S003-E01-N006": SubResource("Resource_tywj4"),
-"S003-E01-N007": SubResource("Resource_q10mk"),
-"S003-E01-N008": SubResource("Resource_enhqo"),
-"S003-E01-N009": SubResource("Resource_coghr"),
-"S003-E01-N010": SubResource("Resource_ptguh"),
-"S004-E01-N001": SubResource("Resource_x4ynt"),
-"S004-E01-N002": SubResource("Resource_ybc5s"),
-"S004-E01-N003": SubResource("Resource_of7r8"),
-"S004-E01-N004": SubResource("Resource_hrrb0"),
-"S004-E01-N005": SubResource("Resource_wmuac"),
-"S004-E01-N006": SubResource("Resource_23euk"),
-"S004-E01-N007": SubResource("Resource_40lh0"),
-"S004-E01-N008": SubResource("Resource_dfsrt"),
-"S004-E01-N009": SubResource("Resource_lf6gj"),
-"S004-E01-N010": SubResource("Resource_2q84f"),
-"S005-E01-N001": SubResource("Resource_e5gdm"),
-"S005-E01-N002": SubResource("Resource_5hnwd"),
-"S005-E01-N003": SubResource("Resource_hgsuf"),
-"S005-E01-N004": SubResource("Resource_jve08"),
-"S005-E01-N005": SubResource("Resource_4tr6p"),
-"S005-E01-N006": SubResource("Resource_vkb60"),
-"S005-E01-N007": SubResource("Resource_7b3kp"),
-"S005-E01-N008": SubResource("Resource_n58vc"),
-"S005-E01-N009": SubResource("Resource_xam46"),
-"S005-E01-N010": SubResource("Resource_3mpii"),
-"S006-E01-N001": SubResource("Resource_vh8n7"),
-"S006-E01-N002": SubResource("Resource_d4m4r"),
-"S006-E01-N003": SubResource("Resource_x2n1p"),
-"S006-E01-N004": SubResource("Resource_dq1tq"),
-"S006-E01-N005": SubResource("Resource_lj7ks"),
-"S006-E01-N006": SubResource("Resource_0oaj6"),
-"S006-E01-N007": SubResource("Resource_xgx8m"),
-"S006-E01-N008": SubResource("Resource_axath"),
-"S006-E01-N009": SubResource("Resource_uvpr3"),
-"S006-E01-N010": SubResource("Resource_xplnt")
+"S001-E01-N001": SubResource("Resource_msm5g"),
+"S001-E01-N002": SubResource("Resource_kwtlh"),
+"S001-E01-N003": SubResource("Resource_a6co2"),
+"S001-E01-N004": SubResource("Resource_8de20"),
+"S001-E01-N005": SubResource("Resource_qmtx6"),
+"S001-E01-N006": SubResource("Resource_athid"),
+"S001-E01-N007": SubResource("Resource_lx601"),
+"S001-E01-N008": SubResource("Resource_2048x"),
+"S001-E01-N009": SubResource("Resource_1xg4a"),
+"S001-E01-N010": SubResource("Resource_twsnr"),
+"S002-E01-N001": SubResource("Resource_mhwae"),
+"S002-E01-N002": SubResource("Resource_vfoi8"),
+"S002-E01-N003": SubResource("Resource_k4ouw"),
+"S002-E01-N004": SubResource("Resource_3jn8v"),
+"S002-E01-N005": SubResource("Resource_kdbkt"),
+"S002-E01-N006": SubResource("Resource_t6o0s"),
+"S002-E01-N007": SubResource("Resource_r70u0"),
+"S002-E01-N008": SubResource("Resource_45ctj"),
+"S002-E01-N009": SubResource("Resource_6nlc3"),
+"S002-E01-N010": SubResource("Resource_jpc08"),
+"S003-E01-N001": SubResource("Resource_d42lx"),
+"S003-E01-N002": SubResource("Resource_7smhx"),
+"S003-E01-N003": SubResource("Resource_kakiq"),
+"S003-E01-N004": SubResource("Resource_a8a2o"),
+"S003-E01-N005": SubResource("Resource_bcmp5"),
+"S003-E01-N006": SubResource("Resource_vw076"),
+"S003-E01-N007": SubResource("Resource_wg4wy"),
+"S003-E01-N008": SubResource("Resource_tywj4"),
+"S003-E01-N009": SubResource("Resource_q10mk"),
+"S003-E01-N010": SubResource("Resource_enhqo"),
+"S004-E01-N001": SubResource("Resource_coghr"),
+"S004-E01-N002": SubResource("Resource_ptguh"),
+"S004-E01-N003": SubResource("Resource_x4ynt"),
+"S004-E01-N004": SubResource("Resource_ybc5s"),
+"S004-E01-N005": SubResource("Resource_of7r8"),
+"S004-E01-N006": SubResource("Resource_hrrb0"),
+"S004-E01-N007": SubResource("Resource_wmuac"),
+"S004-E01-N008": SubResource("Resource_23euk"),
+"S004-E01-N009": SubResource("Resource_40lh0"),
+"S004-E01-N010": SubResource("Resource_dfsrt"),
+"S005-E01-N001": SubResource("Resource_lf6gj"),
+"S005-E01-N002": SubResource("Resource_2q84f"),
+"S005-E01-N003": SubResource("Resource_e5gdm"),
+"S005-E01-N004": SubResource("Resource_5hnwd"),
+"S005-E01-N005": SubResource("Resource_hgsuf"),
+"S005-E01-N006": SubResource("Resource_jve08"),
+"S005-E01-N007": SubResource("Resource_4tr6p"),
+"S005-E01-N008": SubResource("Resource_vkb60"),
+"S005-E01-N009": SubResource("Resource_7b3kp"),
+"S005-E01-N010": SubResource("Resource_n58vc"),
+"S006-E01-N001": SubResource("Resource_xam46"),
+"S006-E01-N002": SubResource("Resource_3mpii"),
+"S006-E01-N003": SubResource("Resource_vh8n7"),
+"S006-E01-N004": SubResource("Resource_d4m4r"),
+"S006-E01-N005": SubResource("Resource_x2n1p"),
+"S006-E01-N006": SubResource("Resource_dq1tq"),
+"S006-E01-N007": SubResource("Resource_lj7ks"),
+"S006-E01-N008": SubResource("Resource_0oaj6"),
+"S006-E01-N009": SubResource("Resource_xgx8m"),
+"S006-E01-N010": SubResource("Resource_axath")
 })
 effect_cards = Dictionary[String, ExtResource("3_kwtlh")]({
-"S000-E01-N001": SubResource("Resource_xanpn"),
-"S000-E01-N002": SubResource("Resource_hyilf"),
-"S000-E01-N003": SubResource("Resource_rjcci"),
-"S000-E01-N004": SubResource("Resource_1o5e6"),
-"S000-E01-N005": SubResource("Resource_l8yri"),
-"S000-E01-N006": SubResource("Resource_b2rcc"),
-"S000-E01-N007": SubResource("Resource_tcit7"),
-"S000-E01-N008": SubResource("Resource_yjtmn"),
-"S000-E01-N009": SubResource("Resource_34ibc"),
-"S000-E01-N010": SubResource("Resource_dypvt"),
-"S000-E01-N011": SubResource("Resource_yym0f"),
-"S000-E01-N012": SubResource("Resource_0ch6o"),
-"S000-E01-N013": SubResource("Resource_vvdjw"),
-"S000-E01-N014": SubResource("Resource_y1edv"),
-"S000-E01-N015": SubResource("Resource_u1rwj"),
-"S000-E01-N016": SubResource("Resource_stky8"),
-"S000-E01-N017": SubResource("Resource_o207p"),
-"S000-E01-N018": SubResource("Resource_p5vq7"),
-"S000-E01-N019": SubResource("Resource_8c2ox"),
-"S000-E01-N020": SubResource("Resource_epr82"),
-"S000-E01-N021": SubResource("Resource_jh0gj"),
-"S000-E01-N022": SubResource("Resource_1s51u"),
-"S000-E01-N023": SubResource("Resource_dhyqs"),
-"S000-E01-N024": SubResource("Resource_6qubv"),
-"S000-E01-N025": SubResource("Resource_5d4k0"),
-"S000-E01-N026": SubResource("Resource_yfu6o"),
-"S000-E01-N027": SubResource("Resource_oss3d"),
-"S000-E01-N028": SubResource("Resource_3cnwl"),
-"S000-E01-N029": SubResource("Resource_3iy4b"),
-"S000-E01-N030": SubResource("Resource_ru1fi"),
-"S000-E01-N031": SubResource("Resource_yn1dr"),
-"S000-E01-N032": SubResource("Resource_vgp0b"),
-"S000-E01-N033": SubResource("Resource_1nh26"),
-"S000-E01-N034": SubResource("Resource_usy5s"),
-"S000-E01-N035": SubResource("Resource_wluvd"),
-"S000-E01-N036": SubResource("Resource_mlvoq"),
-"S000-E01-N037": SubResource("Resource_l4cgx"),
-"S000-E01-N038": SubResource("Resource_yclab"),
-"S000-E01-N039": SubResource("Resource_62s5d"),
-"S000-E01-N040": SubResource("Resource_kg8rn"),
-"S000-E01-N041": SubResource("Resource_gcq81"),
-"S000-E01-N042": SubResource("Resource_qqfnu"),
-"S000-E01-N043": SubResource("Resource_tl8ol"),
-"S000-E01-N044": SubResource("Resource_4w8tb"),
-"S000-E01-N045": SubResource("Resource_s70o0")
+"S000-E01-N001": SubResource("Resource_uvpr3"),
+"S000-E01-N002": SubResource("Resource_xplnt"),
+"S000-E01-N003": SubResource("Resource_xanpn"),
+"S000-E01-N004": SubResource("Resource_hyilf"),
+"S000-E01-N005": SubResource("Resource_rjcci"),
+"S000-E01-N006": SubResource("Resource_1o5e6"),
+"S000-E01-N007": SubResource("Resource_l8yri"),
+"S000-E01-N008": SubResource("Resource_b2rcc"),
+"S000-E01-N009": SubResource("Resource_tcit7"),
+"S000-E01-N010": SubResource("Resource_yjtmn"),
+"S000-E01-N011": SubResource("Resource_34ibc"),
+"S000-E01-N012": SubResource("Resource_dypvt"),
+"S000-E01-N013": SubResource("Resource_yym0f"),
+"S000-E01-N014": SubResource("Resource_0ch6o"),
+"S000-E01-N015": SubResource("Resource_vvdjw"),
+"S000-E01-N016": SubResource("Resource_y1edv"),
+"S000-E01-N017": SubResource("Resource_u1rwj"),
+"S000-E01-N018": SubResource("Resource_stky8"),
+"S000-E01-N019": SubResource("Resource_o207p"),
+"S000-E01-N020": SubResource("Resource_p5vq7"),
+"S000-E01-N021": SubResource("Resource_8c2ox"),
+"S000-E01-N022": SubResource("Resource_epr82"),
+"S000-E01-N023": SubResource("Resource_jh0gj"),
+"S000-E01-N024": SubResource("Resource_1s51u"),
+"S000-E01-N025": SubResource("Resource_dhyqs"),
+"S000-E01-N026": SubResource("Resource_6qubv"),
+"S000-E01-N027": SubResource("Resource_5d4k0"),
+"S000-E01-N028": SubResource("Resource_yfu6o"),
+"S000-E01-N029": SubResource("Resource_oss3d"),
+"S000-E01-N030": SubResource("Resource_3cnwl"),
+"S000-E01-N031": SubResource("Resource_3iy4b"),
+"S000-E01-N032": SubResource("Resource_ru1fi"),
+"S000-E01-N033": SubResource("Resource_yn1dr"),
+"S000-E01-N034": SubResource("Resource_vgp0b"),
+"S000-E01-N035": SubResource("Resource_1nh26"),
+"S000-E01-N036": SubResource("Resource_usy5s"),
+"S000-E01-N037": SubResource("Resource_wluvd"),
+"S000-E01-N038": SubResource("Resource_mlvoq"),
+"S000-E01-N039": SubResource("Resource_l4cgx"),
+"S000-E01-N040": SubResource("Resource_yclab"),
+"S000-E01-N041": SubResource("Resource_62s5d"),
+"S000-E01-N042": SubResource("Resource_kg8rn"),
+"S000-E01-N043": SubResource("Resource_gcq81"),
+"S000-E01-N044": SubResource("Resource_qqfnu"),
+"S000-E01-N045": SubResource("Resource_tl8ol")
 })
 entity_cards_indexed_by_name = Dictionary[String, String]({
 "Akari": "S001-E01-N007",

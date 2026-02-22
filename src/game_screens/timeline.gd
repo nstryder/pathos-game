@@ -40,6 +40,7 @@ func register_effect_use(owner_player_path: NodePath, effect_idx: int) -> void:
 	action.effect = player.get_effect_card_at_index(effect_idx)
 
 	player.remove_effect_from_hand(effect_idx)
+	action.effect.hide_from_field()
 	_add_action_to_main_timeline(action)
 
 
