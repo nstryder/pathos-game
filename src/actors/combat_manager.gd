@@ -1,6 +1,8 @@
 extends Node2D
 class_name CombatManager
 
+signal attack_declared
+signal attack_rescinded
 
 enum Phases {
 	PLAYER1_OFFENSE,
@@ -20,9 +22,18 @@ var turn_count: int = 0
 		var phase_text: String = str(Phases.keys()[value]).capitalize()
 		(%PhaseLabel as Label).text = "Current phase: " + phase_text
 
-@export var declared_attacker_slot: int
-@export var declared_target_slot: int
-
+var declared_attacker_idx: int
+var declared_target_idx: int
+@export var attacking_player_nodepath: NodePath:
+	set(value):
+		attacking_player_nodepath = value
+		if value:
+			attacking_player = get_node(value)
+@export var defending_player_nodepath: NodePath:
+	set(value):
+		defending_player_nodepath = value
+		if value:
+			defending_player = get_node(value)
 var attacking_player: Player
 var defending_player: Player
 
@@ -37,8 +48,35 @@ func phase_is_defense() -> bool:
 	return current_phase in [Phases.PLAYER1_DEFENSE, Phases.PLAYER2_DEFENSE]
 
 
+func get_current_attacker() -> EntityCard:
+	return attacking_player.get_entity_card_at_index(declared_attacker_idx)
+
+
+func get_current_target() -> EntityCard:
+	return defending_player.get_entity_card_at_index(declared_target_idx)
+
+
 func skip_was_declared() -> bool:
-	return declared_attacker_slot == -1
+	return declared_attacker_idx == -1
+
+
+@rpc("authority", "call_local", "reliable")
+func declare_attack(attacker_idx: int, target_idx: int) -> void:
+	print(attacking_player, defending_player)
+	declared_attacker_idx = attacker_idx
+	declared_target_idx = target_idx
+	attack_declared.emit()
+
+
+@rpc("authority", "call_local", "reliable")
+func rescind_attack() -> void:
+	_reset_attack_indexes()
+	attack_rescinded.emit()
+
+
+func _reset_attack_indexes() -> void:
+	declared_attacker_idx = -1
+	declared_target_idx = -1
 
 
 # TODO
@@ -57,8 +95,8 @@ func _resolve_effects() -> void:
 
 
 func _resolve_combat() -> void:
-	var attacking_entity: EntityCard = attacking_player.get_entity_card_at_slot(declared_attacker_slot)
-	var target_entity: EntityCard = defending_player.get_entity_card_at_slot(declared_target_slot)
+	var attacking_entity: EntityCard = attacking_player.get_entity_card_at_slot(declared_attacker_idx)
+	var target_entity: EntityCard = defending_player.get_entity_card_at_slot(declared_target_idx)
 	target_entity.current_shield -= attacking_entity.current_attack
 
 

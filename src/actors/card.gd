@@ -41,7 +41,7 @@ var is_revealed_permanently: bool = false:
 
 func _ready() -> void:
 	player = get_parent().get_parent()
-	Utils.validate_vars(self, player, current_idx)
+	Utils.validate_vars(self , player, current_idx)
 
 
 func drag_effects_enable() -> void:

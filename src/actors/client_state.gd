@@ -13,8 +13,8 @@ var is_attacker: bool = false
 @onready var opp_hp_label: Label = %OppHPLabel
 
 @onready var button_undo: Button = %UndoButton
-@onready var button_skip: Button = %SkipButton
-@onready var button_confirm: Button = %ConfirmButton
+@onready var button_end: Button = %EndTurnButton
+@onready var button_rescind_attack: Button = %RescindButton
 @onready var card_manager: CardManager = %CardManager
 @onready var combat_manager: CombatManager = %CombatManager
 @onready var attack_indicator: Line2D = %AttackIndicator
@@ -27,11 +27,12 @@ var is_attacker: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	button_undo.hide()
+	button_rescind_attack.hide()
 	button_undo.pressed.connect(undo_action)
-	button_skip.hide()
-	button_skip.pressed.connect(skip_phase)
-	button_confirm.hide()
-	button_confirm.pressed.connect(declare_defense)
+	button_end.pressed.connect(end_turn)
+	button_rescind_attack.pressed.connect(rescind_attack)
+	combat_manager.attack_declared.connect(_on_attack_declared)
+	combat_manager.attack_rescinded.connect(_on_attack_rescinded)
 	set_status('')
 
 
@@ -51,7 +52,6 @@ func start_turn() -> void:
 
 @rpc("authority", "call_local", "reliable")
 func wait_for_offense() -> void:
-	await client_sync_server_state()
 	sync_opponent()
 	wait_for_turn()
 
@@ -60,6 +60,8 @@ func wait_for_turn() -> void:
 	set_status("Waiting for opponent's action...")
 	card_manager.dragging_enabled = false
 	card_manager.attacking_enabled = false
+	button_end.hide()
+	button_undo.hide()
 
 
 func sync_opponent() -> void:
@@ -74,41 +76,35 @@ func show_attack_indicator(from: Vector2, to: Vector2) -> void:
 	attack_indicator.show()
 	attack_indicator.set_point_position(0, from)
 	attack_indicator.set_point_position(1, to)
-
-
-func show_attack_indicator_via_players(attacker_markers: EntitySlotMarkers, target_markers: EntitySlotMarkers, attacker_slot: int, target_slot: int) -> void:
-	var attacker_pos := attacker_markers.get_position_at_slot(attacker_slot)
-	var target_pos := target_markers.get_position_at_slot(target_slot)
-	show_attack_indicator(attacker_pos, target_pos)
+	print(from, " | ", to)
 
 
 @rpc("authority", "call_local", "reliable")
 func visualize_combat() -> void:
-	await client_sync_server_state()
-	set_status("Resolving Combat")
-	var attacking_player: Player
-	var target_entity_slots: EntitySlotMarkers
-	if is_attacker:
-		attacking_player = controlled_player
-		target_entity_slots = opp_side.entity_slot_markers
-	else:
-		attacking_player = opposing_player
-		target_entity_slots = your_side.entity_slot_markers
-		
-	var attacking_entity: EntityCard = attacking_player.get_entity_card_at_slot(combat_manager.declared_attacker_slot)
-	var target_position: Vector2 = target_entity_slots.get_position_at_slot(combat_manager.declared_target_slot)
-	var tween := create_tween() \
-		.set_ease(Tween.EASE_OUT) \
-		.set_trans(Tween.TRANS_QUAD)
-
-	var original_position: Vector2 = attacking_entity.global_position
-	tween.tween_property(attacking_entity, "global_position", target_position, 0.1)
-	tween.tween_property(attacking_entity, "global_position", original_position, 0.1)
-	await tween.finished
-	attack_indicator.hide()
-	await Utils.sleep(1)
-	place_entities_on_field()
-	check_endgame()
+	# await client_sync_server_state()
+	# set_status("Resolving Combat")
+	# var attacking_player: Player
+	# var target_entity_slots: EntitySlotMarkers
+	# if is_attacker:
+	# 	attacking_player = controlled_player
+	# 	target_entity_slots = opp_side.entity_slot_markers
+	# else:
+	# 	attacking_player = opposing_player
+	# 	target_entity_slots = your_side.entity_slot_markers
+	# # var attacking_entity: EntityCard = attacking_player.get_entity_card_at_slot(combat_manager.declared_attacker_slot)
+	# # var target_position: Vector2 = target_entity_slots.get_position_at_slot(combat_manager.declared_target_slot)
+	# var tween := create_tween() \
+	# 	.set_ease(Tween.EASE_OUT) \
+	# 	.set_trans(Tween.TRANS_QUAD)
+	# # var original_position: Vector2 = attacking_entity.global_position
+	# # tween.tween_property(attacking_entity, "global_position", target_position, 0.1)
+	# # tween.tween_property(attacking_entity, "global_position", original_position, 0.1)
+	# await tween.finished
+	# attack_indicator.hide()
+	# await Utils.sleep(1)
+	# place_entities_on_field()
+	# check_endgame()
+	pass
 
 
 func check_endgame() -> void:
@@ -128,13 +124,11 @@ func start_client_offense() -> void:
 	is_attacker = true
 	card_manager.dragging_enabled = true
 	card_manager.attacking_enabled = true
-	button_skip.show()
 	button_undo.hide()
 	your_side.realize_effect_state()
 
 
 func end_client_offense() -> void:
-	button_skip.hide()
 	button_undo.hide()
 	wait_for_turn()
 
@@ -146,50 +140,32 @@ func start_client_defense() -> void:
 	is_attacker = false
 	card_manager.dragging_enabled = true
 	card_manager.attacking_enabled = false
-	show_attack_indicator_via_players(
-		opp_side.entity_slot_markers,
-		your_side.entity_slot_markers,
-		combat_manager.declared_attacker_slot,
-		combat_manager.declared_target_slot,
-	)
-	button_skip.show()
+	# show_attack_indicator_via_players(
+	# 	opp_side.entity_slot_markers,
+	# 	your_side.entity_slot_markers,
+	# 	combat_manager.declared_attacker_slot,
+	# 	combat_manager.declared_target_slot,
+	# )
 	button_undo.hide()
-	button_confirm.hide()
 	opp_side.realize_effect_state()
-	reveal_opponent_hidden_cards()
+	reveal_attacking_entity()
 	
 
 func end_client_defense() -> void:
-	button_skip.hide()
 	button_undo.hide()
-	button_confirm.hide()
 	wait_for_turn()
 
 
 #region Player Actions
 # TODO: Update
-func declare_attack(attacker_slot: int, target_slot: int) -> void:
-	server.send_attack.rpc_id(1, attacker_slot, target_slot)
-	if attacker_slot != -1:
-		show_attack_indicator_via_players(
-			your_side.entity_slot_markers,
-			opp_side.entity_slot_markers,
-			attacker_slot,
-			target_slot
-		)
-	end_client_offense()
+func declare_attack(attacker: EntityCard, target: EntityCard) -> void:
+	server.send_attack.rpc_id(1, attacker.current_idx, target.current_idx)
+	button_rescind_attack.show()
 
 
-func declare_defense() -> void:
-	# server.send_defense.rpc_id(1, queued_effect_attachments)
-	end_client_defense()
-
-
-func skip_phase() -> void:
-	if combat_manager.phase_is_offense():
-		declare_attack(-1, -1)
-	else:
-		declare_defense()
+func rescind_attack() -> void:
+	server.rescind_attack.rpc_id(1)
+	button_rescind_attack.hide()
 
 
 func attach_effect_to_entity(effect: EffectCard, entity: EntityCard) -> void:
@@ -201,10 +177,6 @@ func attach_effect_to_entity(effect: EffectCard, entity: EntityCard) -> void:
 	var entity_idx: int = entity.current_idx
 	var target_player_path: NodePath = players.get_path_to(entity.player)
 	timeline.register_effect_attachment.rpc(owner_player_path, effect_idx, target_player_path, entity_idx)
-	if combat_manager.phase_is_defense():
-		button_confirm.show()
-	button_undo.show()
-	button_skip.hide()
 
 
 func use_effect(effect: EffectCard) -> void:
@@ -219,15 +191,18 @@ func undo_action() -> void:
 	timeline.undo.rpc()
 
 
+# TODO
+func end_turn() -> void:
+	server.request_end_turn.rpc_id(1)
+	wait_for_turn()
+
+
 #endregion
 
 
-func reveal_opponent_hidden_cards() -> void:
-	var attacking_entity: EntityCard = opposing_player.get_entity_card_at_slot(combat_manager.declared_attacker_slot)
-	attacking_entity.is_revealed_permanently = true
-	# var effect_cards := opposing_player.get_effect_cards_at_slot(combat_manager.declared_attacker_slot)
-	# for effect_card in effect_cards:
-	# 	effect_card.is_veiled = false
+func reveal_attacking_entity() -> void:
+	var attacker: EntityCard = combat_manager.get_current_attacker()
+	attacker.is_veiled = false
 
 
 func update_hp_label(new_hp: int, target_label: Label) -> void:
@@ -239,7 +214,6 @@ func place_entities_on_field() -> void:
 	opp_side.realize_entity_state()
 
 
-# TODO: Finish adapting this to new timeline system
 func arrange_attached_effects() -> void:
 	const CARD_SPACING = 32
 	var attachments: Dictionary[EntityCard, int] = {}
@@ -300,10 +274,16 @@ func _on_timeline_timeline_modified() -> void:
 	opp_side.hand.update_hand_positions()
 	arrange_attached_effects()
 	if timeline.main_timeline_queue.is_empty():
-		# button_skip.show()
 		button_undo.hide()
-		# button_confirm.hide()
 	else:
-		# button_skip.show()
 		button_undo.show()
-		# button_confirm.hide()
+
+
+func _on_attack_declared() -> void:
+	var attacker: EntityCard = combat_manager.get_current_attacker()
+	var target: EntityCard = combat_manager.get_current_target()
+	show_attack_indicator(attacker.global_position, target.global_position)
+
+
+func _on_attack_rescinded() -> void:
+	attack_indicator.hide()

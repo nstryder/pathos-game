@@ -15,18 +15,18 @@
 [ext_resource type="Script" uid="uid://5dp333mnt8qj" path="res://src/game_screens/use_effect_prompt.gd" id="13_jsr4r"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_36hs7"]
-properties/0/path = NodePath("CombatManager:declared_attacker_slot")
+properties/0/path = NodePath("CombatManager:current_phase")
 properties/0/spawn = true
 properties/0/replication_mode = 2
-properties/1/path = NodePath("CombatManager:declared_target_slot")
+properties/1/path = NodePath("CombatManager:attacking_player_nodepath")
 properties/1/spawn = true
 properties/1/replication_mode = 2
-properties/2/path = NodePath("CombatManager:current_phase")
+properties/2/path = NodePath("CombatManager:defending_player_nodepath")
 properties/2/spawn = true
 properties/2/replication_mode = 2
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_jsr4r"]
-size = Vector2(1920, 540)
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_jsr4r"]
+normal = Vector2(0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_jpl4g"]
 font_size = 32
@@ -133,8 +133,7 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UI/UseEffectAnchor/UseEffectArea" unique_id=314591204]
-position = Vector2(0, -270)
-shape = SubResource("RectangleShape2D_jsr4r")
+shape = SubResource("WorldBoundaryShape2D_jsr4r")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI" unique_id=863780745]
 offset_right = 40.0
@@ -158,12 +157,12 @@ metadata/_edit_use_anchors_ = true
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 
-[node name="SkipButton" type="Button" parent="UI/VBoxContainer" unique_id=1876364867]
+[node name="EndTurnButton" type="Button" parent="UI/VBoxContainer" unique_id=1113935397]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
-text = "Skip"
+text = "End Turn"
 
 [node name="UndoButton" type="Button" parent="UI/VBoxContainer" unique_id=420210840]
 unique_name_in_owner = true
@@ -172,12 +171,13 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Undo"
 
-[node name="ConfirmButton" type="Button" parent="UI/VBoxContainer" unique_id=1113935397]
+[node name="RescindButton" type="Button" parent="UI/VBoxContainer" unique_id=1680922446]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
-text = "Confirm"
+text = "Rescind
+Attack"
 
 [node name="StatusLabel" type="Label" parent="UI" unique_id=544002931]
 unique_name_in_owner = true

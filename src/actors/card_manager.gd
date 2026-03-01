@@ -116,10 +116,7 @@ func detect_fx_use_box() -> bool:
 
 
 func send_declare_attack(entity_card: EntityCard, target_entity: EntityCard) -> void:
-	var attacker_slot := entity_card.current_slot
-	var target_slot := target_entity.current_slot
-	target_entity.is_veiled = false
-	client.declare_attack(attacker_slot, target_slot)
+	client.declare_attack(entity_card, target_entity)
 
 
 func start_declare_attack(entity_card: EntityCard) -> void:

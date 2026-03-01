@@ -1,8 +1,7 @@
 extends Node2D
 class_name ServerState
 
-signal attack_declared
-signal defense_declared
+signal turn_ended
 
 const Phases = CombatManager.Phases
 
@@ -37,23 +36,27 @@ func start_game() -> void:
 func execute_phase_flow() -> void:
 	while true:
 		combat_manager.current_phase = Phases.PLAYER1_OFFENSE
-		await execute_offense_phase(player1, player2)
-		
-		if not combat_manager.skip_was_declared():
-			combat_manager.current_phase = Phases.PLAYER2_DEFENSE
-			await execute_defense_phase()
-			await execute_combat_phase()
+		execute_offense_phase(player1, player2)
+		await turn_ended
+
+		combat_manager.current_phase = Phases.PLAYER2_DEFENSE
+		execute_defense_phase()
+		await turn_ended
+
+		await execute_combat_phase()
 
 		if player1.hp <= 0 or player2.hp <= 0:
 			break
 		
 		combat_manager.current_phase = Phases.PLAYER2_OFFENSE
-		await execute_offense_phase(player2, player1)
+		execute_offense_phase(player2, player1)
+		await turn_ended
 
-		if not combat_manager.skip_was_declared():
-			combat_manager.current_phase = Phases.PLAYER1_DEFENSE
-			await execute_defense_phase()
-			await execute_combat_phase()
+		combat_manager.current_phase = Phases.PLAYER1_DEFENSE
+		execute_defense_phase()
+		await turn_ended
+
+		await execute_combat_phase()
 		
 		if player1.hp <= 0 or player2.hp <= 0:
 			break
@@ -63,16 +66,14 @@ func execute_offense_phase(attacker: Player, defender: Player) -> void:
 	combat_manager.turn_count += 1
 	# if combat_manager.turn_count > 1:
 	attacker.draw_effects()
-	combat_manager.attacking_player = attacker
-	combat_manager.defending_player = defender
+	combat_manager.attacking_player_nodepath = attacker.get_path()
+	combat_manager.defending_player_nodepath = defender.get_path()
 	client.start_client_offense.rpc_id(attacker.id)
 	client.wait_for_offense.rpc_id(defender.id)
-	await attack_declared
 
 
 func execute_defense_phase() -> void:
 	client.start_client_defense.rpc_id(combat_manager.defending_player.id)
-	await defense_declared
 
 
 func execute_combat_phase() -> void:
@@ -83,26 +84,25 @@ func execute_combat_phase() -> void:
 
 
 @rpc("any_peer", "call_local", "reliable")
-func send_attack(attacker_slot: int, target_slot: int, effect_attachments: Array[Array]) -> void:
+func request_end_turn() -> void:
 	if not multiplayer.is_server():
 		return
-	print("This is server...", attacker_slot, " ", target_slot, " ", effect_attachments)
-	combat_manager.declared_attacker_slot = attacker_slot
-	combat_manager.declared_target_slot = target_slot
+	turn_ended.emit()
+	
 
-	if attacker_slot == -1:
-		# Skip was declared
-		attack_declared.emit()
+@rpc("any_peer", "call_local", "reliable")
+func send_attack(attacker_idx: int, target_idx: int) -> void:
+	if not multiplayer.is_server():
 		return
-	attack_declared.emit()
+	print("This is server...", attacker_idx, " ", target_idx)
+	combat_manager.declare_attack.rpc(attacker_idx, target_idx)
 
 
 @rpc("any_peer", "call_local", "reliable")
-func send_defense(effect_attachments: Array[Array]) -> void:
+func rescind_attack() -> void:
 	if not multiplayer.is_server():
 		return
-	print("This is server...", effect_attachments)
-	defense_declared.emit()
+	combat_manager.rescind_attack.rpc()
 
 
 func _assign_player_ids() -> void:
