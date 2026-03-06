@@ -14,7 +14,6 @@ var is_attacker: bool = false
 
 @onready var button_undo: Button = %UndoButton
 @onready var button_end: Button = %EndTurnButton
-@onready var button_rescind_attack: Button = %RescindButton
 @onready var card_manager: CardManager = %CardManager
 @onready var combat_manager: CombatManager = %CombatManager
 @onready var attack_indicator: Line2D = %AttackIndicator
@@ -27,10 +26,8 @@ var is_attacker: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	button_undo.hide()
-	button_rescind_attack.hide()
 	button_undo.pressed.connect(undo_action)
 	button_end.pressed.connect(end_turn)
-	button_rescind_attack.pressed.connect(rescind_attack)
 	combat_manager.attack_declared.connect(_on_attack_declared)
 	combat_manager.attack_rescinded.connect(_on_attack_rescinded)
 	set_status('')
@@ -160,12 +157,10 @@ func end_client_defense() -> void:
 # TODO: Update
 func declare_attack(attacker: EntityCard, target: EntityCard) -> void:
 	server.send_attack.rpc_id(1, attacker.current_idx, target.current_idx)
-	button_rescind_attack.show()
 
 
 func rescind_attack() -> void:
 	server.rescind_attack.rpc_id(1)
-	button_rescind_attack.hide()
 
 
 func attach_effect_to_entity(effect: EffectCard, entity: EntityCard) -> void:

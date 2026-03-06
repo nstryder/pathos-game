@@ -68,6 +68,8 @@ func on_release() -> void:
 		var target_entity: EntityCard = detect_entity_card()
 		if target_entity and target_entity.is_enemy:
 			send_declare_attack(entity_card_to_declare, target_entity)
+		elif client.combat_manager.attack_is_declared():
+			client.rescind_attack()
 		end_declare_attack()
 
 

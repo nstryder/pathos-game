@@ -56,8 +56,8 @@ func get_current_target() -> EntityCard:
 	return defending_player.get_entity_card_at_index(declared_target_idx)
 
 
-func skip_was_declared() -> bool:
-	return declared_attacker_idx == -1
+func attack_is_declared() -> bool:
+	return declared_attacker_idx != -1
 
 
 @rpc("authority", "call_local", "reliable")
