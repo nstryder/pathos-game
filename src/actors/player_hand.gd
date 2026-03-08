@@ -21,7 +21,8 @@ func update_hand_positions() -> void:
 		card.detectable = true
 		card.slot_attachment_effects_disable()
 		card.starting_position = new_position
-		animate_card_to_position(card, new_position)
+		if card.global_position != new_position:
+			animate_card_to_position(card, new_position)
 
 
 func calculate_card_position(index: int) -> float:

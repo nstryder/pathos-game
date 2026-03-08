@@ -68,3 +68,7 @@ func slot_attachment_effects_disable() -> void:
 @rpc("authority", "call_local", "reliable")
 func hide_from_field() -> void:
 	position = Vector2.ZERO
+
+
+func is_hidden_from_field() -> bool:
+	return position == Vector2.ZERO

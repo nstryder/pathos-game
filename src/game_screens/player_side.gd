@@ -61,7 +61,8 @@ func hide_dead_entities() -> void:
 func realize_effect_state() -> void:
 	for effect_idx: int in player.effect_hand:
 		var effect_card: EffectCard = player.get_effect_card_at_index(effect_idx)
-		effect_card.global_position = global_position
+		if effect_card.is_hidden_from_field():
+			effect_card.global_position = global_position
 		effect_card.is_veiled = is_enemy
 		hand.update_hand_positions()
 	effect_deck.update_counter(player.effect_deck)
