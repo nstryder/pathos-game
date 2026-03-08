@@ -2,7 +2,6 @@ extends Node2D
 class_name Card
 
 @export var current_idx: int
-var is_enemy: bool = false
 var starting_position: Vector2
 var player: Player
 

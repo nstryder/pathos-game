@@ -35,7 +35,6 @@ func realize_entity_state() -> void:
 			continue
 		entity_card.activate()
 		entity_card.slot_attachment_effects_enable()
-		entity_card.is_enemy = is_enemy
 		entity_card.is_veiled = is_enemy
 
 		if not tween:

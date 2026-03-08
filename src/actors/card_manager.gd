@@ -39,7 +39,7 @@ func _process(_delta: float) -> void:
 func on_press() -> void:
 	if dragging_enabled:
 		var effect_card := detect_effect_card()
-		if effect_card and not effect_card.is_enemy:
+		if effect_card and not is_enemy_card(effect_card):
 			drag_effect(effect_card)
 	if attacking_enabled and not effect_card_being_dragged:
 		drag_entity()
@@ -54,7 +54,7 @@ func drag_effect(effect_card: EffectCard) -> void:
 
 func drag_entity() -> void:
 	var entity_card := detect_entity_card()
-	if entity_card and not entity_card.is_enemy:
+	if entity_card and not is_enemy_card(entity_card):
 		start_declare_attack(entity_card)
 
 
@@ -66,7 +66,7 @@ func on_release() -> void:
 			release_attach_effect()
 	elif entity_card_to_declare:
 		var target_entity: EntityCard = detect_entity_card()
-		if target_entity and target_entity.is_enemy:
+		if target_entity and is_enemy_card(target_entity):
 			send_declare_attack(entity_card_to_declare, target_entity)
 		elif client.combat_manager.attack_is_declared():
 			client.rescind_attack()
@@ -153,6 +153,10 @@ func raycast_check_for_card(collision_mask: int) -> Card:
 		return _get_card_with_highest_z_index(result)
 	else:
 		return null
+
+
+func is_enemy_card(card: Card) -> bool:
+	return card.player != client.controlled_player
 
 
 # Cards parameter should be from a dict returned by intersect_point()
