@@ -62,7 +62,6 @@ func attack_is_declared() -> bool:
 
 @rpc("authority", "call_local", "reliable")
 func declare_attack(attacker_idx: int, target_idx: int) -> void:
-	print(attacking_player, defending_player)
 	declared_attacker_idx = attacker_idx
 	declared_target_idx = target_idx
 	attack_declared.emit()

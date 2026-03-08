@@ -8,6 +8,7 @@ var opposing_player: Player
 var is_attacker: bool = false
 var is_taking_turn: bool = false:
 	set(value):
+		is_taking_turn = value
 		button_end.visible = value
 
 @onready var your_side: PlayerSide = %YourSide
@@ -55,7 +56,7 @@ func start_turn() -> void:
 @rpc("authority", "call_local", "reliable")
 func wait_for_offense() -> void:
 	await client_sync_server_state()
-	sync_hand()
+	sync_hands()
 	wait_for_turn()
 
 
@@ -67,7 +68,7 @@ func wait_for_turn() -> void:
 	button_undo.hide()
 
 
-func sync_hand() -> void:
+func sync_hands() -> void:
 	your_side.realize_effect_state()
 	opp_side.realize_effect_state()
 
@@ -124,7 +125,7 @@ func check_endgame() -> void:
 @rpc("authority", "call_local", "reliable")
 func start_client_offense() -> void:
 	await client_sync_server_state()
-	sync_hand()
+	sync_hands()
 	start_turn()
 	is_attacker = true
 	card_manager.dragging_enabled = true
@@ -134,7 +135,7 @@ func start_client_offense() -> void:
 @rpc("authority", "call_local", "reliable")
 func start_client_defense() -> void:
 	await client_sync_server_state()
-	sync_hand()
+	sync_hands()
 	start_turn()
 	is_attacker = false
 	card_manager.dragging_enabled = true
@@ -252,11 +253,12 @@ func _setup_board() -> void:
 
 
 func _on_timeline_timeline_modified() -> void:
-	your_side.hand.update_hand_positions()
-	opp_side.hand.update_hand_positions()
+	sync_hands()
 	arrange_attached_effects()
 	if is_taking_turn:
-		if timeline.get_queue_filtered_by_player(controlled_player).is_empty():
+		var your_queue := timeline.get_queue_filtered_by_player(controlled_player)
+		print("Your queue: ", your_queue)
+		if your_queue.is_empty():
 			button_undo.hide()
 		else:
 			button_undo.show()

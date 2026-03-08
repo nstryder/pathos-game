@@ -13,7 +13,6 @@ var player_hand: Array[int]:
 @onready var player_side: PlayerSide = owner
 
 
-# TODO
 func update_hand_positions() -> void:
 	for i in player_hand.size():
 		var effect_idx := player_hand[i]
