@@ -66,6 +66,7 @@ func execute_offense_phase(attacker: Player, defender: Player) -> void:
 	combat_manager.turn_count += 1
 	# if combat_manager.turn_count > 1:
 	attacker.draw_effects()
+	defender.draw_effects()
 	combat_manager.attacking_player_nodepath = attacker.get_path()
 	combat_manager.defending_player_nodepath = defender.get_path()
 	client.start_client_offense.rpc_id(attacker.id)

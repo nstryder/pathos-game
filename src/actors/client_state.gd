@@ -6,6 +6,9 @@ var controlled_player: Player
 var opposing_player: Player
 
 var is_attacker: bool = false
+var is_taking_turn: bool = false:
+	set(value):
+		button_end.visible = value
 
 @onready var your_side: PlayerSide = %YourSide
 @onready var your_hp_label: Label = %YourHPLabel
@@ -45,23 +48,27 @@ func client_sync_server_state() -> void:
 
 func start_turn() -> void:
 	set_status('')
+	is_taking_turn = true
+	button_undo.hide()
 
 
 @rpc("authority", "call_local", "reliable")
 func wait_for_offense() -> void:
-	sync_opponent()
+	await client_sync_server_state()
+	sync_hand()
 	wait_for_turn()
 
 
 func wait_for_turn() -> void:
 	set_status("Waiting for opponent's action...")
+	is_taking_turn = false
 	card_manager.dragging_enabled = false
 	card_manager.attacking_enabled = false
-	button_end.hide()
 	button_undo.hide()
 
 
-func sync_opponent() -> void:
+func sync_hand() -> void:
+	your_side.realize_effect_state()
 	opp_side.realize_effect_state()
 
 
@@ -117,44 +124,25 @@ func check_endgame() -> void:
 @rpc("authority", "call_local", "reliable")
 func start_client_offense() -> void:
 	await client_sync_server_state()
+	sync_hand()
 	start_turn()
 	is_attacker = true
 	card_manager.dragging_enabled = true
 	card_manager.attacking_enabled = true
-	button_undo.hide()
-	your_side.realize_effect_state()
-
-
-func end_client_offense() -> void:
-	button_undo.hide()
-	wait_for_turn()
-
+	
 
 @rpc("authority", "call_local", "reliable")
 func start_client_defense() -> void:
 	await client_sync_server_state()
+	sync_hand()
 	start_turn()
 	is_attacker = false
 	card_manager.dragging_enabled = true
 	card_manager.attacking_enabled = false
-	# show_attack_indicator_via_players(
-	# 	opp_side.entity_slot_markers,
-	# 	your_side.entity_slot_markers,
-	# 	combat_manager.declared_attacker_slot,
-	# 	combat_manager.declared_target_slot,
-	# )
-	button_undo.hide()
-	opp_side.realize_effect_state()
 	reveal_attacking_entity()
 	
 
-func end_client_defense() -> void:
-	button_undo.hide()
-	wait_for_turn()
-
-
 #region Player Actions
-# TODO: Update
 func declare_attack(attacker: EntityCard, target: EntityCard) -> void:
 	server.send_attack.rpc_id(1, attacker.current_idx, target.current_idx)
 
@@ -186,7 +174,6 @@ func undo_action() -> void:
 	timeline.undo.rpc()
 
 
-# TODO
 func end_turn() -> void:
 	server.request_end_turn.rpc_id(1)
 	wait_for_turn()
@@ -268,10 +255,11 @@ func _on_timeline_timeline_modified() -> void:
 	your_side.hand.update_hand_positions()
 	opp_side.hand.update_hand_positions()
 	arrange_attached_effects()
-	if timeline.main_timeline_queue.is_empty():
-		button_undo.hide()
-	else:
-		button_undo.show()
+	if is_taking_turn:
+		if timeline.get_queue_filtered_by_player(controlled_player).is_empty():
+			button_undo.hide()
+		else:
+			button_undo.show()
 
 
 func _on_attack_declared() -> void:

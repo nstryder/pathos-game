@@ -53,6 +53,10 @@ func undo() -> void:
 	timeline_modified.emit()
 
 
+func get_queue_filtered_by_player(player: Player) -> Array[Action]:
+	return main_timeline_queue.filter(func(x: Action) -> bool: return x.effect.player == player)
+
+
 func _add_action_to_main_timeline(action: Action) -> void:
 	main_timeline_queue.append(action)
 	timeline_modified.emit()
