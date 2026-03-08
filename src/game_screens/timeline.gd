@@ -53,6 +53,14 @@ func undo() -> void:
 	timeline_modified.emit()
 
 
+@rpc("authority", "call_local", "reliable")
+func clear_timeline() -> void:
+	for action in main_timeline_queue:
+		action.effect.hide_from_field()
+	main_timeline_queue.clear()
+	timeline_modified.emit()
+
+
 func get_queue_filtered_by_player(player: Player) -> Array[Action]:
 	return main_timeline_queue.filter(func(x: Action) -> bool: return x.effect.player == player)
 

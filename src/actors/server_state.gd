@@ -10,6 +10,7 @@ const Phases = CombatManager.Phases
 
 @onready var client: ClientState = %ClientState
 @onready var combat_manager: CombatManager = %CombatManager
+@onready var timeline: Timeline = %Timeline
 
 @onready var battle_screen: BattleScreen = owner
 
@@ -82,6 +83,7 @@ func execute_combat_phase() -> void:
 	combat_manager.start_combat()
 	client.visualize_combat.rpc()
 	await Utils.sleep(3)
+	timeline.clear_timeline.rpc()
 
 
 @rpc("any_peer", "call_local", "reliable")
