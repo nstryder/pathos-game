@@ -60,13 +60,17 @@ func wait_for_offense() -> void:
 	wait_for_turn()
 
 
+@rpc("authority", "call_local", "reliable")
+func wait_for_defense() -> void:
+	reveal_combating_entities()
+
+
 func wait_for_turn() -> void:
 	set_status("Waiting for opponent's action...")
 	is_taking_turn = false
 	card_manager.dragging_enabled = false
 	card_manager.attacking_enabled = false
 	button_undo.hide()
-
 
 func sync_hands() -> void:
 	your_side.realize_effect_state()
@@ -84,31 +88,24 @@ func show_attack_indicator(from: Vector2, to: Vector2) -> void:
 	print(from, " | ", to)
 
 
+# TODO: Finish
 @rpc("authority", "call_local", "reliable")
 func visualize_combat() -> void:
-	# await client_sync_server_state()
-	# set_status("Resolving Combat")
-	# var attacking_player: Player
-	# var target_entity_slots: EntitySlotMarkers
-	# if is_attacker:
-	# 	attacking_player = controlled_player
-	# 	target_entity_slots = opp_side.entity_slot_markers
-	# else:
-	# 	attacking_player = opposing_player
-	# 	target_entity_slots = your_side.entity_slot_markers
-	# # var attacking_entity: EntityCard = attacking_player.get_entity_card_at_slot(combat_manager.declared_attacker_slot)
-	# # var target_position: Vector2 = target_entity_slots.get_position_at_slot(combat_manager.declared_target_slot)
-	# var tween := create_tween() \
-	# 	.set_ease(Tween.EASE_OUT) \
-	# 	.set_trans(Tween.TRANS_QUAD)
-	# # var original_position: Vector2 = attacking_entity.global_position
-	# # tween.tween_property(attacking_entity, "global_position", target_position, 0.1)
-	# # tween.tween_property(attacking_entity, "global_position", original_position, 0.1)
-	# await tween.finished
-	# attack_indicator.hide()
-	# await Utils.sleep(1)
-	# place_entities_on_field()
-	# check_endgame()
+	await client_sync_server_state()
+	set_status("Resolving Combat")
+	var attacking_entity: EntityCard = combat_manager.get_current_attacker()
+	var target_position: Vector2 = combat_manager.get_current_target().global_position
+	var tween := create_tween() \
+		.set_ease(Tween.EASE_OUT) \
+		.set_trans(Tween.TRANS_QUAD)
+	var original_position: Vector2 = attacking_entity.global_position
+	tween.tween_property(attacking_entity, "global_position", target_position, 0.1)
+	tween.tween_property(attacking_entity, "global_position", original_position, 0.1)
+	await tween.finished
+	attack_indicator.hide()
+	await Utils.sleep(1)
+	update_entities_on_field()
+	check_endgame()
 	pass
 
 
@@ -140,7 +137,7 @@ func start_client_defense() -> void:
 	is_attacker = false
 	card_manager.dragging_enabled = true
 	card_manager.attacking_enabled = false
-	reveal_attacking_entity()
+	reveal_combating_entities()
 	
 
 #region Player Actions
@@ -183,16 +180,17 @@ func end_turn() -> void:
 #endregion
 
 
-func reveal_attacking_entity() -> void:
-	var attacker: EntityCard = combat_manager.get_current_attacker()
-	attacker.is_veiled = false
+func reveal_combating_entities() -> void:
+	if combat_manager.attack_is_declared():
+		combat_manager.get_current_attacker().is_veiled = false
+		combat_manager.get_current_target().is_veiled = false
 
 
 func update_hp_label(new_hp: int, target_label: Label) -> void:
 	target_label.text = str(new_hp)
 
 
-func place_entities_on_field() -> void:
+func update_entities_on_field() -> void:
 	your_side.realize_entity_state()
 	opp_side.realize_entity_state()
 
@@ -227,7 +225,7 @@ func arrange_attached_effects() -> void:
 func _finish_client_side_setup() -> void:
 	await client_sync_player_state()
 	_setup_board()
-	place_entities_on_field()
+	update_entities_on_field()
 
 
 @rpc("authority", "call_local", "reliable")

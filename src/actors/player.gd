@@ -89,10 +89,12 @@ func add_effect_to_hand(effect_idx: int) -> void:
 
 
 func get_entity_card_at_index(idx: int) -> EntityCard:
+	assert(idx >= 0, "Attempted to get an invalid entity idx.")
 	return entity_card_holder.get_child(idx)
 
 
 func get_effect_card_at_index(idx: int) -> EffectCard:
+	assert(idx >= 0, "Attempted to get an invalid effect idx.")
 	return effect_card_holder.get_child(idx)
 
 

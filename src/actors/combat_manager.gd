@@ -69,11 +69,12 @@ func declare_attack(attacker_idx: int, target_idx: int) -> void:
 
 @rpc("authority", "call_local", "reliable")
 func rescind_attack() -> void:
-	_reset_attack_indexes()
+	reset_attack_indexes()
 	attack_rescinded.emit()
 
 
-func _reset_attack_indexes() -> void:
+@rpc("authority", "call_local", "reliable")
+func reset_attack_indexes() -> void:
 	declared_attacker_idx = -1
 	declared_target_idx = -1
 
@@ -85,7 +86,8 @@ func player_has_won() -> bool:
 
 func start_combat() -> void:
 	_resolve_effects()
-	_resolve_combat()
+	if attack_is_declared():
+		_resolve_combat()
 	_resolve_deaths()
 
 # TODO
@@ -94,8 +96,8 @@ func _resolve_effects() -> void:
 
 
 func _resolve_combat() -> void:
-	var attacking_entity: EntityCard = attacking_player.get_entity_card_at_slot(declared_attacker_idx)
-	var target_entity: EntityCard = defending_player.get_entity_card_at_slot(declared_target_idx)
+	var attacking_entity: EntityCard = get_current_attacker()
+	var target_entity: EntityCard = get_current_target()
 	target_entity.current_shield -= attacking_entity.current_attack
 
 

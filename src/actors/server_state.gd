@@ -64,6 +64,7 @@ func execute_phase_flow() -> void:
 
 
 func execute_offense_phase(attacker: Player, defender: Player) -> void:
+	combat_manager.reset_attack_indexes.rpc()
 	combat_manager.turn_count += 1
 	# if combat_manager.turn_count > 1:
 	attacker.draw_effects()
@@ -76,12 +77,14 @@ func execute_offense_phase(attacker: Player, defender: Player) -> void:
 
 func execute_defense_phase() -> void:
 	client.start_client_defense.rpc_id(combat_manager.defending_player.id)
+	client.wait_for_defense.rpc_id(combat_manager.attacking_player.id)
 
 
 func execute_combat_phase() -> void:
 	combat_manager.current_phase = Phases.COMBAT
 	combat_manager.start_combat()
-	client.visualize_combat.rpc()
+	if combat_manager.attack_is_declared():
+		client.visualize_combat.rpc()
 	await Utils.sleep(3)
 	timeline.clear_timeline.rpc()
 
