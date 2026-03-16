@@ -27,6 +27,7 @@ func register_effect_attachment(owner_player_path: NodePath, effect_idx: int, ta
 	action.entity = target_player.get_entity_card_at_index(target_entity_idx)
 
 	player.remove_effect_from_hand(effect_idx)
+	action.effect.is_veiled = false
 	_add_action_to_main_timeline(action)
 
 
@@ -50,6 +51,7 @@ func undo() -> void:
 	var last_action: Action = main_timeline_queue.pop_back()
 	var player: Player = last_action.effect.player
 	player.add_effect_to_hand(last_action.effect.current_idx)
+	last_action.effect.is_veiled = true
 	timeline_modified.emit()
 
 
