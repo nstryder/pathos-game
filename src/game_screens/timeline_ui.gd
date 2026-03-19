@@ -8,7 +8,7 @@ const UsageType = EffectCardData.UsageType
 
 func _on_timeline_timeline_modified() -> void:
 	for child in get_children(): child.queue_free()
-	for action: Timeline.Action in timeline.main_timeline_queue:
+	for action: Timeline.Action in timeline.get_organized_queue():
 		var timeline_entry: Label = timeline_entry_scene.instantiate()
 		if action.type == UsageType.ATTACH:
 			timeline_entry.text = "Attach\nFX"

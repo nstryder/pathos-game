@@ -3,6 +3,8 @@ extends Node
 
 # TODO: Detect when csv has been changed (probably via hash comparison)
 
+const base_effect_behavior_path: String = "res://src/resources/effect_behaviors/%s.gd"
+
 @export var entity_cards: Dictionary[String, EntityCardData] = {} # {Code: EntityCardData}
 @export var effect_cards: Dictionary[String, EffectCardData] = {} # {Code: EffectCardData}
 @export var entity_cards_indexed_by_name: Dictionary[String, String] = {} # {Nickname: Code}
@@ -29,12 +31,15 @@ func get_effect_by_name(effect_name: String) -> EffectCardData:
 func _build_all_data() -> void:
 	_build_entity_card_data()
 	_build_effect_card_data()
+	_create_effect_behavior_files()
 	notify_property_list_changed()
 
 
 func _build_entity_card_data() -> void:
 	var entity_card_array: Array[Dictionary] = csv_parse("res://src/globals/entities.csv")
 	for entity_entry in entity_card_array:
+		if entity_entry["Code"] in entity_cards:
+			continue
 		var entity_resource := EntityCardData.new()
 		entity_resource.nickname = entity_entry["Nickname"]
 		entity_resource.base_attack = entity_entry["ATK"]
@@ -48,6 +53,8 @@ func _build_entity_card_data() -> void:
 func _build_effect_card_data() -> void:
 	var effect_card_array: Array[Dictionary] = csv_parse("res://src/globals/effects.csv")
 	for effect_entry in effect_card_array:
+		if effect_entry["Code"] in effect_cards:
+			continue
 		var effect_resource := EffectCardData.new()
 		effect_resource.effect_name = effect_entry["Nickname"]
 		effect_resource.effect_type = EffectCardData.EffectType[str(effect_entry["Effect Type"]).to_upper()]
@@ -60,6 +67,29 @@ func _build_effect_card_data() -> void:
 		effect_cards_indexed_by_name[effect_resource.effect_name] = effect_entry["Code"]
 
 
+func _create_effect_behavior_files() -> void:
+	for effect_code in effect_cards:
+		var filename: String = get_effect_behavior_name(effect_code)
+		var path: String = base_effect_behavior_path % filename
+		if FileAccess.file_exists(path):
+			continue
+		var script := GDScript.new()
+		script.source_code = "extends EffectBehavior"
+		script.reload()
+		ResourceSaver.save(script, path)
+
+
+func get_effect_behavior(effect_code: String) -> EffectBehavior:
+	var path: String = base_effect_behavior_path % get_effect_behavior_name(effect_code)
+	return load(path)
+
+
+func get_effect_behavior_name(effect_code: String) -> String:
+	# Use snake case because its friendlier for file names
+	var snake_name: String = get_effect_by_code(effect_code).effect_name.to_snake_case()
+	return effect_code + "_" + snake_name
+
+		
 static func csv_parse(csv_path: String) -> Array[Dictionary]:
 	var file := FileAccess.open(csv_path, FileAccess.READ)
 	

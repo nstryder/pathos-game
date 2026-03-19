@@ -4,6 +4,7 @@ class_name EffectCard
 
 @export var effect_code: String
 var data: EffectCardData
+var behavior: EffectBehavior
 
 @onready var nickname: Label = %Nickname
 @onready var description: Label = %Description
@@ -13,6 +14,8 @@ func _ready() -> void:
 	super._ready()
 	
 	data = CardDb.get_effect_by_code(effect_code)
+	behavior = CardDb.get_effect_behavior(effect_code)
+
 	var affix := ""
 	if data.usage_type == EffectCardData.UsageType.ATTACH:
 		affix = "ATT"
@@ -21,4 +24,4 @@ func _ready() -> void:
 	nickname.text = data.effect_name + " (" + affix + ")"
 	effect_type.text = EffectCardData.EffectType.keys()[data.effect_type]
 	
-	Utils.validate_vars(self , effect_code, data)
+	Utils.validate_vars(self , effect_code, data, behavior)

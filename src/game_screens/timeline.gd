@@ -2,11 +2,12 @@ extends Node2D
 class_name Timeline
 
 signal timeline_modified
+signal discard_queue_modified
 
 const UsageType = EffectCardData.UsageType
 
-var immediate_queue: Array[Dictionary] = []
-var main_timeline_queue: Array[Action] = []
+var _main_timeline_queue: Array[Action] = []
+var _discard_queue: Array[Action] = []
 
 class Action:
 	var type: EffectCardData.UsageType
@@ -47,8 +48,8 @@ func register_effect_use(owner_player_path: NodePath, effect_idx: int) -> void:
 
 @rpc("any_peer", "call_local", "reliable")
 func undo() -> void:
-	assert(not main_timeline_queue.is_empty(), "Undo was invoked on an empty timeline.")
-	var last_action: Action = main_timeline_queue.pop_back()
+	assert(not _main_timeline_queue.is_empty(), "Undo was invoked on an empty timeline.")
+	var last_action: Action = _main_timeline_queue.pop_back()
 	var player: Player = last_action.effect.player
 	player.add_effect_to_hand(last_action.effect.current_idx)
 	last_action.effect.is_veiled = true
@@ -57,16 +58,82 @@ func undo() -> void:
 
 @rpc("authority", "call_local", "reliable")
 func clear_timeline() -> void:
-	for action in main_timeline_queue:
+	for action in _main_timeline_queue:
 		action.effect.hide_from_field()
-	main_timeline_queue.clear()
+	_main_timeline_queue.clear()
 	timeline_modified.emit()
 
 
+# The following methods are split into two parts:
+#	A public method used by the server
+#	A private RPC method that gets called on every client
+# 	This split is necessary since Action is not serializable
+
+	
+func transfer_action_to_discard(action: Action) -> void:
+	if not multiplayer.is_server():
+		return
+	var idx: int = get_action_idx(action)
+	_rpc_transfer_action_to_discard.rpc(idx)
+
+
+@rpc("authority", "call_local", "reliable")
+func _rpc_transfer_action_to_discard(action_idx: int) -> void:
+	var action: Action = _main_timeline_queue[action_idx]
+	_discard_queue.append(action)
+	_rpc_remove_from_queue(action_idx)
+	discard_queue_modified.emit()
+
+
+func remove_from_queue(action: Action) -> void:
+	if not multiplayer.is_server():
+		return
+	var idx: int = get_action_idx(action)
+	_rpc_remove_from_queue.rpc(idx)
+
+
+@rpc("authority", "call_local", "reliable")
+func _rpc_remove_from_queue(action_idx: int) -> void:
+	_main_timeline_queue.pop_at(action_idx)
+	timeline_modified.emit()
+
+
+func remove_from_discard_queue(action: Action) -> void:
+	if not multiplayer.is_server():
+		return
+	var idx: int = _discard_queue.find(action)
+	assert(idx >= 0, "Attempted to get invalid action")
+	_rpc_remove_from_discard_queue.rpc(idx)
+
+
+@rpc("authority", "call_local", "reliable")
+func _rpc_remove_from_discard_queue(action_idx: int) -> void:
+	_discard_queue.pop_at(action_idx)
+	discard_queue_modified.emit()
+
+
+func get_queue() -> Array[Action]:
+	return _main_timeline_queue
+
+# TODO: Separate queue into immediates vs normals
+func get_organized_queue() -> Array[Action]:
+	return _main_timeline_queue.duplicate()
+
+
 func get_queue_filtered_by_player(player: Player) -> Array[Action]:
-	return main_timeline_queue.filter(func(x: Action) -> bool: return x.effect.player == player)
+	return _main_timeline_queue.filter(func(x: Action) -> bool: return x.effect.player == player)
+
+
+func get_discard_queue() -> Array[Action]:
+	return _discard_queue
+
+
+func get_action_idx(action: Action) -> int:
+	var idx: int = _main_timeline_queue.find(action)
+	assert(idx >= 0, "Attempted to get invalid action")
+	return idx
 
 
 func _add_action_to_main_timeline(action: Action) -> void:
-	main_timeline_queue.append(action)
+	_main_timeline_queue.append(action)
 	timeline_modified.emit()

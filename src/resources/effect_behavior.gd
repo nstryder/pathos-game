@@ -3,12 +3,17 @@ class_name EffectBehavior
 
 
 @warning_ignore("unused_parameter")
-func on_entry(effect_card: EffectCard) -> void:
+func enter(target_entity: EntityCard) -> void:
 	pass
 
 
 @warning_ignore("unused_parameter")
-func on_discard(effect_card: EffectCard) -> void:
+func exit(target_entity: EntityCard) -> void:
+	pass
+
+
+@warning_ignore("unused_parameter")
+func use() -> void:
 	pass
 
 

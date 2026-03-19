@@ -88,17 +88,31 @@ func start_combat() -> void:
 	_resolve_effects()
 	if attack_is_declared():
 		_resolve_combat()
+	_resolve_discards()
 	_resolve_deaths()
 
 # TODO
 func _resolve_effects() -> void:
-	pass
+	for action: Timeline.Action in server.timeline.get_organized_queue():
+		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
+			action.effect.behavior.enter(action.entity)
+			server.timeline.transfer_action_to_discard(action)
+		else:
+			action.effect.behavior.use()
+			server.timeline.remove_from_queue(action)
 
 
 func _resolve_combat() -> void:
 	var attacking_entity: EntityCard = get_current_attacker()
 	var target_entity: EntityCard = get_current_target()
 	target_entity.current_shield -= attacking_entity.current_attack
+
+
+func _resolve_discards() -> void:
+	for action: Timeline.Action in server.timeline.get_discard_queue():
+		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
+			action.effect.behavior.exit(action.entity)
+			server.timeline.remove_from_discard_queue(action)
 
 
 func _resolve_deaths() -> void:
