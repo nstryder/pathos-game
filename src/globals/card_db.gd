@@ -1,6 +1,8 @@
 @tool
 extends Node
 
+# NOTE: Do NOT ever statically type EffectBehavior in this class.
+# 	It will cause cyclic errors due to this class being an autoload.
 # TODO: Detect when csv has been changed (probably via hash comparison)
 
 const base_effect_behavior_path: String = "res://src/resources/effect_behaviors/%s.gd"
@@ -29,13 +31,18 @@ func get_effect_by_name(effect_name: String) -> EffectCardData:
 
 
 func _build_all_data() -> void:
+	if not Engine.is_editor_hint():
+		return
+	print("Building CardDB data...")
 	_build_entity_card_data()
 	_build_effect_card_data()
 	_create_effect_behavior_files()
 	notify_property_list_changed()
+	print("CardDB finished building data.")
 
 
 func _build_entity_card_data() -> void:
+	print("Building EntityCard data...")
 	var entity_card_array: Array[Dictionary] = csv_parse("res://src/globals/entities.csv")
 	for entity_entry in entity_card_array:
 		if entity_entry["Code"] in entity_cards:
@@ -48,9 +55,11 @@ func _build_entity_card_data() -> void:
 		# TODO: Fill in rest of data once they are implemented
 		entity_cards[entity_entry["Code"]] = entity_resource
 		entity_cards_indexed_by_name[entity_resource.nickname] = entity_entry["Code"]
+	print("Done")
 
 
 func _build_effect_card_data() -> void:
+	print("Building EffectCard data...")
 	var effect_card_array: Array[Dictionary] = csv_parse("res://src/globals/effects.csv")
 	for effect_entry in effect_card_array:
 		if effect_entry["Code"] in effect_cards:
@@ -65,9 +74,11 @@ func _build_effect_card_data() -> void:
 		# TODO: Fill in rest of data once they are implemented
 		effect_cards[effect_entry["Code"]] = effect_resource
 		effect_cards_indexed_by_name[effect_resource.effect_name] = effect_entry["Code"]
+	print("Done")
 
 
 func _create_effect_behavior_files() -> void:
+	print("Creating EffectBehavior files...")
 	for effect_code in effect_cards:
 		var filename: String = get_effect_behavior_name(effect_code)
 		var path: String = base_effect_behavior_path % filename
@@ -75,14 +86,9 @@ func _create_effect_behavior_files() -> void:
 			continue
 		var script := GDScript.new()
 		script.source_code = "extends EffectBehavior"
-		script.reload()
+		# script.reload()
 		ResourceSaver.save(script, path)
-
-
-func get_effect_behavior(effect_code: String) -> EffectBehavior:
-	var path: String = base_effect_behavior_path % get_effect_behavior_name(effect_code)
-	return load(path)
-
+	print("Done")
 
 func get_effect_behavior_name(effect_code: String) -> String:
 	# Use snake case because its friendlier for file names

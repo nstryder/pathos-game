@@ -14,7 +14,7 @@ func _ready() -> void:
 	super._ready()
 	
 	data = CardDb.get_effect_by_code(effect_code)
-	behavior = CardDb.get_effect_behavior(effect_code)
+	behavior = load_effect_behavior(effect_code)
 
 	var affix := ""
 	if data.usage_type == EffectCardData.UsageType.ATTACH:
@@ -25,3 +25,10 @@ func _ready() -> void:
 	effect_type.text = EffectCardData.EffectType.keys()[data.effect_type]
 	
 	Utils.validate_vars(self , effect_code, data, behavior)
+
+func load_effect_behavior(code: String) -> EffectBehavior:
+	var path: String = CardDb.base_effect_behavior_path % CardDb.get_effect_behavior_name(code)
+	var script: GDScript = load(path)
+	var effect_behavior := EffectBehavior.new()
+	effect_behavior.set_script(script)
+	return effect_behavior
