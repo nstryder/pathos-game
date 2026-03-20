@@ -70,12 +70,16 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 visible = false
 
+[node name="PresentationPoint" type="Marker2D" parent="." unique_id=1858560015]
+unique_name_in_owner = true
+position = Vector2(1600, 768)
+gizmo_extents = 64.0
+
 [node name="BoardCenter" type="Marker2D" parent="." unique_id=1465864018]
 position = Vector2(960, 540)
 
 [node name="YourSide" parent="BoardCenter" unique_id=1698511803 instance=ExtResource("7_jsr4r")]
 unique_name_in_owner = true
-is_enemy = false
 
 [node name="OppSide" parent="BoardCenter" unique_id=1578482435 instance=ExtResource("7_jsr4r")]
 unique_name_in_owner = true
@@ -136,8 +140,10 @@ collision_mask = 4
 shape = SubResource("WorldBoundaryShape2D_jsr4r")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI" unique_id=863780745]
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 256.0
+offset_bottom = 501.0
 theme_override_constants/separation = 24
 
 [node name="PlayerNumberLabel" type="Label" parent="UI/VBoxContainer" unique_id=1010010013]
@@ -188,8 +194,10 @@ horizontal_alignment = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -89.0
-offset_right = 357.0
+offset_left = 24.0
+offset_top = -80.0
+offset_right = 386.0
+offset_bottom = 9.0
 grow_vertical = 0
 
 [node name="Prefix" type="Label" parent="UI/HBoxContainer" unique_id=729394623]
@@ -208,7 +216,8 @@ label_settings = SubResource("LabelSettings_tlhb1")
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -362.0
+offset_left = -448.0
+offset_right = -23.0
 offset_bottom = 89.0
 grow_horizontal = 0
 

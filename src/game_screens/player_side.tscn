@@ -1,38 +1,37 @@
-[gd_scene load_steps=5 format=3 uid="uid://dqjvo8kvgo7iy"]
+[gd_scene format=3 uid="uid://dqjvo8kvgo7iy"]
 
 [ext_resource type="PackedScene" uid="uid://b5eojojjt7qk3" path="res://src/actors/deck.tscn" id="1_56qvi"]
 [ext_resource type="Script" uid="uid://i84ooqacrr5k" path="res://src/game_screens/player_side.gd" id="1_canyk"]
 [ext_resource type="PackedScene" uid="uid://qbgnkpc4g0sa" path="res://src/actors/player_hand.tscn" id="2_canyk"]
 [ext_resource type="Script" uid="uid://c3oox5b6qpuv4" path="res://src/game_screens/entity_slot_markers.gd" id="3_85fbd"]
 
-[node name="PlayerSide" type="Node2D"]
+[node name="PlayerSide" type="Node2D" unique_id=413993915]
 script = ExtResource("1_canyk")
-is_enemy = null
 
-[node name="EffectDeck" parent="." instance=ExtResource("1_56qvi")]
+[node name="EffectDeck" parent="." unique_id=1708784327 instance=ExtResource("1_56qvi")]
 unique_name_in_owner = true
-position = Vector2(-754, 291)
+position = Vector2(-712, 272)
 
-[node name="EntityDeck" parent="." instance=ExtResource("1_56qvi")]
+[node name="EntityDeck" parent="." unique_id=1053873170 instance=ExtResource("1_56qvi")]
 unique_name_in_owner = true
-position = Vector2(-412, 202)
+position = Vector2(-440.00003, 200)
 scale = Vector2(0.6, 0.6)
 
-[node name="Hand" parent="." instance=ExtResource("2_canyk")]
+[node name="Hand" parent="." unique_id=567906064 instance=ExtResource("2_canyk")]
 unique_name_in_owner = true
 position = Vector2(0, 550)
 
-[node name="EntitySlotMarkers" type="Node2D" parent="."]
+[node name="EntitySlotMarkers" type="Node2D" parent="." unique_id=131228425]
 unique_name_in_owner = true
 z_index = -100
 position = Vector2(0, 200)
 script = ExtResource("3_85fbd")
 gap = 40
 
-[node name="Slot1" type="Marker2D" parent="EntitySlotMarkers"]
+[node name="Slot1" type="Marker2D" parent="EntitySlotMarkers" unique_id=1302313234]
 position = Vector2(200, 0)
 
-[node name="Slot2" type="Marker2D" parent="EntitySlotMarkers"]
+[node name="Slot2" type="Marker2D" parent="EntitySlotMarkers" unique_id=1916498988]
 
-[node name="Slot3" type="Marker2D" parent="EntitySlotMarkers"]
+[node name="Slot3" type="Marker2D" parent="EntitySlotMarkers" unique_id=192503314]
 position = Vector2(-200, 0)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://djf85mhy7rn64"]
+[gd_scene format=3 uid="uid://djf85mhy7rn64"]
 
 [ext_resource type="PackedScene" uid="uid://bfb04tdppv0p2" path="res://src/actors/card.tscn" id="1_skp7o"]
 [ext_resource type="Script" uid="uid://220a8t7sh726" path="res://src/actors/entity_card.gd" id="2_ewlyu"]
@@ -71,7 +71,7 @@ properties/3/path = NodePath(".:current_idx")
 properties/3/spawn = true
 properties/3/replication_mode = 2
 
-[node name="EntityCard" instance=ExtResource("1_skp7o")]
+[node name="EntityCard" unique_id=1641401315 instance=ExtResource("1_skp7o")]
 script = ExtResource("2_ewlyu")
 entity_code = ""
 current_attack = 0
@@ -80,71 +80,71 @@ current_shield = 0
 [node name="Background" parent="Visuals" index="0"]
 theme_override_styles/panel = SubResource("StyleBoxFlat_ewlyu")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Visuals/Info" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Visuals/Info" index="0" unique_id=1870098539]
 layout_mode = 2
 
-[node name="Nickname" type="Label" parent="Visuals/Info/VBoxContainer" index="0"]
+[node name="Nickname" type="Label" parent="Visuals/Info/VBoxContainer" index="0" unique_id=643583524]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Card Nickname"
 label_settings = SubResource("LabelSettings_ewlyu")
 
-[node name="ArtPlaceholder" type="ColorRect" parent="Visuals/Info/VBoxContainer" index="1"]
+[node name="ArtPlaceholder" type="ColorRect" parent="Visuals/Info/VBoxContainer" index="1" unique_id=769739324]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="Visuals/Info/VBoxContainer" index="2"]
+[node name="Label" type="Label" parent="Visuals/Info/VBoxContainer" index="2" unique_id=1842701856]
 layout_mode = 2
 size_flags_vertical = 1
-text = "Description"
+text = "Ability"
 
-[node name="HSeparator" type="HSeparator" parent="Visuals/Info/VBoxContainer" index="3"]
+[node name="HSeparator" type="HSeparator" parent="Visuals/Info/VBoxContainer" index="3" unique_id=1912853774]
 layout_mode = 2
 
-[node name="Description" type="Label" parent="Visuals/Info/VBoxContainer" index="4"]
+[node name="Description" type="Label" parent="Visuals/Info/VBoxContainer" index="4" unique_id=507185036]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
 autowrap_mode = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Visuals/Info/VBoxContainer" index="5"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Visuals/Info/VBoxContainer" index="5" unique_id=1560628203]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Visuals/Info/VBoxContainer/HBoxContainer" index="0"]
+[node name="PanelContainer" type="PanelContainer" parent="Visuals/Info/VBoxContainer/HBoxContainer" index="0" unique_id=1392735374]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_3ilae")
 
-[node name="MarginContainer" type="MarginContainer" parent="Visuals/Info/VBoxContainer/HBoxContainer/PanelContainer" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="Visuals/Info/VBoxContainer/HBoxContainer/PanelContainer" index="0" unique_id=570897363]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 0
 
-[node name="Attack" type="Label" parent="Visuals/Info/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer" index="0"]
+[node name="Attack" type="Label" parent="Visuals/Info/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer" index="0" unique_id=155962613]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 label_settings = SubResource("LabelSettings_vc8ps")
 
-[node name="Control" type="Control" parent="Visuals/Info/VBoxContainer/HBoxContainer" index="1"]
+[node name="Control" type="Control" parent="Visuals/Info/VBoxContainer/HBoxContainer" index="1" unique_id=562438285]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PanelContainer2" type="PanelContainer" parent="Visuals/Info/VBoxContainer/HBoxContainer" index="2"]
+[node name="PanelContainer2" type="PanelContainer" parent="Visuals/Info/VBoxContainer/HBoxContainer" index="2" unique_id=434838265]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_hbyfa")
 
-[node name="MarginContainer" type="MarginContainer" parent="Visuals/Info/VBoxContainer/HBoxContainer/PanelContainer2" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="Visuals/Info/VBoxContainer/HBoxContainer/PanelContainer2" index="0" unique_id=1591539374]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 0
 
-[node name="Shield" type="Label" parent="Visuals/Info/VBoxContainer/HBoxContainer/PanelContainer2/MarginContainer" index="0"]
+[node name="Shield" type="Label" parent="Visuals/Info/VBoxContainer/HBoxContainer/PanelContainer2/MarginContainer" index="0" unique_id=725218264]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
@@ -154,7 +154,7 @@ label_settings = SubResource("LabelSettings_vc8ps")
 visible = false
 theme_override_styles/panel = SubResource("StyleBoxFlat_vc8ps")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="1"]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="1" unique_id=1886459913]
 replication_config = SubResource("SceneReplicationConfig_ewlyu")
 
 [node name="Area2D" parent="." index="2"]

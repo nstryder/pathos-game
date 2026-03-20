@@ -12,6 +12,7 @@ const base_effect_behavior_path: String = "res://src/resources/effect_behaviors/
 @export var entity_cards_indexed_by_name: Dictionary[String, String] = {} # {Nickname: Code}
 @export var effect_cards_indexed_by_name: Dictionary[String, String] = {} # {Nickname: Code}
 @export_tool_button("Build Card Data From CSV", "Callable") var build_button: Callable = _build_all_data
+@export_tool_button("Re-build Card DB From CSV", "Callable") var rebuild_button: Callable = _rebuild_all_data
 
 
 func get_entity_by_code(entity_code: String) -> EntityCardData:
@@ -41,28 +42,41 @@ func _build_all_data() -> void:
 	print("CardDB finished building data.")
 
 
-func _build_entity_card_data() -> void:
+func _rebuild_all_data() -> void:
+	if not Engine.is_editor_hint():
+		return
+	print("Building CardDB data...")
+	_build_entity_card_data(false)
+	_build_effect_card_data(false)
+	_create_effect_behavior_files(true)
+	notify_property_list_changed()
+	print("CardDB finished building data.")
+
+
+func _build_entity_card_data(skip_existing: bool = true) -> void:
 	print("Building EntityCard data...")
 	var entity_card_array: Array[Dictionary] = csv_parse("res://src/globals/entities.csv")
 	for entity_entry in entity_card_array:
-		if entity_entry["Code"] in entity_cards:
+		if skip_existing and entity_entry["Code"] in entity_cards:
 			continue
 		var entity_resource := EntityCardData.new()
 		entity_resource.nickname = entity_entry["Nickname"]
 		entity_resource.base_attack = entity_entry["ATK"]
 		entity_resource.base_shield = entity_entry["SHD"]
 		entity_resource.rarity = EntityCardData.Rarity[str(entity_entry["Rarity"]).to_upper()]
+		entity_resource.description = entity_entry["Ability Desc"]
 		# TODO: Fill in rest of data once they are implemented
+
 		entity_cards[entity_entry["Code"]] = entity_resource
 		entity_cards_indexed_by_name[entity_resource.nickname] = entity_entry["Code"]
 	print("Done")
 
 
-func _build_effect_card_data() -> void:
+func _build_effect_card_data(skip_existing: bool = true) -> void:
 	print("Building EffectCard data...")
 	var effect_card_array: Array[Dictionary] = csv_parse("res://src/globals/effects.csv")
 	for effect_entry in effect_card_array:
-		if effect_entry["Code"] in effect_cards:
+		if skip_existing and effect_entry["Code"] in effect_cards:
 			continue
 		var effect_resource := EffectCardData.new()
 		effect_resource.effect_name = effect_entry["Nickname"]
@@ -71,18 +85,20 @@ func _build_effect_card_data() -> void:
 		effect_resource.ability_phase = EffectCardData.AbilityPhase[str(effect_entry["Ability Phase"]).to_upper()]
 		effect_resource.usage_type = EffectCardData.UsageType[str(effect_entry["Use/Attach"]).to_upper()]
 		effect_resource.timeline_condition = EffectCardData.TimelineCondition[str(effect_entry["Timeline Condition"]).to_upper()]
+		effect_resource.description = effect_entry["Ability Description"]
 		# TODO: Fill in rest of data once they are implemented
+		
 		effect_cards[effect_entry["Code"]] = effect_resource
 		effect_cards_indexed_by_name[effect_resource.effect_name] = effect_entry["Code"]
 	print("Done")
 
 
-func _create_effect_behavior_files() -> void:
+func _create_effect_behavior_files(skip_existing: bool = true) -> void:
 	print("Creating EffectBehavior files...")
 	for effect_code in effect_cards:
 		var filename: String = get_effect_behavior_name(effect_code)
 		var path: String = base_effect_behavior_path % filename
-		if FileAccess.file_exists(path):
+		if skip_existing and FileAccess.file_exists(path):
 			continue
 		var script := GDScript.new()
 		script.source_code = "extends EffectBehavior"

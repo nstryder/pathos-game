@@ -21,8 +21,10 @@ func _ready() -> void:
 		affix = "ATT"
 	else:
 		affix = "USE"
+
 	nickname.text = data.effect_name + " (" + affix + ")"
 	effect_type.text = EffectCardData.EffectType.keys()[data.effect_type]
+	description.text = data.description
 	
 	Utils.validate_vars(self , effect_code, data, behavior)
 

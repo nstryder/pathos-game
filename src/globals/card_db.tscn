@@ -10,12 +10,14 @@ nickname = "Kei"
 base_attack = 3
 base_shield = 2
 rarity = 1
+description = "Opponent must use selected Entity in combat next turn."
 
 [sub_resource type="Resource" id="Resource_kwtlh"]
 script = ExtResource("2_msm5g")
 nickname = "Shin"
 base_shield = 5
 rarity = 1
+description = "Deal 3 DMG back at the enemy Entity after hit."
 
 [sub_resource type="Resource" id="Resource_a6co2"]
 script = ExtResource("2_msm5g")
@@ -23,35 +25,41 @@ nickname = "Ginko"
 base_attack = 1
 base_shield = 2
 rarity = 1
+description = "Deal her ATK to all Revealed Entities other than herself."
 
 [sub_resource type="Resource" id="Resource_8de20"]
 script = ExtResource("2_msm5g")
 nickname = "Hibiki"
 base_attack = 2
 base_shield = 1
+description = "Draw 1 Effect card."
 
 [sub_resource type="Resource" id="Resource_qmtx6"]
 script = ExtResource("2_msm5g")
 nickname = "Mira"
 base_shield = 1
+description = "Permanently *copy* the ATK of the first Entity you attack."
 
 [sub_resource type="Resource" id="Resource_athid"]
 script = ExtResource("2_msm5g")
 nickname = "Haru"
 base_attack = 1
 base_shield = 2
+description = "Shuffle your Effect discard pile back into your Effect draw pile."
 
 [sub_resource type="Resource" id="Resource_lx601"]
 script = ExtResource("2_msm5g")
 nickname = "Akari"
 base_attack = 1
 base_shield = 2
+description = "Negate the enemy Entity's ability during combat."
 
 [sub_resource type="Resource" id="Resource_2048x"]
 script = ExtResource("2_msm5g")
 nickname = "Kumiko"
 base_attack = 2
 base_shield = 2
+description = "Keep attached Effect cards until the next turn."
 
 [sub_resource type="Resource" id="Resource_1xg4a"]
 script = ExtResource("2_msm5g")
@@ -71,6 +79,7 @@ nickname = "Bumi"
 base_attack = 1
 base_shield = 3
 rarity = 1
+description = "You may remove one Effect card from any Entity."
 
 [sub_resource type="Resource" id="Resource_vfoi8"]
 script = ExtResource("2_msm5g")
@@ -78,6 +87,7 @@ nickname = "Doc"
 base_attack = 2
 base_shield = 2
 rarity = 1
+description = "Give an Entity +1 SHD this turn."
 
 [sub_resource type="Resource" id="Resource_k4ouw"]
 script = ExtResource("2_msm5g")
@@ -85,33 +95,39 @@ nickname = "Domino"
 base_attack = 2
 base_shield = 2
 rarity = 1
+description = "Give an Entity +1 ATK this turn."
 
 [sub_resource type="Resource" id="Resource_3jn8v"]
 script = ExtResource("2_msm5g")
 nickname = "Responder"
 base_shield = 3
+description = "Invert the ATK and SHD of Responder this Phase. Revert back on the next Phase."
 
 [sub_resource type="Resource" id="Resource_kdbkt"]
 script = ExtResource("2_msm5g")
 nickname = "Ryoko"
 base_shield = 3
+description = "Ryoko Gains +2 ATK every time he's hit."
 
 [sub_resource type="Resource" id="Resource_t6o0s"]
 script = ExtResource("2_msm5g")
 nickname = "Dango"
 base_shield = 3
+description = "Heal +2 SHD to one other ally Entities."
 
 [sub_resource type="Resource" id="Resource_r70u0"]
 script = ExtResource("2_msm5g")
 nickname = "Moriko"
 base_attack = 1
 base_shield = 2
+description = "If any ally Entities were healed last turn, Moriko Gains +2 ATK."
 
 [sub_resource type="Resource" id="Resource_45ctj"]
 script = ExtResource("2_msm5g")
 nickname = "Frederick"
 base_attack = 2
 base_shield = 3
+description = "Frederick heals +1 SHD upon landing a KO with him."
 
 [sub_resource type="Resource" id="Resource_6nlc3"]
 script = ExtResource("2_msm5g")
@@ -131,6 +147,7 @@ nickname = "Fabian"
 base_attack = 2
 base_shield = 2
 rarity = 1
+description = "For every ally Entity KO, Fabian Gains +1 ATK this Phase."
 
 [sub_resource type="Resource" id="Resource_7smhx"]
 script = ExtResource("2_msm5g")
@@ -138,6 +155,7 @@ nickname = "Kelvin"
 base_attack = 2
 base_shield = 2
 rarity = 1
+description = "For every ally Entity currently Revealed, Kelvin Gains +1 ATK this Phase."
 
 [sub_resource type="Resource" id="Resource_kakiq"]
 script = ExtResource("2_msm5g")
@@ -145,36 +163,42 @@ nickname = "Shizumi"
 base_attack = 5
 base_shield = 1
 rarity = 1
+description = "Shizumi has Aggro. Remove any Aggro from ally Entities. You cannot apply Aggro to ally Entities while Shizumi is Revealed."
 
 [sub_resource type="Resource" id="Resource_a8a2o"]
 script = ExtResource("2_msm5g")
 nickname = "Infiltrator"
 base_attack = 3
 base_shield = 1
+description = "Reveal an enemy Entity without activating their ability."
 
 [sub_resource type="Resource" id="Resource_bcmp5"]
 script = ExtResource("2_msm5g")
 nickname = "Commander"
 base_attack = 2
 base_shield = 1
+description = "Deal 1 DMG to every Revealed enemy Entity."
 
 [sub_resource type="Resource" id="Resource_vw076"]
 script = ExtResource("2_msm5g")
 nickname = "Vivilie"
 base_attack = 2
 base_shield = 1
+description = "Vivilie Gains +2 SHD upon landing a KO with her."
 
 [sub_resource type="Resource" id="Resource_wg4wy"]
 script = ExtResource("2_msm5g")
 nickname = "Tesallia"
 base_attack = 3
 base_shield = 5
+description = "Tesallia loses all of her ATK after combat."
 
 [sub_resource type="Resource" id="Resource_tywj4"]
 script = ExtResource("2_msm5g")
 nickname = "Cuckoo"
 base_attack = 3
 base_shield = 1
+description = "When Cuckoo is Revealed, deal its ATK to a selected Entity and KO Cuckoo. Current Phase ends."
 
 [sub_resource type="Resource" id="Resource_q10mk"]
 script = ExtResource("2_msm5g")
@@ -193,6 +217,7 @@ script = ExtResource("2_msm5g")
 nickname = "Bastion"
 base_shield = 5
 rarity = 1
+description = "Bastion has Aggro. Remove any Aggro from ally Entities. You cannot apply Aggro to ally Entities while Bastion is Revealed. No Inverts."
 
 [sub_resource type="Resource" id="Resource_ptguh"]
 script = ExtResource("2_msm5g")
@@ -200,40 +225,47 @@ nickname = "Machina"
 base_attack = 2
 base_shield = 2
 rarity = 1
+description = "Keep attached Effect cards on Machina. If Ability is Negated, *Immediate*ly Discard all attached Effects. Cards with Exhaust cannot be attached."
 
 [sub_resource type="Resource" id="Resource_x4ynt"]
 script = ExtResource("2_msm5g")
 nickname = "Justitia"
 base_shield = 5
 rarity = 1
+description = "All DMG dealt to Justitia this turn becomes her ATK this Phase."
 
 [sub_resource type="Resource" id="Resource_ybc5s"]
 script = ExtResource("2_msm5g")
 nickname = "Guild"
 base_attack = 1
 base_shield = 3
+description = "Heal +1 SHD after combat."
 
 [sub_resource type="Resource" id="Resource_of7r8"]
 script = ExtResource("2_msm5g")
 nickname = "Coroner"
 base_attack = 1
 base_shield = 1
+description = "Coroner Gains +2 ATK and +2 SHD if ally Entity was KO'd when he's Revealed."
 
 [sub_resource type="Resource" id="Resource_hrrb0"]
 script = ExtResource("2_msm5g")
 nickname = "Trek"
 base_attack = 1
 base_shield = 1
+description = "Deal +1 DMG to a selected Entity."
 
 [sub_resource type="Resource" id="Resource_wmuac"]
 script = ExtResource("2_msm5g")
 nickname = "Petal"
 base_shield = 2
+description = "Give +2 SHD to one Revealed ally Entity."
 
 [sub_resource type="Resource" id="Resource_23euk"]
 script = ExtResource("2_msm5g")
 nickname = "Stim"
 base_shield = 5
+description = "Stim loses -1 SHD on every Phase he's Revealed."
 
 [sub_resource type="Resource" id="Resource_40lh0"]
 script = ExtResource("2_msm5g")
@@ -253,6 +285,7 @@ nickname = "Yuno"
 base_attack = 2
 base_shield = 2
 rarity = 1
+description = "Yuno Gains +X SHD for X DMG she deals in combat."
 
 [sub_resource type="Resource" id="Resource_2q84f"]
 script = ExtResource("2_msm5g")
@@ -260,41 +293,48 @@ nickname = "Yoru"
 base_attack = 1
 base_shield = 2
 rarity = 1
+description = "You may Sap -1 of your own HP to permanently Gain +2 ATK once per turn."
 
 [sub_resource type="Resource" id="Resource_e5gdm"]
 script = ExtResource("2_msm5g")
 nickname = "Natsuki"
 base_shield = 5
 rarity = 1
+description = "Natsuki Gains +X ATK for every -X SHD he's lost in combat."
 
 [sub_resource type="Resource" id="Resource_5hnwd"]
 script = ExtResource("2_msm5g")
 nickname = "Nikita"
 base_attack = 1
 base_shield = 3
+description = "You may Sap -1 SHD from Nikita to Gain +1 ATK once per turn."
 
 [sub_resource type="Resource" id="Resource_hgsuf"]
 script = ExtResource("2_msm5g")
 nickname = "Shoto"
 base_attack = 2
 base_shield = 2
+description = "Invert the enemy Entity's ATK and SHD."
 
 [sub_resource type="Resource" id="Resource_jve08"]
 script = ExtResource("2_msm5g")
 nickname = "Mei"
 base_shield = 2
+description = "You may Sap -1 SHD from one other ally Entity to Gain +1 ATK once per turn."
 
 [sub_resource type="Resource" id="Resource_4tr6p"]
 script = ExtResource("2_msm5g")
 nickname = "Akira"
 base_attack = 1
 base_shield = 1
+description = "Deal 1 DMG to both your and the enemy's HP."
 
 [sub_resource type="Resource" id="Resource_vkb60"]
 script = ExtResource("2_msm5g")
 nickname = "Sensei"
 base_attack = 2
 base_shield = 2
+description = "You may copy her ATK and SHD to one ally Entity only once. If the selected Entity is Hidden, Reveal them."
 
 [sub_resource type="Resource" id="Resource_7b3kp"]
 script = ExtResource("2_msm5g")
@@ -314,6 +354,7 @@ nickname = "Noire"
 base_attack = 2
 base_shield = 2
 rarity = 1
+description = "For every Status on the Play Field, Noire Gains +1 ATK this Phase."
 
 [sub_resource type="Resource" id="Resource_3mpii"]
 script = ExtResource("2_msm5g")
@@ -321,6 +362,7 @@ nickname = "Capo"
 base_attack = 2
 base_shield = 2
 rarity = 1
+description = "Deal +2 DMG to the enemy Entity if they have a Status."
 
 [sub_resource type="Resource" id="Resource_vh8n7"]
 script = ExtResource("2_msm5g")
@@ -328,36 +370,42 @@ nickname = "Salvatore"
 base_attack = 2
 base_shield = 3
 rarity = 1
+description = "Negate the enemy Entity's ability and its attached Effect cards during combat."
 
 [sub_resource type="Resource" id="Resource_d4m4r"]
 script = ExtResource("2_msm5g")
 nickname = "Tito"
 base_attack = 1
 base_shield = 2
+description = "If Tito has a Status, he Gains +2 ATK this Phase. Statuses have no effect on him if he's Revealed."
 
 [sub_resource type="Resource" id="Resource_x2n1p"]
 script = ExtResource("2_msm5g")
 nickname = "Raggedy"
 base_attack = 2
 base_shield = 1
+description = "Apply Poisoned to an Entity. You may only apply this Status on one Entity at a time."
 
 [sub_resource type="Resource" id="Resource_dq1tq"]
 script = ExtResource("2_msm5g")
 nickname = "Lovely"
 base_attack = 2
 base_shield = 1
+description = "Apply Frozen to an Entity. You may only apply this Status on one Entity at a time."
 
 [sub_resource type="Resource" id="Resource_lj7ks"]
 script = ExtResource("2_msm5g")
 nickname = "Giacomo"
 base_attack = 2
 base_shield = 1
+description = "Apply Aggro to an Entity. You may only apply this Status on one Entity at a time."
 
 [sub_resource type="Resource" id="Resource_0oaj6"]
 script = ExtResource("2_msm5g")
 nickname = "Nonna"
 base_attack = 2
 base_shield = 1
+description = "Apply Fatigued to an Entity. You may only apply this Status on one Entity at a time."
 
 [sub_resource type="Resource" id="Resource_xgx8m"]
 script = ExtResource("2_msm5g")
@@ -375,6 +423,7 @@ base_shield = 1
 script = ExtResource("3_kwtlh")
 effect_name = "Knife"
 usage_type = 1
+description = "Gain +2 ATK."
 
 [sub_resource type="Resource" id="Resource_xplnt"]
 script = ExtResource("3_kwtlh")
@@ -382,51 +431,60 @@ effect_name = "Snipe"
 identifier = 1
 ability_phase = 1
 usage_type = 1
+description = "Ignore SHD and deal DMG to HP instead. Exhaust."
 
 [sub_resource type="Resource" id="Resource_xanpn"]
 script = ExtResource("3_kwtlh")
 effect_name = "Mortar"
 ability_phase = 1
+description = "Deal 1 DMG to all Revealed enemy Entities."
 
 [sub_resource type="Resource" id="Resource_hyilf"]
 script = ExtResource("3_kwtlh")
 effect_name = "Bite"
 identifier = 1
 usage_type = 1
+description = "Gain +1 ATK and Heal 1 SHD upon hit."
 
 [sub_resource type="Resource" id="Resource_rjcci"]
 script = ExtResource("3_kwtlh")
 effect_name = "Lance"
 ability_phase = 1
 usage_type = 1
+description = "Gain +3 ATK. Exhaust."
 
 [sub_resource type="Resource" id="Resource_1o5e6"]
 script = ExtResource("3_kwtlh")
 effect_name = "Arsenal"
 identifier = 1
+description = "If your Synergy is activated, your Entity in combat activates their Ability twice instead."
 
 [sub_resource type="Resource" id="Resource_l8yri"]
 script = ExtResource("3_kwtlh")
 effect_name = "Energizer"
 ability_phase = 1
 timeline_condition = 1
+description = "Reveal an ally Entity without activating their Ability"
 
 [sub_resource type="Resource" id="Resource_b2rcc"]
 script = ExtResource("3_kwtlh")
 effect_name = "Shotgun"
 ability_phase = 1
 usage_type = 1
+description = "On combat, attack twice. Exhaust."
 
 [sub_resource type="Resource" id="Resource_tcit7"]
 script = ExtResource("3_kwtlh")
 effect_name = "Self-Destruct"
 identifier = 1
 timeline_condition = 1
+description = "KO one of your ally Entities. Deal 1 DMG to your opponent's HP."
 
 [sub_resource type="Resource" id="Resource_yjtmn"]
 script = ExtResource("3_kwtlh")
 effect_name = "Nitro"
 ability_phase = 1
+description = "If this is the first Effect card played, skip DEF Phase and start combat."
 
 [sub_resource type="Resource" id="Resource_34ibc"]
 script = ExtResource("3_kwtlh")
@@ -434,6 +492,7 @@ effect_name = "Stinger"
 identifier = 1
 usage_type = 1
 timeline_condition = 1
+description = "Lose 1 HP. Deal 1 DMG to an Entity."
 
 [sub_resource type="Resource" id="Resource_dypvt"]
 script = ExtResource("3_kwtlh")
@@ -441,6 +500,7 @@ effect_name = "Dart"
 identifier = 2
 ability_phase = 1
 usage_type = 1
+description = "Apply Fatigued to an Entity."
 
 [sub_resource type="Resource" id="Resource_yym0f"]
 script = ExtResource("3_kwtlh")
@@ -448,6 +508,7 @@ effect_name = "Sludge"
 identifier = 2
 ability_phase = 1
 usage_type = 1
+description = "Apply Poisoned to an Entity."
 
 [sub_resource type="Resource" id="Resource_0ch6o"]
 script = ExtResource("3_kwtlh")
@@ -455,42 +516,49 @@ effect_name = "Flash Freeze"
 identifier = 2
 ability_phase = 1
 usage_type = 1
+description = "Apply Frozen to an Entity."
 
 [sub_resource type="Resource" id="Resource_vvdjw"]
 script = ExtResource("3_kwtlh")
 effect_name = "Taunt"
 identifier = 2
 usage_type = 1
+description = "Apply Aggro to an Entity."
 
 [sub_resource type="Resource" id="Resource_y1edv"]
 script = ExtResource("3_kwtlh")
 effect_name = "Plate"
 effect_type = 1
 usage_type = 1
+description = "Gain +2 SHD."
 
 [sub_resource type="Resource" id="Resource_u1rwj"]
 script = ExtResource("3_kwtlh")
 effect_name = "Syringe"
 effect_type = 1
 usage_type = 1
+description = "Remove a Status from one Entity."
 
 [sub_resource type="Resource" id="Resource_stky8"]
 script = ExtResource("3_kwtlh")
 effect_name = "Barricade"
 effect_type = 1
 usage_type = 1
+description = "Immune to all DMG. Exhaust."
 
 [sub_resource type="Resource" id="Resource_o207p"]
 script = ExtResource("3_kwtlh")
 effect_name = "Medkit"
 effect_type = 1
 usage_type = 1
+description = "Heal +3 SHD."
 
 [sub_resource type="Resource" id="Resource_p5vq7"]
 script = ExtResource("3_kwtlh")
 effect_name = "Mask"
 effect_type = 1
 ability_phase = 2
+description = "Negate any Statuses applied this Phase."
 
 [sub_resource type="Resource" id="Resource_8c2ox"]
 script = ExtResource("3_kwtlh")
@@ -498,6 +566,7 @@ effect_name = "Dome"
 effect_type = 1
 ability_phase = 2
 usage_type = 1
+description = "Immune to Overdamage."
 
 [sub_resource type="Resource" id="Resource_epr82"]
 script = ExtResource("3_kwtlh")
@@ -505,6 +574,7 @@ effect_name = "Rally"
 effect_type = 1
 identifier = 1
 ability_phase = 2
+description = "If your Synergy is activated, Negate all Effect cards played by the opponent."
 
 [sub_resource type="Resource" id="Resource_jh0gj"]
 script = ExtResource("3_kwtlh")
@@ -512,12 +582,14 @@ effect_name = "Whistle"
 effect_type = 1
 ability_phase = 2
 usage_type = 1
+description = "Negate an Entity's Ability."
 
 [sub_resource type="Resource" id="Resource_1s51u"]
 script = ExtResource("3_kwtlh")
 effect_name = "Stop Sign"
 effect_type = 1
 ability_phase = 2
+description = "Negate the first Effect card played by the opponent. Immediate Effect cards aren't affected."
 
 [sub_resource type="Resource" id="Resource_dhyqs"]
 script = ExtResource("3_kwtlh")
@@ -525,6 +597,7 @@ effect_name = "Payback"
 effect_type = 1
 identifier = 1
 ability_phase = 2
+description = "After being hit in combat, deal the amount of ATK of your Entity back to the enemy Entity. If your Entity was KO'd, this card has no effect."
 
 [sub_resource type="Resource" id="Resource_6qubv"]
 script = ExtResource("3_kwtlh")
@@ -533,18 +606,21 @@ effect_type = 1
 identifier = 1
 ability_phase = 1
 timeline_condition = 1
+description = "If your Synergy is activated, deal 2 DMG to an Entity if an ally Entity was hit last Phase."
 
 [sub_resource type="Resource" id="Resource_5d4k0"]
 script = ExtResource("3_kwtlh")
 effect_name = "Helmet"
 effect_type = 1
 usage_type = 1
+description = "No Inverts after this card is played this Phase."
 
 [sub_resource type="Resource" id="Resource_yfu6o"]
 script = ExtResource("3_kwtlh")
 effect_name = "Bear Trap"
 effect_type = 1
 usage_type = 1
+description = "Keep this card Attached to an Entity. If the Entity is hit this Phase, deal 1 DMG to your opponent's HP."
 
 [sub_resource type="Resource" id="Resource_oss3d"]
 script = ExtResource("3_kwtlh")
@@ -553,6 +629,7 @@ effect_type = 1
 identifier = 1
 ability_phase = 3
 usage_type = 1
+description = "Sap -1 ATK to Gain +1 SHD."
 
 [sub_resource type="Resource" id="Resource_3cnwl"]
 script = ExtResource("3_kwtlh")
@@ -561,6 +638,7 @@ effect_type = 1
 identifier = 2
 ability_phase = 1
 usage_type = 1
+description = "Apply Resistant to an Entity."
 
 [sub_resource type="Resource" id="Resource_3iy4b"]
 script = ExtResource("3_kwtlh")
@@ -568,23 +646,27 @@ effect_name = "Switcheroo"
 effect_type = 2
 identifier = 1
 usage_type = 1
+description = "Invert ATK and SHD."
 
 [sub_resource type="Resource" id="Resource_ru1fi"]
 script = ExtResource("3_kwtlh")
 effect_name = "Cape"
 effect_type = 2
+description = "Hide all of your Revealed ally Entities."
 
 [sub_resource type="Resource" id="Resource_yn1dr"]
 script = ExtResource("3_kwtlh")
 effect_name = "Smoke Grenade"
 effect_type = 2
 usage_type = 1
+description = "Hide an Entity."
 
 [sub_resource type="Resource" id="Resource_vgp0b"]
 script = ExtResource("3_kwtlh")
 effect_name = "Magnifying Glass"
 effect_type = 2
 timeline_condition = 1
+description = "Reveal an enemy Entity without activating their Ability."
 
 [sub_resource type="Resource" id="Resource_1nh26"]
 script = ExtResource("3_kwtlh")
@@ -592,12 +674,14 @@ effect_name = "Recon"
 effect_type = 2
 identifier = 1
 timeline_condition = 1
+description = "Reveal an opponent's hand."
 
 [sub_resource type="Resource" id="Resource_usy5s"]
 script = ExtResource("3_kwtlh")
 effect_name = "Reshuffler"
 effect_type = 2
 timeline_condition = 1
+description = "Opponent puts their hand back into their Effect deck, shuffles, and draws 2 Effect cards."
 
 [sub_resource type="Resource" id="Resource_wluvd"]
 script = ExtResource("3_kwtlh")
@@ -605,28 +689,33 @@ effect_name = "Treasure"
 effect_type = 2
 ability_phase = 1
 timeline_condition = 1
+description = "Draw 1 Effect card."
 
 [sub_resource type="Resource" id="Resource_mlvoq"]
 script = ExtResource("3_kwtlh")
 effect_name = "Scepter"
 effect_type = 2
 ability_phase = 2
+description = "Upon landing a KO, opponent Reveals the Entity replacing the KO."
 
 [sub_resource type="Resource" id="Resource_l4cgx"]
 script = ExtResource("3_kwtlh")
 effect_name = "Disguise"
 effect_type = 2
 usage_type = 1
+description = "Changes the ally Entity's Set."
 
 [sub_resource type="Resource" id="Resource_yclab"]
 script = ExtResource("3_kwtlh")
 effect_name = "Gem"
 effect_type = 2
+description = "Your Entity in combat activates one of your other Entities' Ability instead of their own, so long as they are in the Play Field. If Hidden, Reveal that Entity."
 
 [sub_resource type="Resource" id="Resource_62s5d"]
 script = ExtResource("3_kwtlh")
 effect_name = "Plug-in"
 effect_type = 2
+description = "Transfer a Status onto one of your Entities."
 
 [sub_resource type="Resource" id="Resource_kg8rn"]
 script = ExtResource("3_kwtlh")
@@ -634,11 +723,13 @@ effect_name = "Stun Grenade"
 effect_type = 2
 ability_phase = 2
 usage_type = 1
+description = "The Entity and their Ability cannot be used. Keep this card Attached until next Phase."
 
 [sub_resource type="Resource" id="Resource_gcq81"]
 script = ExtResource("3_kwtlh")
 effect_name = "Trash Can"
 effect_type = 2
+description = "Exhaust any number of Effect cards in your hand, including this card."
 
 [sub_resource type="Resource" id="Resource_qqfnu"]
 script = ExtResource("3_kwtlh")
@@ -646,6 +737,7 @@ effect_name = "Recycle"
 effect_type = 2
 identifier = 1
 timeline_condition = 1
+description = "Search your Discard pile and take one Effect card into your hand."
 
 [sub_resource type="Resource" id="Resource_tl8ol"]
 script = ExtResource("3_kwtlh")
@@ -653,6 +745,7 @@ effect_name = "Recall"
 effect_type = 2
 identifier = 1
 timeline_condition = 1
+description = "Shuffle an ally Entity in the Play Field back into your Entity deck and replace it. Exhaust."
 
 [node name="CardDB" type="Node" unique_id=452699192]
 script = ExtResource("1_p485w")

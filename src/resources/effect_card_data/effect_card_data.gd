@@ -36,3 +36,4 @@ enum UsageType {
 @export var ability_phase: AbilityPhase = AbilityPhase.BOTH
 @export var usage_type: UsageType = UsageType.USE
 @export var timeline_condition: TimelineCondition = TimelineCondition.NONE
+@export var description: String

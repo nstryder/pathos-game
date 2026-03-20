@@ -39,6 +39,7 @@ func _ready() -> void:
 	max_attack = data.base_attack
 	max_shield = data.base_shield
 	nickname.text = data.nickname
+	description.text = data.description if data.description else "No special ability."
 
 	Utils.validate_vars(self , entity_code, data)
 
