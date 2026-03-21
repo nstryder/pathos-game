@@ -76,6 +76,7 @@ position = Vector2(1600, 768)
 gizmo_extents = 64.0
 
 [node name="BoardCenter" type="Marker2D" parent="." unique_id=1465864018]
+unique_name_in_owner = true
 position = Vector2(960, 540)
 
 [node name="YourSide" parent="BoardCenter" unique_id=1698511803 instance=ExtResource("7_jsr4r")]

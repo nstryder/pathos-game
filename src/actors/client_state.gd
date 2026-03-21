@@ -88,7 +88,6 @@ func show_attack_indicator(from: Vector2, to: Vector2) -> void:
 	print(from, " | ", to)
 
 
-# TODO: Finish
 @rpc("authority", "call_local", "reliable")
 func visualize_combat() -> void:
 	await client_sync_server_state()
@@ -107,6 +106,22 @@ func visualize_combat() -> void:
 	update_entities_on_field()
 	check_endgame()
 	pass
+
+
+@rpc("authority", "call_local", "reliable")
+func visualize_combat_phase_fx(action_dict: Dictionary) -> void:
+	var action := Timeline.Action.from_dict(action_dict)
+	var presentation_point: Node2D = %PresentationPoint
+	var board_center: Node2D = %BoardCenter
+	action.effect.slot_attachment_effects_disable()
+	action.effect.is_veiled = false
+	action.effect.global_position = board_center.global_position
+	var tween := create_tween()
+	tween.tween_property(action.effect, "global_position", presentation_point.global_position, 0.1)
+	tween.tween_interval(0.9)
+	tween.tween_property(action.effect, "global_position:y", action.effect.global_position.y + 400, 0.1)
+	await tween.finished
+	action.effect.hide_from_field()
 
 
 func check_endgame() -> void:

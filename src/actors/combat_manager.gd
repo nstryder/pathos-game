@@ -85,13 +85,14 @@ func player_has_won() -> bool:
 
 
 func start_combat() -> void:
-	_resolve_effects()
+	await _resolve_effects()
 	if attack_is_declared():
 		_resolve_combat()
+		server.client.visualize_combat.rpc()
 	_resolve_discards()
 	_resolve_deaths()
 
-# TODO
+
 func _resolve_effects() -> void:
 	for action: Timeline.Action in server.timeline.get_organized_queue():
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
@@ -100,6 +101,8 @@ func _resolve_effects() -> void:
 		else:
 			action.effect.behavior.use()
 			server.timeline.remove_from_queue(action)
+		server.client.visualize_combat_phase_fx.rpc(action.to_dict())
+		await Utils.sleep(1)
 
 
 func _resolve_combat() -> void:

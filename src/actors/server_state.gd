@@ -82,9 +82,7 @@ func execute_defense_phase() -> void:
 
 func execute_combat_phase() -> void:
 	combat_manager.current_phase = Phases.COMBAT
-	combat_manager.start_combat()
-	if combat_manager.attack_is_declared():
-		client.visualize_combat.rpc()
+	await combat_manager.start_combat()
 	await Utils.sleep(3)
 	timeline.clear_timeline.rpc()
 
