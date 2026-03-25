@@ -2,13 +2,17 @@ extends Resource
 class_name EffectBehavior
 
 
+class GameData:
+	var target_entity: EntityCard
+
+
 @warning_ignore("unused_parameter")
-func enter(target_entity: EntityCard) -> void:
+func enter(data: GameData) -> void:
 	pass
 
 
 @warning_ignore("unused_parameter")
-func exit(target_entity: EntityCard) -> void:
+func exit(data: GameData) -> void:
 	pass
 
 

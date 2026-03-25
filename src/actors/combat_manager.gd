@@ -95,11 +95,12 @@ func start_combat() -> void:
 
 func _resolve_effects() -> void:
 	for action: Timeline.Action in server.timeline.get_organized_queue():
+		var game_data := EffectBehavior.GameData.new()
+		game_data.target_entity = action.entity
+		action.effect.behavior.enter(game_data)
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
-			action.effect.behavior.enter(action.entity)
 			server.timeline.transfer_action_to_discard(action)
 		else:
-			action.effect.behavior.use()
 			server.timeline.remove_from_queue(action)
 		server.client.visualize_combat_phase_fx.rpc(action.to_dict())
 		await Utils.sleep(1)
@@ -114,7 +115,9 @@ func _resolve_combat() -> void:
 func _resolve_discards() -> void:
 	for action: Timeline.Action in server.timeline.get_discard_queue():
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
-			action.effect.behavior.exit(action.entity)
+			var game_data := EffectBehavior.GameData.new()
+			game_data.target_entity = action.entity
+			action.effect.behavior.exit(game_data)
 			server.timeline.remove_from_discard_queue(action)
 
 
