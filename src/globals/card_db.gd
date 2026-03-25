@@ -85,6 +85,7 @@ func _build_effect_card_data(skip_existing: bool = true) -> void:
 		effect_resource.ability_phase = EffectCardData.AbilityPhase[str(effect_entry["Ability Phase"]).to_upper()]
 		effect_resource.usage_type = EffectCardData.UsageType[str(effect_entry["Use/Attach"]).to_upper()]
 		effect_resource.timeline_condition = EffectCardData.TimelineCondition[str(effect_entry["Timeline Condition"]).to_upper()]
+		effect_resource.after_use = EffectCardData.AfterUse[str(effect_entry["After Use"]).to_upper()]
 		effect_resource.description = effect_entry["Ability Description"]
 		# TODO: Fill in rest of data once they are implemented
 		

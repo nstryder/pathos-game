@@ -30,10 +30,16 @@ enum UsageType {
 	ATTACH
 }
 
+enum AfterUse {
+	DISCARD,
+	EXHAUST
+}
+
 @export var effect_name: String
 @export var effect_type: EffectType = EffectType.OFFENSIVE
 @export var identifier: Identifier = Identifier.ITEM
 @export var ability_phase: AbilityPhase = AbilityPhase.BOTH
 @export var usage_type: UsageType = UsageType.USE
 @export var timeline_condition: TimelineCondition = TimelineCondition.NONE
+@export var after_use: AfterUse = AfterUse.DISCARD
 @export var description: String
