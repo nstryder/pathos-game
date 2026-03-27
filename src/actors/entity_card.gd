@@ -22,6 +22,7 @@ var max_shield: int
 		if value <= 0:
 			deactivate()
 
+@onready var conditions: Node2D = $Conditions
 @onready var nickname: Label = %Nickname
 @onready var description: Label = %Description
 @onready var attack_label: Label = %Attack
@@ -64,3 +65,23 @@ func animate_pop(node: Control) -> void:
 	rot_tween.tween_property(node, "rotation", PI / 6.0, 0.1)
 	rot_tween.tween_property(node, "rotation", -PI / 6.0, 0.1)
 	rot_tween.tween_property(node, "rotation", 0, 0.1)
+
+
+func heal(amount: int) -> void:
+	current_shield = min(max_shield, current_shield + amount)
+
+
+func add_condition(condition_path: String) -> void:
+	var condition: Condition = (load(condition_path) as PackedScene).instantiate()
+	conditions.add_child(condition)
+
+
+func get_conditions() -> Array[Condition]:
+	var condition_list: Array[Condition]
+	condition_list.assign(conditions.get_children())
+	return condition_list
+
+
+func clear_conditions() -> void:
+	for condition in conditions.get_children():
+		condition.queue_free()

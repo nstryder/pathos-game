@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ciuga10gboorw"]
+
+[ext_resource type="Script" uid="uid://c3oe0ow3evkyr" path="res://src/resources/entity_conditions/_base_condition.gd" id="1_wicvd"]
+
+[node name="BaseCondition" type="Node2D" unique_id=1455647321]
+script = ExtResource("1_wicvd")

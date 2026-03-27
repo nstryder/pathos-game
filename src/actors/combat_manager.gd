@@ -85,10 +85,12 @@ func player_has_won() -> bool:
 
 
 func start_combat() -> void:
+	if not multiplayer.is_server():
+		return
+	
 	await _resolve_effects()
 	if attack_is_declared():
 		_resolve_combat()
-		server.client.visualize_combat.rpc()
 	_resolve_discards()
 	_resolve_deaths()
 
@@ -107,10 +109,19 @@ func _resolve_effects() -> void:
 
 
 func _resolve_combat() -> void:
-	var attacking_entity: EntityCard = get_current_attacker()
-	var target_entity: EntityCard = get_current_target()
-	target_entity.current_shield -= attacking_entity.current_attack
+	server.client.visualize_combat.rpc()
+	var attacker: EntityCard = get_current_attacker()
+	var defender: EntityCard = get_current_target()
 
+	# TODO: Implement damage formula hijacking
+	defender.current_shield -= attacker.current_attack
+
+	for condition in attacker.get_conditions():
+		condition.on_post_damage_given(attacker, defender)
+	
+	attacker.clear_conditions()
+	defender.clear_conditions()
+		
 
 func _resolve_discards() -> void:
 	for action: Timeline.Action in server.timeline.get_discard_queue():

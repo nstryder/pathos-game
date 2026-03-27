@@ -2,8 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://bfb04tdppv0p2" path="res://src/actors/card.tscn" id="1_skp7o"]
 [ext_resource type="Script" uid="uid://220a8t7sh726" path="res://src/actors/entity_card.gd" id="2_ewlyu"]
+[ext_resource type="Script" uid="uid://b5q7780f6eosn" path="res://src/actors/conditions_spawner.gd" id="3_3ilae"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ewlyu"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vc8ps"]
 resource_local_to_scene = true
 bg_color = Color(0.878431, 0.788235, 0.65098, 1)
 border_width_left = 6
@@ -41,7 +42,7 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vc8ps"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62ai8"]
 resource_local_to_scene = true
 bg_color = Color(0.878431, 0.788235, 0.65098, 1)
 border_width_left = 6
@@ -78,7 +79,7 @@ current_attack = 0
 current_shield = 0
 
 [node name="Background" parent="Visuals" index="0"]
-theme_override_styles/panel = SubResource("StyleBoxFlat_ewlyu")
+theme_override_styles/panel = SubResource("StyleBoxFlat_vc8ps")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Visuals/Info" index="0" unique_id=1870098539]
 layout_mode = 2
@@ -152,12 +153,20 @@ label_settings = SubResource("LabelSettings_vc8ps")
 
 [node name="Veil" parent="Visuals" index="2"]
 visible = false
-theme_override_styles/panel = SubResource("StyleBoxFlat_vc8ps")
+theme_override_styles/panel = SubResource("StyleBoxFlat_62ai8")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="1" unique_id=1886459913]
 replication_config = SubResource("SceneReplicationConfig_ewlyu")
 
-[node name="Area2D" parent="." index="2"]
+[node name="ConditionsSpawner" type="MultiplayerSpawner" parent="." index="2" unique_id=1265659322]
+_spawnable_scenes = PackedStringArray("uid://ciuga10gboorw", "uid://5wlge7x6o2s")
+spawn_path = NodePath("../Conditions")
+script = ExtResource("3_3ilae")
+conditions_path = "res://src/resources/entity_conditions/"
+
+[node name="Conditions" type="Node2D" parent="." index="3" unique_id=1114080756]
+
+[node name="Area2D" parent="." index="4"]
 visible = false
 collision_layer = 2
 collision_mask = 2

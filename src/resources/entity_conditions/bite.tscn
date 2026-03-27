@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://5wlge7x6o2s"]
+
+[ext_resource type="PackedScene" uid="uid://ciuga10gboorw" path="res://src/resources/entity_conditions/_base_condition.tscn" id="1_s25bx"]
+[ext_resource type="Script" uid="uid://dngb5s8a62alv" path="res://src/resources/entity_conditions/bite.gd" id="2_iu4hv"]
+
+[node name="Bite" unique_id=1455647321 instance=ExtResource("1_s25bx")]
+script = ExtResource("2_iu4hv")

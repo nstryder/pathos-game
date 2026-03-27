@@ -54,9 +54,11 @@ func initialize_decks() -> void:
 		effect_card_holder.add_child(effect_card, true)
 		
 	entity_deck.assign(range(base_entity_deck.size()))
-	entity_deck.shuffle()
 	effect_deck.assign(range(base_effect_deck.size()))
-	effect_deck.shuffle()
+	var battle_screen: BattleScreen = owner
+	if battle_screen.can_shuffle_cards:
+		entity_deck.shuffle()
+		effect_deck.shuffle()
 
 
 func draw_entities() -> void:
