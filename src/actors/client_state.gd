@@ -77,6 +77,7 @@ func sync_hands() -> void:
 	opp_side.realize_effect_state()
 
 
+@rpc("authority", "call_local", "reliable")
 func set_status(text: String) -> void:
 	(%StatusLabel as Label).text = text
 
@@ -90,7 +91,7 @@ func show_attack_indicator(from: Vector2, to: Vector2) -> void:
 
 @rpc("authority", "call_local", "reliable")
 func visualize_combat() -> void:
-	await client_sync_server_state()
+	print("Resolving Combat for ", multiplayer.get_unique_id())
 	set_status("Resolving Combat")
 	var attacking_entity: EntityCard = combat_manager.get_current_attacker()
 	var target_position: Vector2 = combat_manager.get_current_target().global_position
@@ -102,10 +103,6 @@ func visualize_combat() -> void:
 	tween.tween_property(attacking_entity, "global_position", original_position, 0.1)
 	await tween.finished
 	attack_indicator.hide()
-	await Utils.sleep(1)
-	update_entities_on_field()
-	check_endgame()
-	pass
 
 
 @rpc("authority", "call_local", "reliable")
@@ -124,7 +121,9 @@ func visualize_combat_phase_fx(action_dict: Dictionary) -> void:
 	action.effect.hide_from_field()
 
 
+@rpc("authority", "call_local", "reliable")
 func check_endgame() -> void:
+	update_entities_on_field()
 	if server.player1.hp <= 0 or server.player2.hp <= 0:
 		card_manager.dragging_enabled = false
 		card_manager.attacking_enabled = false

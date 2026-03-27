@@ -85,6 +85,7 @@ func execute_combat_phase() -> void:
 	await combat_manager.start_combat()
 	await Utils.sleep(3)
 	timeline.clear_timeline.rpc()
+	client.check_endgame.rpc()
 
 
 @rpc("any_peer", "call_local", "reliable")

@@ -90,12 +90,13 @@ func start_combat() -> void:
 	
 	await _resolve_effects()
 	if attack_is_declared():
-		_resolve_combat()
-	_resolve_discards()
-	_resolve_deaths()
+		await _resolve_combat()
+	await _resolve_discards()
+	await _resolve_deaths()
 
 
 func _resolve_effects() -> void:
+	server.client.set_status.rpc("Resolving Effects...")
 	for action: Timeline.Action in server.timeline.get_organized_queue():
 		var game_data := EffectBehavior.GameData.new()
 		game_data.target_entity = action.entity
@@ -106,6 +107,7 @@ func _resolve_effects() -> void:
 			server.timeline.remove_from_queue(action)
 		server.client.visualize_combat_phase_fx.rpc(action.to_dict())
 		await Utils.sleep(1)
+	await Utils.sleep(1)
 
 
 func _resolve_combat() -> void:
@@ -121,17 +123,22 @@ func _resolve_combat() -> void:
 	
 	attacker.clear_conditions()
 	defender.clear_conditions()
+	await Utils.sleep(1)
 		
 
 func _resolve_discards() -> void:
+	server.client.set_status.rpc("Discarding cards...")
 	for action: Timeline.Action in server.timeline.get_discard_queue():
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
 			var game_data := EffectBehavior.GameData.new()
 			game_data.target_entity = action.entity
 			action.effect.behavior.exit(game_data)
 			server.timeline.remove_from_discard_queue(action)
+	await Utils.sleep(1)
 
 
 func _resolve_deaths() -> void:
+	server.client.set_status.rpc("Checking deaths...")
 	server.player1.check_entity_deaths()
 	server.player2.check_entity_deaths()
+	await Utils.sleep(1)
