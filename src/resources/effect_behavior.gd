@@ -3,7 +3,9 @@ class_name EffectBehavior
 
 
 class GameData:
+	var effect_player: Player
 	var target_entity: EntityCard
+	var server: ServerState
 
 
 @warning_ignore("unused_parameter")

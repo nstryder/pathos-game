@@ -31,7 +31,7 @@ var is_veiled: bool = false:
 		(%Veil as Control).visible = is_veiled
 
 
-var is_revealed_permanently: bool = false:
+@export var is_revealed_permanently: bool = false:
 	set(value):
 		is_revealed_permanently = value
 		if value:

@@ -76,8 +76,10 @@ func execute_offense_phase(attacker: Player, defender: Player) -> void:
 
 
 func execute_defense_phase() -> void:
+	if combat_manager.attack_is_declared():
+		combat_manager.get_current_attacker().is_revealed_permanently = true
+		combat_manager.get_current_target().is_revealed_permanently = true
 	client.start_client_defense.rpc_id(combat_manager.defending_player.id)
-	client.wait_for_defense.rpc_id(combat_manager.attacking_player.id)
 
 
 func execute_combat_phase() -> void:

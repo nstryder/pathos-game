@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bfb04tdppv0p2"]
+[gd_scene format=3 uid="uid://bfb04tdppv0p2"]
 
 [ext_resource type="Script" uid="uid://40ynm75xhfg0" path="res://src/actors/card.gd" id="1_juwcs"]
 
@@ -21,13 +21,18 @@ corner_radius_bottom_left = 6
 corner_detail = 4
 shadow_offset = Vector2(0, 9)
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_juwcs"]
+properties/0/path = NodePath(".:is_revealed_permanently")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p56sn"]
 size = Vector2(240, 360)
 
-[node name="Card" type="Node2D"]
+[node name="Card" type="Node2D" unique_id=651227605]
 script = ExtResource("1_juwcs")
 
-[node name="Visuals" type="Control" parent="."]
+[node name="Visuals" type="Control" parent="." unique_id=1408353716]
 layout_mode = 3
 anchors_preset = 0
 offset_left = -120.0
@@ -36,7 +41,7 @@ offset_right = 120.0
 offset_bottom = 180.0
 theme = SubResource("Theme_juwcs")
 
-[node name="Background" type="Panel" parent="Visuals"]
+[node name="Background" type="Panel" parent="Visuals" unique_id=1883745025]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -46,7 +51,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_juwcs")
 
-[node name="Info" type="MarginContainer" parent="Visuals"]
+[node name="Info" type="MarginContainer" parent="Visuals" unique_id=360501990]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -58,7 +63,7 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="Veil" type="Panel" parent="Visuals"]
+[node name="Veil" type="Panel" parent="Visuals" unique_id=1706764291]
 unique_name_in_owner = true
 modulate = Color(0.69, 0.69, 0.69, 1)
 layout_mode = 1
@@ -69,7 +74,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_juwcs")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="RevealedSyncer" type="MultiplayerSynchronizer" parent="." unique_id=835301285]
+replication_config = SubResource("SceneReplicationConfig_juwcs")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="Area2D" type="Area2D" parent="." unique_id=1799181593]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=402604604]
 shape = SubResource("RectangleShape2D_p56sn")

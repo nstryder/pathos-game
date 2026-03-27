@@ -49,7 +49,7 @@ font_size = 128
 [node name="BattleScreen" type="Node2D" unique_id=935212692]
 script = ExtResource("1_36hs7")
 template_entity_deck = Array[String](["Ginko", "Golem", "Pixie", "Hibiki", "Haru"])
-template_effect_deck = Array[String](["Mortar", "Plate", "Medkit", "Parry", "Switcheroo", "Reshuffler", "Bite", "Knife", "Treasure"])
+template_effect_deck = Array[String](["Plate", "Medkit", "Snipe", "Switcheroo", "Reshuffler", "Bite", "Knife", "Treasure", "Mortar"])
 can_shuffle_cards = false
 
 [node name="ServerState" parent="." unique_id=1478185525 instance=ExtResource("2_6smmo")]

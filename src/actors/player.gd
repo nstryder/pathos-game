@@ -100,8 +100,17 @@ func get_effect_card_at_index(idx: int) -> EffectCard:
 	return effect_card_holder.get_child(idx)
 
 
-func get_entity_card_at_slot(slot_num: int) -> EntityCard:
-	return get_entity_card_at_index(entities_in_play[slot_num])
+func get_all_entities_in_play() -> Array[EntityCard]:
+	var entities: Array[EntityCard] = []
+	for entity_idx in entities_in_play:
+		if entity_idx == -1:
+			continue
+		entities.append(get_entity_card_at_index(entity_idx))
+	return entities
+
+
+func take_damage(amount: int) -> void:
+	hp -= amount
 
 
 func check_entity_deaths() -> void:
@@ -114,5 +123,5 @@ func check_entity_deaths() -> void:
 			entity_graveyard.append(entity_idx)
 			entities_in_play[i] = -1
 			var overdamage: int = abs(entity.current_shield)
-			hp -= (2 + overdamage)
+			take_damage(2 + overdamage)
 	draw_entities()

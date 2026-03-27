@@ -98,9 +98,9 @@ func start_combat() -> void:
 func _resolve_effects() -> void:
 	server.client.set_status.rpc("Resolving Effects...")
 	for action: Timeline.Action in server.timeline.get_organized_queue():
-		var game_data := EffectBehavior.GameData.new()
-		game_data.target_entity = action.entity
+		var game_data := _create_game_data(action)
 		action.effect.behavior.enter(game_data)
+
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
 			server.timeline.transfer_action_to_discard(action)
 		else:
@@ -130,8 +130,7 @@ func _resolve_discards() -> void:
 	server.client.set_status.rpc("Discarding cards...")
 	for action: Timeline.Action in server.timeline.get_discard_queue():
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
-			var game_data := EffectBehavior.GameData.new()
-			game_data.target_entity = action.entity
+			var game_data := _create_game_data(action)
 			action.effect.behavior.exit(game_data)
 			server.timeline.remove_from_discard_queue(action)
 	await Utils.sleep(1)
@@ -142,3 +141,11 @@ func _resolve_deaths() -> void:
 	server.player1.check_entity_deaths()
 	server.player2.check_entity_deaths()
 	await Utils.sleep(1)
+
+
+func _create_game_data(action: Timeline.Action) -> EffectBehavior.GameData:
+	var game_data := EffectBehavior.GameData.new()
+	game_data.effect_player = action.effect.player
+	game_data.target_entity = action.entity
+	game_data.server = server
+	return game_data

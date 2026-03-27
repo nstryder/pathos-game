@@ -60,11 +60,6 @@ func wait_for_offense() -> void:
 	wait_for_turn()
 
 
-@rpc("authority", "call_local", "reliable")
-func wait_for_defense() -> void:
-	reveal_combating_entities()
-
-
 func wait_for_turn() -> void:
 	set_status("Waiting for opponent's action...")
 	is_taking_turn = false
@@ -151,7 +146,6 @@ func start_client_defense() -> void:
 	is_attacker = false
 	card_manager.dragging_enabled = true
 	card_manager.attacking_enabled = false
-	reveal_combating_entities()
 	
 
 #region Player Actions
@@ -192,13 +186,6 @@ func end_turn() -> void:
 
 
 #endregion
-
-
-func reveal_combating_entities() -> void:
-	if combat_manager.attack_is_declared():
-		combat_manager.get_current_attacker().is_veiled = false
-		combat_manager.get_current_target().is_veiled = false
-
 
 func update_hp_label(new_hp: int, target_label: Label) -> void:
 	target_label.text = str(new_hp)
