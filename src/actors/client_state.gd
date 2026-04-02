@@ -67,6 +67,8 @@ func wait_for_turn() -> void:
 	card_manager.attacking_enabled = false
 	button_undo.hide()
 
+
+@rpc("authority", "call_local", "reliable")
 func sync_hands() -> void:
 	your_side.realize_effect_state()
 	opp_side.realize_effect_state()

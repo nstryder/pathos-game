@@ -12,36 +12,41 @@ properties/1/replication_mode = 2
 properties/2/path = NodePath(".:entity_graveyard")
 properties/2/spawn = true
 properties/2/replication_mode = 2
-properties/3/path = NodePath(".:effect_deck")
+properties/3/path = NodePath(".:base_entity_deck")
 properties/3/spawn = true
 properties/3/replication_mode = 2
-properties/4/path = NodePath(".:effect_hand")
+properties/4/path = NodePath(".:base_effect_deck")
 properties/4/spawn = true
 properties/4/replication_mode = 2
-properties/5/path = NodePath(".:effect_discard_pile")
+properties/5/path = NodePath(".:id")
 properties/5/spawn = true
 properties/5/replication_mode = 2
-properties/6/path = NodePath(".:effect_exhaust_pile")
+properties/6/path = NodePath(".:hp")
 properties/6/spawn = true
 properties/6/replication_mode = 2
-properties/7/path = NodePath(".:base_entity_deck")
-properties/7/spawn = true
-properties/7/replication_mode = 2
-properties/8/path = NodePath(".:base_effect_deck")
-properties/8/spawn = true
-properties/8/replication_mode = 2
-properties/9/path = NodePath(".:id")
-properties/9/spawn = true
-properties/9/replication_mode = 2
-properties/10/path = NodePath(".:hp")
-properties/10/spawn = true
-properties/10/replication_mode = 2
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gdh0h"]
+properties/0/path = NodePath(".:effect_deck")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:effect_hand")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:effect_discard_pile")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:effect_exhaust_pile")
+properties/3/spawn = true
+properties/3/replication_mode = 2
 
 [node name="Player" type="Node2D" unique_id=1515954978]
 script = ExtResource("1_iairh")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=595768675]
 replication_config = SubResource("SceneReplicationConfig_iairh")
+
+[node name="HandSyncer" type="MultiplayerSynchronizer" parent="." unique_id=159796978]
+replication_config = SubResource("SceneReplicationConfig_gdh0h")
 
 [node name="EntitySpawner" type="MultiplayerSpawner" parent="." unique_id=325733916]
 _spawnable_scenes = PackedStringArray("uid://djf85mhy7rn64")

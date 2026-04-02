@@ -71,11 +71,10 @@ func draw_entities() -> void:
 			entities_in_play[i] = drawn_entity_idx
 
 
-func draw_effects() -> void:
+func draw_effects(draw_quantity: int = 2) -> void:
 	if not multiplayer.is_server():
 		return
-	const DRAW_QUANTITY = 2
-	for i in DRAW_QUANTITY:
+	for i in draw_quantity:
 		if effect_deck.is_empty():
 			return
 		effect_hand.append(effect_deck.pop_back())
