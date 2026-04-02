@@ -59,6 +59,9 @@ func hide_dead_entities() -> void:
 #region EFFECT METHODS
 
 func realize_effect_state() -> void:
+	for effect_idx: int in player.effect_deck:
+		var effect_card: EffectCard = player.get_effect_card_at_index(effect_idx)
+		effect_card.hide_from_field()
 	for effect_idx: int in player.effect_hand:
 		var effect_card: EffectCard = player.get_effect_card_at_index(effect_idx)
 		if effect_card.is_hidden_from_field():

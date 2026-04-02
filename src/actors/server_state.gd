@@ -112,6 +112,12 @@ func rescind_attack() -> void:
 	combat_manager.rescind_attack.rpc()
 
 
+func sync_client_hands() -> void:
+	# Wait 1 frame to ensure Synchronizers are first in network order
+	await get_tree().process_frame
+	client.sync_hands.rpc()
+
+
 func _assign_player_ids() -> void:
 	# NOTE: get_peers() does NOT include caller's own ID
 	# so we need to include it manually (for the server it is 1)

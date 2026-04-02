@@ -89,6 +89,16 @@ func add_effect_to_hand(effect_idx: int) -> void:
 	effect_hand.append(effect_idx)
 
 
+func add_effect_to_deck(effect_idx: int) -> void:
+	assert(effect_idx not in effect_deck, "Effect was already in deck.")
+	effect_deck.append(effect_idx)
+
+
+func return_effect_to_deck(effect_idx: int) -> void:
+	remove_effect_from_hand(effect_idx)
+	add_effect_to_deck(effect_idx)
+
+
 func get_entity_card_at_index(idx: int) -> EntityCard:
 	assert(idx >= 0, "Attempted to get an invalid entity idx.")
 	return entity_card_holder.get_child(idx)

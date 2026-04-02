@@ -7,6 +7,12 @@ class GameData:
 	var target_entity: EntityCard
 	var server: ServerState
 
+	func get_opponent() -> Player:
+		if effect_player == server.player1:
+			return server.player2
+		else:
+			return server.player1
+
 
 @warning_ignore("unused_parameter")
 func enter(data: GameData) -> void:
