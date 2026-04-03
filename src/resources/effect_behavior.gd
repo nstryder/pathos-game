@@ -6,6 +6,7 @@ class GameData:
 	var effect_player: Player
 	var target_entity: EntityCard
 	var server: ServerState
+	var combat_data: CombatManager.CombatData
 
 	func get_opponent() -> Player:
 		if effect_player == server.player1:

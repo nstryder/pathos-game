@@ -4,6 +4,13 @@ class_name CombatManager
 signal attack_declared
 signal attack_rescinded
 
+
+class CombatData:
+	var damage_source: Callable # Callable<> -> int
+	var damage_receiver: Callable # Callable<int> -> void
+	var damage_modifier: float = 1
+
+
 enum Phases {
 	PLAYER1_OFFENSE,
 	PLAYER2_DEFENSE,
@@ -79,6 +86,8 @@ func reset_attack_indexes() -> void:
 	declared_target_idx = -1
 
 
+#region COMBAT RESOLUTION
+
 # TODO
 func player_has_won() -> bool:
 	return false
@@ -87,18 +96,29 @@ func player_has_won() -> bool:
 func start_combat() -> void:
 	if not multiplayer.is_server():
 		return
+
+	var data: CombatData = _initialize_combat_data()
 	
-	await _resolve_effects()
+	await _resolve_effects(data)
 	if attack_is_declared():
-		await _resolve_combat()
-	await _resolve_discards()
+		await _resolve_combat(data)
+	await _resolve_discards(data)
 	await _resolve_deaths()
 
 
-func _resolve_effects() -> void:
+func _initialize_combat_data() -> CombatData:
+	var data := CombatData.new()
+	var attacker: EntityCard = get_current_attacker()
+	var target: EntityCard = get_current_target()
+	data.damage_source = attacker.get_current_attack
+	data.damage_receiver = target.take_damage
+	return data
+
+
+func _resolve_effects(data: CombatData) -> void:
 	server.client.set_status.rpc("Resolving Effects...")
 	for action: Timeline.Action in server.timeline.get_organized_queue():
-		var game_data := _create_game_data(action)
+		var game_data := _create_game_data(action, data)
 		action.effect.behavior.enter(game_data)
 
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
@@ -110,13 +130,16 @@ func _resolve_effects() -> void:
 	await Utils.sleep(1)
 
 
-func _resolve_combat() -> void:
+func _resolve_combat(data: CombatData) -> void:
 	server.client.visualize_combat.rpc()
+
 	var attacker: EntityCard = get_current_attacker()
 	var defender: EntityCard = get_current_target()
 
-	# TODO: Implement damage formula hijacking
-	defender.current_shield -= attacker.current_attack
+	# By default this is basically just:
+	# defender.take_damage(attacker.get_current_attack())
+	var damage: int = data.damage_source.call()
+	data.damage_receiver.call(damage)
 
 	for condition in attacker.get_conditions():
 		condition.on_post_damage_given(attacker, defender)
@@ -126,11 +149,11 @@ func _resolve_combat() -> void:
 	await Utils.sleep(1)
 		
 
-func _resolve_discards() -> void:
+func _resolve_discards(data: CombatData) -> void:
 	server.client.set_status.rpc("Discarding cards...")
 	for action: Timeline.Action in server.timeline.get_discard_queue():
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
-			var game_data := _create_game_data(action)
+			var game_data := _create_game_data(action, data)
 			action.effect.behavior.exit(game_data)
 			server.timeline.remove_from_discard_queue(action)
 	await Utils.sleep(1)
@@ -143,9 +166,13 @@ func _resolve_deaths() -> void:
 	await Utils.sleep(1)
 
 
-func _create_game_data(action: Timeline.Action) -> EffectBehavior.GameData:
+func _create_game_data(action: Timeline.Action, data: CombatData) -> EffectBehavior.GameData:
 	var game_data := EffectBehavior.GameData.new()
 	game_data.effect_player = action.effect.player
 	game_data.target_entity = action.entity
 	game_data.server = server
+	game_data.combat_data = data
 	return game_data
+
+
+#endregion

@@ -7,12 +7,19 @@ var data: EntityCardData
 
 var max_attack: int
 var max_shield: int
+
 @export var current_attack: int:
-	set(value):
-		current_attack = value
-		if attack_label:
-			attack_label.text = str(value)
-			animate_pop(attack_label.get_parent().get_parent() as Control)
+	set = set_current_attack,
+	get = get_current_attack
+func set_current_attack(value: int) -> void:
+	current_attack = value
+	if attack_label:
+		attack_label.text = str(value)
+		animate_pop(attack_label.get_parent().get_parent() as Control)
+func get_current_attack() -> int:
+	return current_attack
+
+
 @export var current_shield: int:
 	set(value):
 		current_shield = value
@@ -69,6 +76,10 @@ func animate_pop(node: Control) -> void:
 
 func heal(amount: int) -> void:
 	current_shield = min(max_shield, current_shield + amount)
+
+
+func take_damage(amount: int) -> void:
+	current_shield -= amount
 
 
 func add_condition(condition_path: String) -> void:

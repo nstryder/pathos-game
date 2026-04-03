@@ -11,7 +11,7 @@ Flash Freeze,FLASH FREEZE,Offensive,Status,Apply Frozen to an Entity.,Offense,No
 Taunt,TAUNT,Offensive,Status,Apply Aggro to an Entity.,Offense,None,Attach,Discard,S000-E01-N010,S000,E01,N010,v1.0
 Plate,PLATE,Defensive,Item,Gain +2 SHD.,Both,None,Attach,Discard,S000-E01-N011,S000,E01,N011,v1.0
 Syringe,SYRINGE,Defensive,Item,Remove a Status from one Entity.,Both,None,Attach,Discard,S000-E01-N012,S000,E01,N012,v1.0
-Barricade,BARRICADE,Defensive,Item,Immune to all DMG. Exhaust.,Both,None,Attach,Exhaust,S000-E01-N013,S000,E01,N013,v1.0
+Barricade,BARRICADE,Defensive,Item,Immune to all DMG. Exhaust.,Both,None,Use,Exhaust,S000-E01-N013,S000,E01,N013,v1.0
 Medkit,MEDKIT,Defensive,Item,Heal +3 SHD.,Both,None,Attach,Discard,S000-E01-N014,S000,E01,N014,v1.0
 Mask,MASK,Defensive,Item,Negate any Statuses applied this Phase.,Defense,None,Use,Discard,S000-E01-N015,S000,E01,N015,v1.0
 Dome,DOME,Defensive,Item,Immune to Overdamage.,Defense,None,Attach,Discard,S000-E01-N016,S000,E01,N016,v1.0

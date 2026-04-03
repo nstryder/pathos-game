@@ -6,4 +6,4 @@ func enter(data: GameData) -> void:
 	
 	for entity in enemy_player.get_all_entities_in_play():
 		if entity.is_revealed_permanently:
-			entity.current_shield -= 1
+			entity.take_damage(1)
