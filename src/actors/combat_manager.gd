@@ -9,14 +9,14 @@ class EntityCombatData:
 	var hit_player_instead: bool = false
 
 
-class GlobalCombatData:
+class PlayerCombatData:
 	var damage_modifier: float = 1.0
 	var overdamage_modifier: float = 1.0
 
 
 class CombatData:
 	var entities: Dictionary[EntityCard, EntityCombatData] = {}
-	var global := GlobalCombatData.new()
+	var players: Dictionary[Player, PlayerCombatData] = {}
 
 	
 enum Phases {
@@ -97,6 +97,26 @@ func reset_attack_indexes() -> void:
 
 #region COMBAT RESOLUTION
 
+
+# Use this in most cases when an Entity is trying to attack another Entity
+# whether a direct attack or through its ability
+func deal_damage(attacker: EntityCard, target: EntityCard, amount: int) -> void:
+	var damage_modifier: float = combat_data.players[target.player].damage_modifier
+	var damage := int(amount * damage_modifier)
+	if combat_data.entities[attacker].hit_player_instead:
+		target.player.take_damage(damage)
+	else:
+		target.take_damage(damage)
+
+
+# Use this for cases when you are dealing damage from non-entity sources
+# For example Mortar
+func deal_global_damage(target: EntityCard, amount: int) -> void:
+	var damage_modifier: float = combat_data.players[target.player].damage_modifier
+	var damage := int(amount * damage_modifier)
+	target.take_damage(damage)
+
+
 # TODO
 func player_has_won() -> bool:
 	return false
@@ -122,6 +142,9 @@ func _initialize_combat_data() -> void:
 		var entity_data := EntityCombatData.new()
 		combat_data.entities[entity] = entity_data
 	
+	combat_data.players[attacking_player] = PlayerCombatData.new()
+	combat_data.players[defending_player] = PlayerCombatData.new()
+	
 
 func _resolve_effects() -> void:
 	server.client.set_status.rpc("Resolving Effects...")
@@ -144,11 +167,7 @@ func _resolve_combat() -> void:
 	var attacker: EntityCard = get_current_attacker()
 	var defender: EntityCard = get_current_target()
 
-	var damage: int = int(attacker.get_current_attack() * combat_data.global.damage_modifier)
-	if combat_data.entities[attacker].hit_player_instead:
-		defending_player.take_damage(damage)
-	else:
-		defender.take_damage(damage)
+	deal_damage(attacker, defender, attacker.get_current_attack())
 
 	for condition in attacker.get_conditions():
 		condition.on_post_damage_given(attacker, defender)
