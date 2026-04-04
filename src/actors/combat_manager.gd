@@ -5,12 +5,20 @@ signal attack_declared
 signal attack_rescinded
 
 
+class EntityCombatData:
+	var hit_player_instead: bool = false
+
+
+class GlobalCombatData:
+	var damage_modifier: float = 1.0
+	var overdamage_modifier: float = 1.0
+
+
 class CombatData:
-	var damage_source: Callable # Callable<> -> int
-	var damage_receiver: Callable # Callable<int> -> void
-	var damage_modifier: float = 1
+	var entities: Dictionary[EntityCard, EntityCombatData] = {}
+	var global := GlobalCombatData.new()
 
-
+	
 enum Phases {
 	PLAYER1_OFFENSE,
 	PLAYER2_DEFENSE,
@@ -43,6 +51,7 @@ var declared_target_idx: int
 			defending_player = get_node(value)
 var attacking_player: Player
 var defending_player: Player
+var combat_data: CombatData
 
 @onready var server: ServerState = %ServerState
 
@@ -97,28 +106,27 @@ func start_combat() -> void:
 	if not multiplayer.is_server():
 		return
 
-	var data: CombatData = _initialize_combat_data()
+	_initialize_combat_data()
 	
-	await _resolve_effects(data)
+	await _resolve_effects()
 	if attack_is_declared():
-		await _resolve_combat(data)
-	await _resolve_discards(data)
+		await _resolve_combat()
+	await _resolve_discards()
 	await _resolve_deaths()
 
 
-func _initialize_combat_data() -> CombatData:
-	var data := CombatData.new()
-	var attacker: EntityCard = get_current_attacker()
-	var target: EntityCard = get_current_target()
-	data.damage_source = attacker.get_current_attack
-	data.damage_receiver = target.take_damage
-	return data
+func _initialize_combat_data() -> void:
+	combat_data = CombatData.new()
+	var all_active_entities: Array[EntityCard] = attacking_player.get_all_entities_in_play() + defending_player.get_all_entities_in_play()
+	for entity in all_active_entities:
+		var entity_data := EntityCombatData.new()
+		combat_data.entities[entity] = entity_data
+	
 
-
-func _resolve_effects(data: CombatData) -> void:
+func _resolve_effects() -> void:
 	server.client.set_status.rpc("Resolving Effects...")
 	for action: Timeline.Action in server.timeline.get_organized_queue():
-		var game_data := _create_game_data(action, data)
+		var game_data := _create_game_data(action)
 		action.effect.behavior.enter(game_data)
 
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
@@ -130,16 +138,17 @@ func _resolve_effects(data: CombatData) -> void:
 	await Utils.sleep(1)
 
 
-func _resolve_combat(data: CombatData) -> void:
+func _resolve_combat() -> void:
 	server.client.visualize_combat.rpc()
 
 	var attacker: EntityCard = get_current_attacker()
 	var defender: EntityCard = get_current_target()
 
-	# By default this is basically just:
-	# defender.take_damage(attacker.get_current_attack())
-	var damage: int = data.damage_source.call()
-	data.damage_receiver.call(damage)
+	var damage: int = int(attacker.get_current_attack() * combat_data.global.damage_modifier)
+	if combat_data.entities[attacker].hit_player_instead:
+		defending_player.take_damage(damage)
+	else:
+		defender.take_damage(damage)
 
 	for condition in attacker.get_conditions():
 		condition.on_post_damage_given(attacker, defender)
@@ -149,11 +158,11 @@ func _resolve_combat(data: CombatData) -> void:
 	await Utils.sleep(1)
 		
 
-func _resolve_discards(data: CombatData) -> void:
+func _resolve_discards() -> void:
 	server.client.set_status.rpc("Discarding cards...")
 	for action: Timeline.Action in server.timeline.get_discard_queue():
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
-			var game_data := _create_game_data(action, data)
+			var game_data := _create_game_data(action)
 			action.effect.behavior.exit(game_data)
 			server.timeline.remove_from_discard_queue(action)
 	await Utils.sleep(1)
@@ -166,12 +175,12 @@ func _resolve_deaths() -> void:
 	await Utils.sleep(1)
 
 
-func _create_game_data(action: Timeline.Action, data: CombatData) -> EffectBehavior.GameData:
+func _create_game_data(action: Timeline.Action) -> EffectBehavior.GameData:
 	var game_data := EffectBehavior.GameData.new()
 	game_data.effect_player = action.effect.player
 	game_data.target_entity = action.entity
 	game_data.server = server
-	game_data.combat_data = data
+	game_data.combat_data = combat_data
 	return game_data
 
 
