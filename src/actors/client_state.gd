@@ -193,6 +193,7 @@ func update_hp_label(new_hp: int, target_label: Label) -> void:
 	target_label.text = str(new_hp)
 
 
+@rpc("authority", "call_local", "reliable")
 func update_entities_on_field() -> void:
 	your_side.realize_entity_state()
 	opp_side.realize_entity_state()

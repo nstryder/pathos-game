@@ -99,14 +99,25 @@ func return_effect_to_deck(effect_idx: int) -> void:
 	add_effect_to_deck(effect_idx)
 
 
+func get_effect_card_at_index(idx: int) -> EffectCard:
+	assert(idx >= 0, "Attempted to get an invalid effect idx.")
+	return effect_card_holder.get_child(idx)
+
+
 func get_entity_card_at_index(idx: int) -> EntityCard:
 	assert(idx >= 0, "Attempted to get an invalid entity idx.")
 	return entity_card_holder.get_child(idx)
 
 
-func get_effect_card_at_index(idx: int) -> EffectCard:
-	assert(idx >= 0, "Attempted to get an invalid effect idx.")
-	return effect_card_holder.get_child(idx)
+func send_entity_to_graveyard(idx: int) -> void:
+	assert(idx not in entity_graveyard, "Entity is already in Graveyard.")
+	entity_graveyard.append(idx)
+	
+
+func remove_entity_from_play(entity_idx: int) -> void:
+	assert(entity_idx in entities_in_play, "Entity is not in play.")
+	var slot_idx: int = entities_in_play.find(entity_idx)
+	entities_in_play[slot_idx] = -1
 
 
 func get_all_entities_in_play() -> Array[EntityCard]:
@@ -120,17 +131,3 @@ func get_all_entities_in_play() -> Array[EntityCard]:
 
 func take_damage(amount: int) -> void:
 	hp -= amount
-
-
-func check_entity_deaths() -> void:
-	for i in entities_in_play.size():
-		var entity_idx: int = entities_in_play[i]
-		if entity_idx == -1:
-			continue
-		var entity: EntityCard = get_entity_card_at_index(entity_idx)
-		if entity.current_shield <= 0:
-			entity_graveyard.append(entity_idx)
-			entities_in_play[i] = -1
-			var overdamage: int = abs(entity.current_shield)
-			take_damage(2 + overdamage)
-	draw_entities()

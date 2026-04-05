@@ -55,7 +55,7 @@ var combat_data: CombatData
 
 @onready var server: ServerState = %ServerState
 
-
+#region STATE UTILS
 func phase_is_offense() -> bool:
 	return current_phase in [Phases.PLAYER1_OFFENSE, Phases.PLAYER2_OFFENSE]
 
@@ -94,33 +94,35 @@ func reset_attack_indexes() -> void:
 	declared_attacker_idx = -1
 	declared_target_idx = -1
 
+#endregion
+#region DAMAGE CALCULATION
 
-#region COMBAT RESOLUTION
-
-
-# Use this in most cases when an Entity is trying to attack another Entity
-# whether a direct attack or through its ability
+## Use this in most cases when an Entity is trying to attack another Entity
+## whether a direct attack or through its ability
 func deal_damage(attacker: EntityCard, target: EntityCard, amount: int) -> void:
 	var damage_modifier: float = combat_data.players[target.player].damage_modifier
 	var damage := int(amount * damage_modifier)
 	if combat_data.entities[attacker].hit_player_instead:
-		target.player.take_damage(damage)
+		deal_player_damage(target.player, damage)
 	else:
 		target.take_damage(damage)
 
 
-# Use this for cases when you are dealing damage from non-entity sources
-# For example Mortar
+## Use this for cases when you are dealing damage from non-entity sources
+## For example Mortar
 func deal_global_damage(target: EntityCard, amount: int) -> void:
 	var damage_modifier: float = combat_data.players[target.player].damage_modifier
 	var damage := int(amount * damage_modifier)
 	target.take_damage(damage)
 
 
-# TODO
-func player_has_won() -> bool:
-	return false
+## Use this when the player needs to take damage
+func deal_player_damage(player: Player, amount: int) -> void:
+	player.take_damage(amount)
 
+
+#endregion
+#region COMBAT RESOLUTION
 
 func start_combat() -> void:
 	if not multiplayer.is_server():
@@ -189,8 +191,17 @@ func _resolve_discards() -> void:
 
 func _resolve_deaths() -> void:
 	server.client.set_status.rpc("Checking deaths...")
-	server.player1.check_entity_deaths()
-	server.player2.check_entity_deaths()
+	for player: Player in [attacking_player, defending_player]:
+		for entity in player.get_all_entities_in_play():
+			if entity.current_shield <= 0:
+				print("Removing entity from play: ", entity.data.nickname)
+				var overdamage: int = abs(entity.current_shield) * combat_data.players[player].overdamage_modifier
+				deal_player_damage(player, 2 + overdamage)
+				player.remove_entity_from_play(entity.current_idx)
+				player.send_entity_to_graveyard(entity.current_idx)
+				player.draw_entities()
+	await get_tree().process_frame
+	server.client.update_entities_on_field.rpc()
 	await Utils.sleep(1)
 
 

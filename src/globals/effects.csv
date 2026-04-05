@@ -14,7 +14,7 @@ Syringe,SYRINGE,Defensive,Item,Remove a Status from one Entity.,Both,None,Attach
 Barricade,BARRICADE,Defensive,Item,Immune to all DMG. Exhaust.,Both,None,Use,Exhaust,S000-E01-N013,S000,E01,N013,v1.0
 Medkit,MEDKIT,Defensive,Item,Heal +3 SHD.,Both,None,Attach,Discard,S000-E01-N014,S000,E01,N014,v1.0
 Mask,MASK,Defensive,Item,Negate any Statuses applied this Phase.,Defense,None,Use,Discard,S000-E01-N015,S000,E01,N015,v1.0
-Dome,DOME,Defensive,Item,Immune to Overdamage.,Defense,None,Attach,Discard,S000-E01-N016,S000,E01,N016,v1.0
+Dome,DOME,Defensive,Item,Immune to Overdamage.,Defense,None,Use,Discard,S000-E01-N016,S000,E01,N016,v1.0
 Rally,RALLY,Defensive,Skill,"If your Synergy is activated, Negate all Effect cards played by the opponent.",Defense,None,Use,Discard,S000-E01-N017,S000,E01,N017,v1.0
 Whistle,WHISTLE,Defensive,Item,Negate an Entity's Ability.,Defense,None,Attach,Discard,S000-E01-N018,S000,E01,N018,v1.0
 Stop Sign,STOP SIGN,Defensive,Item,Negate the first Effect card played by the opponent. Immediate Effect cards aren't affected.,Defense,None,Use,Discard,S000-E01-N019,S000,E01,N019,v1.0
