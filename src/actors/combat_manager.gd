@@ -94,6 +94,7 @@ func reset_attack_indexes() -> void:
 	declared_attacker_idx = -1
 	declared_target_idx = -1
 
+
 #endregion
 #region DAMAGE CALCULATION
 
@@ -121,14 +122,27 @@ func deal_player_damage(player: Player, amount: int) -> void:
 	player.take_damage(amount)
 
 
+func get_all_active_entities() -> Array[EntityCard]:
+	return server.player1.get_all_entities_in_play() + server.player2.get_all_entities_in_play()
+
+
 #endregion
 #region COMBAT RESOLUTION
 
+
+func resolve_turn_start() -> void:
+	_initialize_combat_data()
+	for entity in get_all_active_entities():
+		match entity.status:
+			EntityCard.Status.POISONED:
+				deal_global_damage(entity, 1)
+			EntityCard.Status.FROZEN, EntityCard.Status.RESISTANT:
+				entity.status = EntityCard.Status.NONE
+		
+		
 func start_combat() -> void:
 	if not multiplayer.is_server():
 		return
-
-	_initialize_combat_data()
 	
 	await _resolve_effects()
 	if attack_is_declared():
@@ -139,7 +153,7 @@ func start_combat() -> void:
 
 func _initialize_combat_data() -> void:
 	combat_data = CombatData.new()
-	var all_active_entities: Array[EntityCard] = attacking_player.get_all_entities_in_play() + defending_player.get_all_entities_in_play()
+	var all_active_entities: Array[EntityCard] = get_all_active_entities()
 	for entity in all_active_entities:
 		var entity_data := EntityCombatData.new()
 		combat_data.entities[entity] = entity_data
@@ -169,7 +183,7 @@ func _resolve_combat() -> void:
 	var attacker: EntityCard = get_current_attacker()
 	var defender: EntityCard = get_current_target()
 
-	deal_damage(attacker, defender, attacker.get_current_attack())
+	deal_damage(attacker, defender, attacker.current_attack)
 
 	for condition in attacker.get_conditions():
 		condition.on_post_damage_given(attacker, defender)

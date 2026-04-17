@@ -36,7 +36,9 @@ func start_game() -> void:
 
 func execute_phase_flow() -> void:
 	while true:
+		combat_manager.resolve_turn_start()
 		combat_manager.current_phase = Phases.PLAYER1_OFFENSE
+		
 		execute_offense_phase(player1, player2)
 		await turn_ended
 

@@ -71,17 +71,21 @@ properties/2/replication_mode = 2
 properties/3/path = NodePath(".:current_idx")
 properties/3/spawn = true
 properties/3/replication_mode = 2
+properties/4/path = NodePath(".:status")
+properties/4/spawn = true
+properties/4/replication_mode = 2
 
 [node name="EntityCard" unique_id=1641401315 instance=ExtResource("1_skp7o")]
 script = ExtResource("2_ewlyu")
 entity_code = ""
 current_attack = 0
 current_shield = 0
+status = 0
 
-[node name="Background" parent="Visuals" index="0"]
+[node name="Background" parent="Visuals" parent_id_path=PackedInt32Array(1408353716) index="0" unique_id=1883745025]
 theme_override_styles/panel = SubResource("StyleBoxFlat_vc8ps")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Visuals/Info" index="0" unique_id=1870098539]
+[node name="VBoxContainer" type="VBoxContainer" parent="Visuals/Info" parent_id_path=PackedInt32Array(360501990) index="0" unique_id=1870098539]
 layout_mode = 2
 
 [node name="Nickname" type="Label" parent="Visuals/Info/VBoxContainer" index="0" unique_id=643583524]
@@ -94,10 +98,20 @@ label_settings = SubResource("LabelSettings_ewlyu")
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="Visuals/Info/VBoxContainer" index="2" unique_id=1842701856]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Visuals/Info/VBoxContainer" index="2" unique_id=547030682]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Visuals/Info/VBoxContainer/HBoxContainer2" index="0" unique_id=1842701856]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Ability"
+
+[node name="Status" type="Label" parent="Visuals/Info/VBoxContainer/HBoxContainer2" index="1" unique_id=1995100602]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Status"
+horizontal_alignment = 2
 
 [node name="HSeparator" type="HSeparator" parent="Visuals/Info/VBoxContainer" index="3" unique_id=1912853774]
 layout_mode = 2
@@ -151,7 +165,7 @@ layout_mode = 2
 text = "0"
 label_settings = SubResource("LabelSettings_vc8ps")
 
-[node name="Veil" parent="Visuals" index="2"]
+[node name="Veil" parent="Visuals" parent_id_path=PackedInt32Array(1408353716) index="2" unique_id=1706764291]
 visible = false
 theme_override_styles/panel = SubResource("StyleBoxFlat_62ai8")
 
@@ -166,7 +180,7 @@ conditions_path = "res://src/resources/entity_conditions/"
 
 [node name="Conditions" type="Node2D" parent="." index="3" unique_id=1114080756]
 
-[node name="Area2D" parent="." index="4"]
+[node name="Area2D" parent="." index="5" unique_id=1799181593]
 visible = false
 collision_layer = 2
 collision_mask = 2

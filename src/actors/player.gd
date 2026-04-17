@@ -129,5 +129,12 @@ func get_all_entities_in_play() -> Array[EntityCard]:
 	return entities
 
 
+func has_aggro() -> bool:
+	for entity in get_all_entities_in_play():
+		if entity.status == EntityCard.Status.AGGRO:
+			return true
+	return false
+
+
 func take_damage(amount: int) -> void:
 	hp -= amount

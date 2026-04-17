@@ -1,43 +1,53 @@
 extends Card
 class_name EntityCard
 
-@export var entity_code: String
+
+enum Status {
+	NONE,
+	POISONED,
+	FROZEN,
+	AGGRO,
+	FATIGUED,
+	RESISTANT
+}
+
 var data: EntityCardData
-
-
 var max_attack: int
 var max_shield: int
 
+@export var entity_code: String
 @export var current_attack: int:
-	set = set_current_attack,
-	get = get_current_attack
-func set_current_attack(value: int) -> void:
-	current_attack = value
-	if attack_label:
-		attack_label.text = str(value)
-		animate_pop(attack_label.get_parent().get_parent() as Control)
-func get_current_attack() -> int:
-	return current_attack
+	set(value):
+		current_attack = value
+		if _attack_label:
+			_attack_label.text = str(value)
+			animate_pop(_attack_label.get_parent().get_parent() as Control)
 
 
 @export var current_shield: int:
 	set(value):
 		current_shield = value
-		if shield_label:
-			shield_label.text = str(value)
-			animate_pop(shield_label.get_parent().get_parent() as Control)
+		if _shield_label:
+			_shield_label.text = str(value)
+			animate_pop(_shield_label.get_parent().get_parent() as Control)
 		if value <= 0:
 			deactivate()
 
-@onready var conditions: Node2D = $Conditions
-@onready var nickname: Label = %Nickname
-@onready var description: Label = %Description
-@onready var attack_label: Label = %Attack
-@onready var shield_label: Label = %Shield
+@export var status: Status = Status.NONE:
+	set(value):
+		status = value
+		if _status_label:
+			if value == Status.NONE:
+				_status_label.text = ""
+			else:
+				_status_label.text = Status.keys()[value]
 
-var current_slot: int:
-	get:
-		return player.entities_in_play.find(current_idx)
+@onready var conditions: Node2D = $Conditions
+@onready var _nickname: Label = %Nickname
+@onready var _description: Label = %Description
+@onready var _attack_label: Label = %Attack
+@onready var _shield_label: Label = %Shield
+@onready var _status_label: Label = %Status
 
 
 func _ready() -> void:
@@ -46,8 +56,9 @@ func _ready() -> void:
 	data = CardDb.get_entity_by_code(entity_code)
 	max_attack = data.base_attack
 	max_shield = data.base_shield
-	nickname.text = data.nickname
-	description.text = data.description if data.description else "No special ability."
+	_nickname.text = data.nickname
+	_description.text = data.description if data.description else "No special ability."
+	_status_label.text = ""
 
 	Utils.validate_vars(self , entity_code, data)
 
@@ -96,3 +107,7 @@ func get_conditions() -> Array[Condition]:
 func clear_conditions() -> void:
 	for condition in conditions.get_children():
 		condition.queue_free()
+
+
+func get_current_slot() -> int:
+	return player.entities_in_play.find(current_idx)

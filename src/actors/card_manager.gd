@@ -54,7 +54,7 @@ func drag_effect(effect_card: EffectCard) -> void:
 
 func drag_entity() -> void:
 	var entity_card := detect_entity_card()
-	if entity_card and not is_enemy_card(entity_card):
+	if entity_card and not is_enemy_card(entity_card) and entity_card.status != EntityCard.Status.FROZEN:
 		start_declare_attack(entity_card)
 
 
@@ -67,7 +67,9 @@ func on_release() -> void:
 	elif entity_card_to_declare:
 		var target_entity: EntityCard = detect_entity_card()
 		if target_entity and is_enemy_card(target_entity):
-			send_declare_attack(entity_card_to_declare, target_entity)
+			var aggro_prevents_attack: bool = target_entity.player.has_aggro() and target_entity.status != EntityCard.Status.AGGRO
+			if not aggro_prevents_attack:
+				send_declare_attack(entity_card_to_declare, target_entity)
 		elif client.combat_manager.attack_is_declared():
 			client.rescind_attack()
 		end_declare_attack()
@@ -86,7 +88,7 @@ func release_use_effect() -> void:
 func release_attach_effect() -> void:
 	# Only ATTACH-type fx care about entities
 	var entity_card: EntityCard = detect_entity_card()
-	if entity_card:
+	if entity_card and entity_card.status not in [EntityCard.Status.FATIGUED, EntityCard.Status.FROZEN]:
 		client.attach_effect_to_entity(effect_card_being_dragged, entity_card)
 	else:
 		reset_dragged_card_position()
