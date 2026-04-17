@@ -6,9 +6,10 @@ class_name EffectCard
 var data: EffectCardData
 var behavior: EffectBehavior
 
-@onready var nickname: Label = %Nickname
-@onready var description: Label = %Description
-@onready var effect_type: Label = %EffectType
+@onready var _nickname: Label = %Nickname
+@onready var _description: Label = %Description
+@onready var _effect_type: Label = %EffectType
+@onready var _identifier: Label = %Identifier
 
 func _ready() -> void:
 	super._ready()
@@ -22,9 +23,10 @@ func _ready() -> void:
 	else:
 		affix = "USE"
 
-	nickname.text = data.effect_name + " (" + affix + ")"
-	effect_type.text = EffectCardData.EffectType.keys()[data.effect_type]
-	description.text = data.description
+	_nickname.text = data.effect_name + " (" + affix + ")"
+	_effect_type.text = EffectCardData.EffectType.keys()[data.effect_type]
+	_description.text = data.description
+	_identifier.text = EffectCardData.Identifier.keys()[data.identifier]
 	
 	Utils.validate_vars(self , effect_code, data, behavior)
 

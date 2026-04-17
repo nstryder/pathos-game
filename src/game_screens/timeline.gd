@@ -102,6 +102,10 @@ func get_queue_filtered_by_player(player: Player) -> Array[Action]:
 	return _main_timeline_queue.filter(func(x: Action) -> bool: return x.effect.player == player)
 
 
+func get_queue_filtered_by_entity(entity_card: EntityCard) -> Array[Action]:
+	return _main_timeline_queue.filter(func(x: Action) -> bool: return x.entity == entity_card)
+
+
 func get_discard_queue() -> Array[Action]:
 	return _discard_queue
 
