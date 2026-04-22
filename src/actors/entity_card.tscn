@@ -74,12 +74,16 @@ properties/3/replication_mode = 2
 properties/4/path = NodePath(".:status")
 properties/4/spawn = true
 properties/4/replication_mode = 2
+properties/5/path = NodePath(".:overshield")
+properties/5/spawn = true
+properties/5/replication_mode = 2
 
 [node name="EntityCard" unique_id=1641401315 instance=ExtResource("1_skp7o")]
 script = ExtResource("2_ewlyu")
 entity_code = ""
 current_attack = 0
 current_shield = 0
+overshield = 0
 status = 0
 
 [node name="Background" parent="Visuals" parent_id_path=PackedInt32Array(1408353716) index="0" unique_id=1883745025]

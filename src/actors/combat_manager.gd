@@ -158,8 +158,9 @@ func _initialize_combat_data() -> void:
 		var entity_data := EntityCombatData.new()
 		combat_data.entities[entity] = entity_data
 	
-	combat_data.players[attacking_player] = PlayerCombatData.new()
-	combat_data.players[defending_player] = PlayerCombatData.new()
+	combat_data.players[server.player1] = PlayerCombatData.new()
+	combat_data.players[server.player2] = PlayerCombatData.new()
+	print("Combat Data inited: ", combat_data.players)
 	
 
 func _resolve_effects() -> void:

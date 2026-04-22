@@ -18,7 +18,7 @@ var max_shield: int
 @export var entity_code: String
 @export var current_attack: int:
 	set(value):
-		current_attack = value
+		current_attack = max(value, 0)
 		if _attack_label:
 			_attack_label.text = str(value)
 			animate_pop(_attack_label.get_parent().get_parent() as Control)
@@ -26,12 +26,19 @@ var max_shield: int
 
 @export var current_shield: int:
 	set(value):
-		current_shield = value
-		if _shield_label:
-			_shield_label.text = str(value)
-			animate_pop(_shield_label.get_parent().get_parent() as Control)
 		if value <= 0:
 			deactivate()
+		elif current_shield <= 0 and value > 0:
+			modulate.a = 1
+		current_shield = value
+		update_shield()
+
+
+@export var overshield: int = 0:
+	set(value):
+		overshield = value
+		update_shield()
+
 
 @export var status: Status = Status.NONE:
 	set(value):
@@ -64,13 +71,13 @@ func _ready() -> void:
 
 
 func activate() -> void:
-	modulate = Color(1, 1, 1, 1)
+	modulate.a = 1
 	current_attack = max_attack
 	current_shield = max_shield
 
 
 func deactivate() -> void:
-	modulate = Color(1, 1, 1, 0.5)
+	modulate.a = 0.5
 
 
 func animate_pop(node: Control) -> void:
@@ -85,12 +92,27 @@ func animate_pop(node: Control) -> void:
 	rot_tween.tween_property(node, "rotation", 0, 0.1)
 
 
+func update_shield() -> void:
+	if _shield_label:
+		var shown_shield: int = max(current_shield + overshield, 0)
+		_shield_label.text = str(shown_shield)
+		animate_pop(_shield_label.get_parent().get_parent() as Control)
+
+
 func heal(amount: int) -> void:
 	current_shield = min(max_shield, current_shield + amount)
 
 
 func take_damage(amount: int) -> void:
-	current_shield -= amount
+	# have overshield take damage first until it is 0
+	if overshield > 0:
+		overshield -= amount
+		# Bleed-over gets sent to shield
+		if overshield < 0:
+			current_shield -= abs(overshield)
+			overshield = 0
+	else:
+		current_shield -= amount
 
 
 func add_condition(condition_path: String) -> void:
