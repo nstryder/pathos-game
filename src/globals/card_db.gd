@@ -68,7 +68,7 @@ func _build_entity_card_data(skip_existing: bool = true) -> void:
 		entity_resource.base_shield = entity_entry["SHD"]
 		entity_resource.rarity = EntityCardData.Rarity[str(entity_entry["Rarity"]).to_upper()]
 		entity_resource.description = entity_entry["Ability Desc"]
-		# TODO: Fill in rest of data once they are implemented
+		entity_resource.amp_description = entity_entry["AMP"]
 
 		entity_cards[entity_entry["Code"]] = entity_resource
 		entity_cards_indexed_by_name[entity_resource.nickname] = entity_entry["Code"]
@@ -78,6 +78,7 @@ func _build_entity_card_data(skip_existing: bool = true) -> void:
 func _build_effect_card_data(skip_existing: bool = true) -> void:
 	print("Building EffectCard data...")
 	var effect_card_array: Array[Dictionary] = csv_parse("res://src/globals/effects.csv")
+	effect_card_array.append_array(csv_parse("res://src/globals/amp.csv"))
 	for effect_entry in effect_card_array:
 		if skip_existing and effect_entry["Code"] in effect_cards:
 			continue
@@ -90,7 +91,11 @@ func _build_effect_card_data(skip_existing: bool = true) -> void:
 		effect_resource.timeline_condition = EffectCardData.TimelineCondition[str(effect_entry["Timeline Condition"]).to_upper()]
 		effect_resource.after_use = EffectCardData.AfterUse[str(effect_entry["After Use"]).to_upper()]
 		effect_resource.description = effect_entry["Ability Description"]
-		# TODO: Fill in rest of data once they are implemented
+		if effect_resource.identifier == EffectCardData.Identifier.AMP:
+			effect_resource.amp_protagonist = effect_entry["Protagonist"]
+			effect_resource.amp_set = effect_entry["Set Name"]
+			effect_resource.description = "Amplifies " + effect_resource.amp_protagonist + \
+				". Otherwise, changes attached Entity's Set to " + effect_resource.amp_set
 		
 		effect_cards[effect_entry["Code"]] = effect_resource
 		effect_cards_indexed_by_name[effect_resource.effect_name] = effect_entry["Code"]
@@ -115,7 +120,8 @@ func _create_effect_behavior_files() -> void:
 	for effect_code in effect_cards:
 		var filename: String = get_effect_behavior_name(effect_code)
 		var path: String = base_effect_behavior_path % filename
-		if FileAccess.file_exists(path):
+		var effect := get_effect_by_code(effect_code)
+		if effect.identifier == EffectCardData.Identifier.AMP or FileAccess.file_exists(path):
 			continue
 		var script := GDScript.new()
 		script.source_code = "extends EffectBehavior"

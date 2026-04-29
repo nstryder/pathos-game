@@ -11,6 +11,7 @@ base_attack = 3
 base_shield = 2
 rarity = 1
 description = "Opponent must use selected Entity in combat next turn."
+amp_description = "Opponent must declare selected Entity in combat next Phase. They cannot Attach Effect cards to that Entity."
 
 [sub_resource type="Resource" id="Resource_kwtlh"]
 script = ExtResource("2_msm5g")
@@ -18,6 +19,7 @@ nickname = "Shin"
 base_shield = 5
 rarity = 1
 description = "Deal 3 DMG back at the enemy Entity after hit."
+amp_description = "Deal 5 DMG back at the enemy Entity after hit."
 
 [sub_resource type="Resource" id="Resource_a6co2"]
 script = ExtResource("2_msm5g")
@@ -26,6 +28,7 @@ base_attack = 1
 base_shield = 2
 rarity = 1
 description = "Deal her ATK to all Revealed Entities other than herself."
+amp_description = "Deal her ATK to all Entities other than herself."
 
 [sub_resource type="Resource" id="Resource_8de20"]
 script = ExtResource("2_msm5g")
@@ -75,11 +78,46 @@ base_shield = 1
 
 [sub_resource type="Resource" id="Resource_mhwae"]
 script = ExtResource("3_kwtlh")
+effect_name = "Runic Sword"
+effect_type = 2
+identifier = 3
+usage_type = 1
+timeline_condition = 1
+after_use = 2
+description = "Amplifies Kei. Otherwise, changes attached Entity's Set to Midnight Corridor"
+amp_protagonist = "Kei"
+amp_set = "Midnight Corridor"
+
+[sub_resource type="Resource" id="Resource_vfoi8"]
+script = ExtResource("3_kwtlh")
+effect_name = "Tempered Core"
+effect_type = 1
+identifier = 3
+usage_type = 1
+timeline_condition = 1
+after_use = 2
+description = "Amplifies Shin. Otherwise, changes attached Entity's Set to Midnight Corridor"
+amp_protagonist = "Shin"
+amp_set = "Midnight Corridor"
+
+[sub_resource type="Resource" id="Resource_k4ouw"]
+script = ExtResource("3_kwtlh")
+effect_name = "Brooch of Aria"
+identifier = 3
+usage_type = 1
+timeline_condition = 1
+after_use = 2
+description = "Amplifies Ginko. Otherwise, changes attached Entity's Set to Midnight Corridor"
+amp_protagonist = "Ginko"
+amp_set = "Midnight Corridor"
+
+[sub_resource type="Resource" id="Resource_3jn8v"]
+script = ExtResource("3_kwtlh")
 effect_name = "Knife"
 usage_type = 1
 description = "Gain +2 ATK."
 
-[sub_resource type="Resource" id="Resource_vfoi8"]
+[sub_resource type="Resource" id="Resource_kdbkt"]
 script = ExtResource("3_kwtlh")
 effect_name = "Snipe"
 identifier = 1
@@ -88,13 +126,13 @@ usage_type = 1
 after_use = 1
 description = "Ignore SHD and deal DMG to HP instead. Exhaust."
 
-[sub_resource type="Resource" id="Resource_k4ouw"]
+[sub_resource type="Resource" id="Resource_t6o0s"]
 script = ExtResource("3_kwtlh")
 effect_name = "Mortar"
 ability_phase = 1
 description = "Deal 1 DMG to all Revealed enemy Entities."
 
-[sub_resource type="Resource" id="Resource_3jn8v"]
+[sub_resource type="Resource" id="Resource_r70u0"]
 script = ExtResource("3_kwtlh")
 effect_name = "Bite"
 identifier = 1
@@ -102,21 +140,21 @@ ability_phase = 1
 usage_type = 1
 description = "Gain +1 ATK and Heal 1 SHD upon hit."
 
-[sub_resource type="Resource" id="Resource_kdbkt"]
+[sub_resource type="Resource" id="Resource_45ctj"]
 script = ExtResource("3_kwtlh")
 effect_name = "Lance"
 ability_phase = 1
 usage_type = 1
 description = "Gain +3 ATK. Exhaust."
 
-[sub_resource type="Resource" id="Resource_t6o0s"]
+[sub_resource type="Resource" id="Resource_6nlc3"]
 script = ExtResource("3_kwtlh")
 effect_name = "Energizer"
 ability_phase = 1
 timeline_condition = 1
 description = "Reveal an ally Entity without activating their Ability"
 
-[sub_resource type="Resource" id="Resource_r70u0"]
+[sub_resource type="Resource" id="Resource_jpc08"]
 script = ExtResource("3_kwtlh")
 effect_name = "Dart"
 identifier = 2
@@ -124,7 +162,7 @@ ability_phase = 1
 usage_type = 1
 description = "Apply Fatigued to an Entity."
 
-[sub_resource type="Resource" id="Resource_45ctj"]
+[sub_resource type="Resource" id="Resource_d42lx"]
 script = ExtResource("3_kwtlh")
 effect_name = "Sludge"
 identifier = 2
@@ -132,7 +170,7 @@ ability_phase = 1
 usage_type = 1
 description = "Apply Poisoned to an Entity."
 
-[sub_resource type="Resource" id="Resource_6nlc3"]
+[sub_resource type="Resource" id="Resource_7smhx"]
 script = ExtResource("3_kwtlh")
 effect_name = "Flash Freeze"
 identifier = 2
@@ -140,7 +178,7 @@ ability_phase = 1
 usage_type = 1
 description = "Apply Frozen to an Entity."
 
-[sub_resource type="Resource" id="Resource_jpc08"]
+[sub_resource type="Resource" id="Resource_kakiq"]
 script = ExtResource("3_kwtlh")
 effect_name = "Taunt"
 identifier = 2
@@ -148,49 +186,49 @@ ability_phase = 1
 usage_type = 1
 description = "Apply Aggro to an Entity."
 
-[sub_resource type="Resource" id="Resource_d42lx"]
+[sub_resource type="Resource" id="Resource_a8a2o"]
 script = ExtResource("3_kwtlh")
 effect_name = "Plate"
 effect_type = 1
 usage_type = 1
 description = "Gain +2 SHD."
 
-[sub_resource type="Resource" id="Resource_7smhx"]
+[sub_resource type="Resource" id="Resource_bcmp5"]
 script = ExtResource("3_kwtlh")
 effect_name = "Syringe"
 effect_type = 1
 usage_type = 1
 description = "Remove a Status from one Entity."
 
-[sub_resource type="Resource" id="Resource_kakiq"]
+[sub_resource type="Resource" id="Resource_vw076"]
 script = ExtResource("3_kwtlh")
 effect_name = "Barricade"
 effect_type = 1
 after_use = 1
 description = "Immune to all DMG. Exhaust."
 
-[sub_resource type="Resource" id="Resource_a8a2o"]
+[sub_resource type="Resource" id="Resource_wg4wy"]
 script = ExtResource("3_kwtlh")
 effect_name = "Medkit"
 effect_type = 1
 usage_type = 1
 description = "Heal +3 SHD."
 
-[sub_resource type="Resource" id="Resource_bcmp5"]
+[sub_resource type="Resource" id="Resource_tywj4"]
 script = ExtResource("3_kwtlh")
 effect_name = "Mask"
 effect_type = 1
 ability_phase = 2
 description = "Negate any Statuses applied this Phase."
 
-[sub_resource type="Resource" id="Resource_vw076"]
+[sub_resource type="Resource" id="Resource_q10mk"]
 script = ExtResource("3_kwtlh")
 effect_name = "Dome"
 effect_type = 1
 ability_phase = 2
 description = "Immune to Overdamage."
 
-[sub_resource type="Resource" id="Resource_wg4wy"]
+[sub_resource type="Resource" id="Resource_enhqo"]
 script = ExtResource("3_kwtlh")
 effect_name = "Rally"
 effect_type = 1
@@ -198,7 +236,7 @@ identifier = 1
 ability_phase = 2
 description = "If your Synergy is activated, Negate all Effect cards played by the opponent."
 
-[sub_resource type="Resource" id="Resource_tywj4"]
+[sub_resource type="Resource" id="Resource_coghr"]
 script = ExtResource("3_kwtlh")
 effect_name = "Whistle"
 effect_type = 1
@@ -206,14 +244,14 @@ ability_phase = 2
 usage_type = 1
 description = "Negate an Entity's Ability."
 
-[sub_resource type="Resource" id="Resource_q10mk"]
+[sub_resource type="Resource" id="Resource_ptguh"]
 script = ExtResource("3_kwtlh")
 effect_name = "Stop Sign"
 effect_type = 1
 ability_phase = 2
 description = "Negate the first Effect card played by the opponent. Immediate Effect cards aren't affected."
 
-[sub_resource type="Resource" id="Resource_enhqo"]
+[sub_resource type="Resource" id="Resource_x4ynt"]
 script = ExtResource("3_kwtlh")
 effect_name = "Pills"
 effect_type = 1
@@ -222,7 +260,7 @@ ability_phase = 1
 usage_type = 1
 description = "Apply Resistant to an Entity."
 
-[sub_resource type="Resource" id="Resource_coghr"]
+[sub_resource type="Resource" id="Resource_ybc5s"]
 script = ExtResource("3_kwtlh")
 effect_name = "Switcheroo"
 effect_type = 2
@@ -230,14 +268,14 @@ identifier = 1
 usage_type = 1
 description = "Invert ATK and SHD."
 
-[sub_resource type="Resource" id="Resource_ptguh"]
+[sub_resource type="Resource" id="Resource_of7r8"]
 script = ExtResource("3_kwtlh")
 effect_name = "Smoke Grenade"
 effect_type = 2
 ability_phase = 1
 description = "Hide all of your Revealed ally Entities."
 
-[sub_resource type="Resource" id="Resource_x4ynt"]
+[sub_resource type="Resource" id="Resource_hrrb0"]
 script = ExtResource("3_kwtlh")
 effect_name = "Cape"
 effect_type = 2
@@ -245,14 +283,14 @@ ability_phase = 1
 usage_type = 1
 description = "Hide an Entity."
 
-[sub_resource type="Resource" id="Resource_ybc5s"]
+[sub_resource type="Resource" id="Resource_wmuac"]
 script = ExtResource("3_kwtlh")
 effect_name = "Magnifying Glass"
 effect_type = 2
 timeline_condition = 1
 description = "Reveal an enemy Entity without activating their Ability."
 
-[sub_resource type="Resource" id="Resource_of7r8"]
+[sub_resource type="Resource" id="Resource_23euk"]
 script = ExtResource("3_kwtlh")
 effect_name = "Recon"
 effect_type = 2
@@ -260,34 +298,34 @@ identifier = 1
 timeline_condition = 1
 description = "Reveal the opponent's hand."
 
-[sub_resource type="Resource" id="Resource_hrrb0"]
+[sub_resource type="Resource" id="Resource_40lh0"]
 script = ExtResource("3_kwtlh")
 effect_name = "Reshuffler"
 effect_type = 2
 timeline_condition = 1
 description = "Opponent puts their hand back into their Effect deck, shuffles, and draws 2 Effect cards."
 
-[sub_resource type="Resource" id="Resource_wmuac"]
+[sub_resource type="Resource" id="Resource_dfsrt"]
 script = ExtResource("3_kwtlh")
 effect_name = "Treasure"
 effect_type = 2
 timeline_condition = 1
 description = "Draw 1 Effect card."
 
-[sub_resource type="Resource" id="Resource_23euk"]
+[sub_resource type="Resource" id="Resource_lf6gj"]
 script = ExtResource("3_kwtlh")
 effect_name = "Disguise"
 effect_type = 2
 usage_type = 1
 description = "Changes the ally Entity's Set into a set of a Revealed Entity this Phase."
 
-[sub_resource type="Resource" id="Resource_40lh0"]
+[sub_resource type="Resource" id="Resource_2q84f"]
 script = ExtResource("3_kwtlh")
 effect_name = "Plug-in"
 effect_type = 2
 description = "Transfer a Status onto one of your Entities."
 
-[sub_resource type="Resource" id="Resource_dfsrt"]
+[sub_resource type="Resource" id="Resource_e5gdm"]
 script = ExtResource("3_kwtlh")
 effect_name = "Recycle"
 effect_type = 2
@@ -310,143 +348,84 @@ entity_cards = Dictionary[String, ExtResource("2_msm5g")]({
 "S001-E01-N010": SubResource("Resource_twsnr")
 })
 effect_cards = Dictionary[String, ExtResource("3_kwtlh")]({
-"S000-E01-N001": SubResource("Resource_mhwae"),
-"S000-E01-N002": SubResource("Resource_vfoi8"),
-"S000-E01-N003": SubResource("Resource_k4ouw"),
-"S000-E01-N004": SubResource("Resource_3jn8v"),
-"S000-E01-N005": SubResource("Resource_kdbkt"),
-"S000-E01-N006": SubResource("Resource_t6o0s"),
-"S000-E01-N007": SubResource("Resource_r70u0"),
-"S000-E01-N008": SubResource("Resource_45ctj"),
-"S000-E01-N009": SubResource("Resource_6nlc3"),
-"S000-E01-N010": SubResource("Resource_jpc08"),
-"S000-E01-N011": SubResource("Resource_d42lx"),
-"S000-E01-N012": SubResource("Resource_7smhx"),
-"S000-E01-N013": SubResource("Resource_kakiq"),
-"S000-E01-N014": SubResource("Resource_a8a2o"),
-"S000-E01-N015": SubResource("Resource_bcmp5"),
-"S000-E01-N016": SubResource("Resource_vw076"),
-"S000-E01-N017": SubResource("Resource_wg4wy"),
-"S000-E01-N018": SubResource("Resource_tywj4"),
-"S000-E01-N019": SubResource("Resource_q10mk"),
-"S000-E01-N020": SubResource("Resource_enhqo"),
-"S000-E01-N021": SubResource("Resource_coghr"),
-"S000-E01-N022": SubResource("Resource_ptguh"),
-"S000-E01-N023": SubResource("Resource_x4ynt"),
-"S000-E01-N024": SubResource("Resource_ybc5s"),
-"S000-E01-N025": SubResource("Resource_of7r8"),
-"S000-E01-N026": SubResource("Resource_hrrb0"),
-"S000-E01-N027": SubResource("Resource_wmuac"),
-"S000-E01-N028": SubResource("Resource_23euk"),
-"S000-E01-N029": SubResource("Resource_40lh0"),
-"S000-E01-N030": SubResource("Resource_dfsrt")
+"S000-E01-A001": SubResource("Resource_mhwae"),
+"S000-E01-A002": SubResource("Resource_vfoi8"),
+"S000-E01-A003": SubResource("Resource_k4ouw"),
+"S000-E01-N001": SubResource("Resource_3jn8v"),
+"S000-E01-N002": SubResource("Resource_kdbkt"),
+"S000-E01-N003": SubResource("Resource_t6o0s"),
+"S000-E01-N004": SubResource("Resource_r70u0"),
+"S000-E01-N005": SubResource("Resource_45ctj"),
+"S000-E01-N006": SubResource("Resource_6nlc3"),
+"S000-E01-N007": SubResource("Resource_jpc08"),
+"S000-E01-N008": SubResource("Resource_d42lx"),
+"S000-E01-N009": SubResource("Resource_7smhx"),
+"S000-E01-N010": SubResource("Resource_kakiq"),
+"S000-E01-N011": SubResource("Resource_a8a2o"),
+"S000-E01-N012": SubResource("Resource_bcmp5"),
+"S000-E01-N013": SubResource("Resource_vw076"),
+"S000-E01-N014": SubResource("Resource_wg4wy"),
+"S000-E01-N015": SubResource("Resource_tywj4"),
+"S000-E01-N016": SubResource("Resource_q10mk"),
+"S000-E01-N017": SubResource("Resource_enhqo"),
+"S000-E01-N018": SubResource("Resource_coghr"),
+"S000-E01-N019": SubResource("Resource_ptguh"),
+"S000-E01-N020": SubResource("Resource_x4ynt"),
+"S000-E01-N021": SubResource("Resource_ybc5s"),
+"S000-E01-N022": SubResource("Resource_of7r8"),
+"S000-E01-N023": SubResource("Resource_hrrb0"),
+"S000-E01-N024": SubResource("Resource_wmuac"),
+"S000-E01-N025": SubResource("Resource_23euk"),
+"S000-E01-N026": SubResource("Resource_40lh0"),
+"S000-E01-N027": SubResource("Resource_dfsrt"),
+"S000-E01-N028": SubResource("Resource_lf6gj"),
+"S000-E01-N029": SubResource("Resource_2q84f"),
+"S000-E01-N030": SubResource("Resource_e5gdm")
 })
 entity_cards_indexed_by_name = Dictionary[String, String]({
 "Akari": "S001-E01-N007",
-"Akira": "S005-E01-N007",
-"Bastion": "S004-E01-N001",
-"Bumi": "S002-E01-N001",
-"Capo": "S006-E01-N002",
-"Captain Locust": "S002-E01-N010",
-"Commander": "S003-E01-N005",
-"Coroner": "S004-E01-N005",
-"Cuckoo": "S003-E01-N008",
-"Dango": "S002-E01-N006",
-"Doc": "S002-E01-N002",
-"Domino": "S002-E01-N003",
-"Dory": "S003-E01-N010",
-"Fabian": "S003-E01-N001",
-"Frederick": "S002-E01-N008",
-"Giacomo": "S006-E01-N007",
 "Ginko": "S001-E01-N003",
 "Golem": "S001-E01-N009",
-"Guild": "S004-E01-N004",
-"Gyaru": "S005-E01-N010",
 "Haru": "S001-E01-N006",
-"Henchman": "S006-E01-N010",
 "Hibiki": "S001-E01-N004",
-"Infiltrator": "S003-E01-N004",
-"Justitia": "S004-E01-N003",
 "Kei": "S001-E01-N001",
-"Kelvin": "S003-E01-N002",
 "Kumiko": "S001-E01-N008",
-"Lovely": "S006-E01-N006",
-"Machina": "S004-E01-N002",
-"Macho": "S005-E01-N009",
-"Madman": "S004-E01-N009",
-"Mei": "S005-E01-N006",
-"Mercer": "S003-E01-N009",
 "Mira": "S001-E01-N005",
-"Moriko": "S002-E01-N007",
-"Muscle": "S006-E01-N009",
-"Natsuki": "S005-E01-N003",
-"Nikita": "S005-E01-N004",
-"Noire": "S006-E01-N001",
-"Nonna": "S006-E01-N008",
-"Petal": "S004-E01-N007",
 "Pixie": "S001-E01-N010",
-"Princess Medic": "S002-E01-N009",
-"Raggedy": "S006-E01-N005",
-"Responder": "S002-E01-N004",
-"Ronin": "S004-E01-N010",
-"Ryoko": "S002-E01-N005",
-"Salvatore": "S006-E01-N003",
-"Sensei": "S005-E01-N008",
-"Shin": "S001-E01-N002",
-"Shizumi": "S003-E01-N003",
-"Shoto": "S005-E01-N005",
-"Stim": "S004-E01-N008",
-"Tesallia": "S003-E01-N007",
-"Tito": "S006-E01-N004",
-"Trek": "S004-E01-N006",
-"Vivilie": "S003-E01-N006",
-"Yoru": "S005-E01-N002",
-"Yuno": "S005-E01-N001"
+"Shin": "S001-E01-N002"
 })
 effect_cards_indexed_by_name = Dictionary[String, String]({
-"Arsenal": "S000-E01-N006",
 "Barricade": "S000-E01-N013",
-"Bear Trap": "S000-E01-N028",
 "Bite": "S000-E01-N004",
+"Brooch of Aria": "S000-E01-A003",
 "Cape": "S000-E01-N023",
 "Dart": "S000-E01-N007",
 "Disguise": "S000-E01-N028",
 "Dome": "S000-E01-N016",
 "Energizer": "S000-E01-N006",
 "Flash Freeze": "S000-E01-N009",
-"Gem": "S000-E01-N040",
-"Helmet": "S000-E01-N027",
 "Knife": "S000-E01-N001",
 "Lance": "S000-E01-N005",
 "Magnifying Glass": "S000-E01-N024",
 "Mask": "S000-E01-N015",
 "Medkit": "S000-E01-N014",
 "Mortar": "S000-E01-N003",
-"Nitro": "S000-E01-N010",
-"Parry": "S000-E01-N029",
-"Payback": "S000-E01-N025",
 "Pills": "S000-E01-N020",
 "Plate": "S000-E01-N011",
 "Plug-in": "S000-E01-N029",
 "Rally": "S000-E01-N017",
-"Recall": "S000-E01-N045",
 "Recon": "S000-E01-N025",
 "Recycle": "S000-E01-N030",
 "Reshuffler": "S000-E01-N026",
-"Scepter": "S000-E01-N038",
-"Self-Destruct": "S000-E01-N009",
-"Shotgun": "S000-E01-N008",
+"Runic Sword": "S000-E01-A001",
 "Sludge": "S000-E01-N008",
 "Smoke Grenade": "S000-E01-N022",
 "Snipe": "S000-E01-N002",
-"Stinger": "S000-E01-N011",
 "Stop Sign": "S000-E01-N019",
-"Stun Grenade": "S000-E01-N042",
 "Switcheroo": "S000-E01-N021",
 "Syringe": "S000-E01-N012",
 "Taunt": "S000-E01-N010",
-"Trash Can": "S000-E01-N043",
+"Tempered Core": "S000-E01-A002",
 "Treasure": "S000-E01-N027",
-"Turret": "S000-E01-N026",
 "Whistle": "S000-E01-N018"
 })

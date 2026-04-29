@@ -77,10 +77,14 @@ properties/4/replication_mode = 2
 properties/5/path = NodePath(".:overshield")
 properties/5/spawn = true
 properties/5/replication_mode = 2
+properties/6/path = NodePath(".:is_amped")
+properties/6/spawn = true
+properties/6/replication_mode = 2
 
 [node name="EntityCard" unique_id=1641401315 instance=ExtResource("1_skp7o")]
 script = ExtResource("2_ewlyu")
 entity_code = ""
+is_amped = false
 current_attack = 0
 current_shield = 0
 overshield = 0

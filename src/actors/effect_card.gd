@@ -2,9 +2,11 @@ extends Card
 class_name EffectCard
 
 
-@export var effect_code: String
 var data: EffectCardData
 var behavior: EffectBehavior
+
+@export var effect_code: String
+@export var _amp_bg: StyleBox
 
 @onready var _nickname: Label = %Nickname
 @onready var _description: Label = %Description
@@ -15,7 +17,14 @@ func _ready() -> void:
 	super._ready()
 	
 	data = CardDb.get_effect_by_code(effect_code)
-	behavior = _load_effect_behavior(effect_code)
+
+	var is_amp := false
+	if data.identifier == EffectCardData.Identifier.AMP:
+		(%Background as Panel).add_theme_stylebox_override("panel", _amp_bg)
+		is_amp = true
+
+	behavior = _load_effect_behavior(effect_code, is_amp)
+	behavior.effect_data = data
 
 	var affix := ""
 	if data.usage_type == EffectCardData.UsageType.ATTACH:
@@ -30,7 +39,10 @@ func _ready() -> void:
 	
 	Utils.validate_vars(self , effect_code, data, behavior)
 
-func _load_effect_behavior(code: String) -> EffectBehavior:
+func _load_effect_behavior(code: String, is_amp: bool) -> EffectBehavior:
+	if is_amp:
+		return AmpBehavior.new()
+
 	var path: String = CardDb.base_effect_behavior_path % CardDb.get_effect_behavior_name(code)
 	var script: GDScript = load(path)
 	var effect_behavior := EffectBehavior.new()

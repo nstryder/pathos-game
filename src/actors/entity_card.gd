@@ -17,6 +17,20 @@ var max_shield: int
 var ability: EntityAbility
 
 @export var entity_code: String
+
+@export var is_amped: bool = false:
+	set(value):
+		is_amped = value
+		if value == true:
+			modulate = Color.YELLOW
+			if _description:
+				_description.text = data.amp_description
+		else:
+			modulate = Color.WHITE
+			if _description:
+				_description.text = data.description
+		
+
 @export var current_attack: int:
 	set(value):
 		current_attack = max(value, 0)

@@ -13,3 +13,8 @@ var user: EntityCard
 @warning_ignore("unused_parameter")
 func activate(game_data: GameData) -> void:
     pass
+
+
+@warning_ignore("unused_parameter")
+func activate_amped(game_data: GameData) -> void:
+    pass

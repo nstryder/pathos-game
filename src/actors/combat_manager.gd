@@ -176,6 +176,8 @@ func _resolve_effects() -> void:
 	server.client.set_status.rpc("Resolving Effects...")
 	for action: Timeline.Action in server.timeline.get_organized_queue():
 		var game_data := _create_game_data(action)
+		if action.effect.behavior is AmpBehavior:
+			print("AMPING!!!")
 		action.effect.behavior.enter(game_data)
 
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
@@ -197,8 +199,15 @@ func _resolve_abilities() -> void:
 	ability_game_data.server = server
 	ability_game_data.combat_data = combat_data
 
-	attacker.ability.activate(ability_game_data)
-	defender.ability.activate(ability_game_data)
+	if attacker.is_amped:
+		attacker.ability.activate_amped(ability_game_data)
+	else:
+		attacker.ability.activate(ability_game_data)
+
+	if defender.is_amped:
+		defender.ability.activate_amped(ability_game_data)
+	else:
+		defender.ability.activate(ability_game_data)
 
 	await Utils.sleep(1)
 

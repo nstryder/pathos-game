@@ -10,7 +10,8 @@ enum EffectType {
 enum Identifier {
 	ITEM,
 	SKILL,
-	STATUS
+	STATUS,
+	AMP
 }
 
 enum AbilityPhase {
@@ -32,7 +33,8 @@ enum UsageType {
 
 enum AfterUse {
 	DISCARD,
-	EXHAUST
+	EXHAUST,
+	VARIABLE
 }
 
 @export var effect_name: String
@@ -43,3 +45,5 @@ enum AfterUse {
 @export var timeline_condition: TimelineCondition = TimelineCondition.NONE
 @export var after_use: AfterUse = AfterUse.DISCARD
 @export var description: String
+@export var amp_protagonist: String
+@export var amp_set: String

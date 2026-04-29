@@ -15,6 +15,9 @@ class GameData:
 			return server.player1
 
 
+var effect_data: EffectCardData
+
+
 @warning_ignore("unused_parameter")
 func enter(data: GameData) -> void:
 	pass
