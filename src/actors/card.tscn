@@ -22,7 +22,7 @@ corner_detail = 4
 shadow_offset = Vector2(0, 9)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_juwcs"]
-properties/0/path = NodePath(".:is_revealed_permanently")
+properties/0/path = NodePath(".:is_revealed")
 properties/0/spawn = true
 properties/0/replication_mode = 2
 

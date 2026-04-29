@@ -22,20 +22,20 @@ var has_shadow: bool = false:
 			card_background.shadow_size = 0
 
 
-var is_veiled: bool = false:
+var is_client_veiled: bool = false:
 	set(value):
-		if is_revealed_permanently:
-			is_veiled = false
+		if is_revealed:
+			is_client_veiled = false
 		else:
-			is_veiled = value
-		(%Veil as Control).visible = is_veiled
+			is_client_veiled = value
+		(%Veil as Control).visible = is_client_veiled
 
 
-@export var is_revealed_permanently: bool = false:
+@export var is_revealed: bool = false:
 	set(value):
-		is_revealed_permanently = value
+		is_revealed = value
 		if value:
-			is_veiled = true
+			is_client_veiled = true
 
 
 func _ready() -> void:

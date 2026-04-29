@@ -35,7 +35,7 @@ func realize_entity_state() -> void:
 			continue
 		entity_card.activate()
 		entity_card.slot_attachment_effects_enable()
-		entity_card.is_veiled = is_enemy
+		entity_card.is_client_veiled = is_enemy
 
 		if not tween:
 			tween = create_tween()
@@ -66,7 +66,7 @@ func realize_effect_state() -> void:
 		var effect_card: EffectCard = player.get_effect_card_at_index(effect_idx)
 		if effect_card.is_hidden_from_field():
 			effect_card.global_position = global_position
-		effect_card.is_veiled = is_enemy
+		effect_card.is_client_veiled = is_enemy
 		hand.update_hand_positions()
 	effect_deck.update_counter(player.effect_deck)
 

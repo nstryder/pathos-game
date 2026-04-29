@@ -65,10 +65,12 @@ func phase_is_defense() -> bool:
 
 
 func get_current_attacker() -> EntityCard:
+	assert(attacking_player != null, "Attacker is not set yet.")
 	return attacking_player.get_entity_card_at_index(declared_attacker_idx)
 
 
 func get_current_target() -> EntityCard:
+	assert(defending_player != null, "Defender is not set yet.")
 	return defending_player.get_entity_card_at_index(declared_target_idx)
 
 
@@ -126,6 +128,12 @@ func get_all_active_entities() -> Array[EntityCard]:
 	return server.player1.get_all_entities_in_play() + server.player2.get_all_entities_in_play()
 
 
+func get_all_revealed_entities() -> Array[EntityCard]:
+	return get_all_active_entities().filter(func(x: EntityCard) -> bool:
+		return x.is_revealed == true
+	)
+
+
 #endregion
 #region COMBAT RESOLUTION
 
@@ -146,6 +154,7 @@ func start_combat() -> void:
 	
 	await _resolve_effects()
 	if attack_is_declared():
+		await _resolve_abilities()
 		await _resolve_combat()
 	await _resolve_discards()
 	await _resolve_deaths()
@@ -175,6 +184,22 @@ func _resolve_effects() -> void:
 			server.timeline.remove_from_queue(action)
 		server.client.visualize_combat_phase_fx.rpc(action.to_dict())
 		await Utils.sleep(1)
+	await Utils.sleep(1)
+
+
+func _resolve_abilities() -> void:
+	server.client.set_status.rpc("Resolving Abilities...")
+
+	var attacker: EntityCard = get_current_attacker()
+	var defender: EntityCard = get_current_target()
+
+	var ability_game_data := EntityAbility.GameData.new()
+	ability_game_data.server = server
+	ability_game_data.combat_data = combat_data
+
+	attacker.ability.activate(ability_game_data)
+	defender.ability.activate(ability_game_data)
+
 	await Utils.sleep(1)
 
 

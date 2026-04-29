@@ -14,6 +14,7 @@ enum Status {
 var data: EntityCardData
 var max_attack: int
 var max_shield: int
+var ability: EntityAbility
 
 @export var entity_code: String
 @export var current_attack: int:
@@ -63,11 +64,21 @@ func _ready() -> void:
 	data = CardDb.get_entity_by_code(entity_code)
 	max_attack = data.base_attack
 	max_shield = data.base_shield
+	ability = _load_entity_behavior(entity_code)
 	_nickname.text = data.nickname
 	_description.text = data.description if data.description else "No special ability."
 	_status_label.text = ""
 
 	Utils.validate_vars(self , entity_code, data)
+
+
+func _load_entity_behavior(code: String) -> EntityAbility:
+	var path: String = CardDb.base_entity_ability_path % CardDb.get_entity_behavior_name(code)
+	var script: GDScript = load(path)
+	var entity_behavior := EntityAbility.new()
+	entity_behavior.set_script(script)
+	entity_behavior.user = self
+	return entity_behavior
 
 
 func activate() -> void:

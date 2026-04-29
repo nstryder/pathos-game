@@ -23,12 +23,3 @@ func enter(data: GameData) -> void:
 @warning_ignore("unused_parameter")
 func exit(data: GameData) -> void:
 	pass
-
-
-@warning_ignore("unused_parameter")
-func use() -> void:
-	pass
-
-
-func modify_damage(incoming_damage: int) -> int:
-	return incoming_damage

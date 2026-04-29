@@ -108,7 +108,7 @@ func visualize_combat_phase_fx(action_dict: Dictionary) -> void:
 	var presentation_point: Node2D = %PresentationPoint
 	var board_center: Node2D = %BoardCenter
 	action.effect.slot_attachment_effects_disable()
-	action.effect.is_veiled = false
+	action.effect.is_client_veiled = false
 	action.effect.global_position = board_center.global_position
 	var tween := create_tween()
 	tween.tween_property(action.effect, "global_position", presentation_point.global_position, 0.1)

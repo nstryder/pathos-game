@@ -6,6 +6,7 @@ extends Node
 # TODO: Detect when csv has been changed (probably via hash comparison)
 
 const base_effect_behavior_path: String = "res://src/resources/effect_behaviors/%s.gd"
+const base_entity_ability_path: String = "res://src/resources/entity_abilities/%s.gd"
 
 @export var entity_cards: Dictionary[String, EntityCardData] = {} # {Code: EntityCardData}
 @export var effect_cards: Dictionary[String, EffectCardData] = {} # {Code: EffectCardData}
@@ -37,6 +38,7 @@ func _build_all_data() -> void:
 	print("Building CardDB data...")
 	_build_entity_card_data()
 	_build_effect_card_data()
+	_create_entity_behavior_files()
 	_create_effect_behavior_files()
 	notify_property_list_changed()
 	print("CardDB finished building data.")
@@ -45,12 +47,13 @@ func _build_all_data() -> void:
 func _rebuild_all_data() -> void:
 	if not Engine.is_editor_hint():
 		return
-	print("Building CardDB data...")
+	print("Re-building CardDB data...")
 	_build_entity_card_data(false)
 	_build_effect_card_data(false)
-	_create_effect_behavior_files(true)
+	_create_entity_behavior_files()
+	_create_effect_behavior_files()
 	notify_property_list_changed()
-	print("CardDB finished building data.")
+	print("CardDB finished re-building data.")
 
 
 func _build_entity_card_data(skip_existing: bool = true) -> void:
@@ -94,25 +97,44 @@ func _build_effect_card_data(skip_existing: bool = true) -> void:
 	print("Done")
 
 
-func _create_effect_behavior_files(skip_existing: bool = true) -> void:
+func _create_entity_behavior_files() -> void:
+	print("Creating EntityAbility files...")
+	for entity_code in entity_cards:
+		var filename: String = get_entity_behavior_name(entity_code)
+		var path: String = base_entity_ability_path % filename
+		if FileAccess.file_exists(path):
+			continue
+		var script := GDScript.new()
+		script.source_code = "extends EntityAbility"
+		ResourceSaver.save(script, path)
+	print("Done")
+
+
+func _create_effect_behavior_files() -> void:
 	print("Creating EffectBehavior files...")
 	for effect_code in effect_cards:
 		var filename: String = get_effect_behavior_name(effect_code)
 		var path: String = base_effect_behavior_path % filename
-		if skip_existing and FileAccess.file_exists(path):
+		if FileAccess.file_exists(path):
 			continue
 		var script := GDScript.new()
 		script.source_code = "extends EffectBehavior"
-		# script.reload()
 		ResourceSaver.save(script, path)
 	print("Done")
+
 
 func get_effect_behavior_name(effect_code: String) -> String:
 	# Use snake case because its friendlier for file names
 	var snake_name: String = get_effect_by_code(effect_code).effect_name.to_snake_case()
 	return effect_code + "_" + snake_name
 
-		
+
+func get_entity_behavior_name(entity_code: String) -> String:
+	# Use snake case because its friendlier for file names
+	var snake_name: String = get_entity_by_code(entity_code).nickname.to_snake_case()
+	return entity_code + "_" + snake_name
+
+
 static func csv_parse(csv_path: String) -> Array[Dictionary]:
 	var file := FileAccess.open(csv_path, FileAccess.READ)
 	
