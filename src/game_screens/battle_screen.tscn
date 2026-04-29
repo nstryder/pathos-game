@@ -25,6 +25,12 @@ properties/2/path = NodePath("CombatManager:defending_player_nodepath")
 properties/2/spawn = true
 properties/2/replication_mode = 2
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsr4r"]
+bg_color = Color(0.049399998, 0.05877332, 0.19, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_wk73e"]
+font_size = 128
+
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_jsr4r"]
 normal = Vector2(0, 1)
 
@@ -39,12 +45,6 @@ font_size = 64
 
 [sub_resource type="LabelSettings" id="LabelSettings_tlhb1"]
 font_size = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsr4r"]
-bg_color = Color(0.049399998, 0.05877332, 0.19, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_wk73e"]
-font_size = 128
 
 [node name="BattleScreen" type="Node2D" unique_id=935212692]
 script = ExtResource("1_36hs7")
@@ -99,6 +99,47 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 replication_config = SubResource("SceneReplicationConfig_36hs7")
 
+[node name="UseEffectAnchor" type="Control" parent="." unique_id=322867349]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="UseEffectPrompt" type="PanelContainer" parent="UseEffectAnchor" unique_id=1755127650]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_right = 1920.0
+offset_bottom = 540.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_jsr4r")
+script = ExtResource("13_jsr4r")
+
+[node name="CenterContainer" type="CenterContainer" parent="UseEffectAnchor/UseEffectPrompt" unique_id=1299116260]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UseEffectAnchor/UseEffectPrompt/CenterContainer" unique_id=1124708473]
+layout_mode = 2
+text = "Use..."
+label_settings = SubResource("LabelSettings_wk73e")
+
+[node name="UseEffectArea" type="Area2D" parent="UseEffectAnchor" unique_id=1683979188]
+position = Vector2(0, 540)
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UseEffectAnchor/UseEffectArea" unique_id=314591204]
+shape = SubResource("WorldBoundaryShape2D_jsr4r")
+
 [node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=855148378]
 layer = -10
 script = ExtResource("11_tlhb1")
@@ -123,23 +164,6 @@ loop = true
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1284769508]
 unique_name_in_owner = true
-
-[node name="UseEffectAnchor" type="Control" parent="UI" unique_id=322867349]
-layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="UseEffectArea" type="Area2D" parent="UI/UseEffectAnchor" unique_id=1683979188]
-collision_layer = 4
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="UI/UseEffectAnchor/UseEffectArea" unique_id=314591204]
-shape = SubResource("WorldBoundaryShape2D_jsr4r")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI" unique_id=863780745]
 offset_left = 24.0
@@ -250,28 +274,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("12_tlhb1")
 
-[node name="UseEffectPrompt" type="PanelContainer" parent="UI" unique_id=1755127650]
-visible = false
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_jsr4r")
-script = ExtResource("13_jsr4r")
-metadata/_edit_use_anchors_ = true
-
-[node name="CenterContainer" type="CenterContainer" parent="UI/UseEffectPrompt" unique_id=1299116260]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="UI/UseEffectPrompt/CenterContainer" unique_id=1124708473]
-layout_mode = 2
-text = "Use..."
-label_settings = SubResource("LabelSettings_wk73e")
-
 [connection signal="timeline_modified" from="Timeline" to="ClientState" method="_on_timeline_timeline_modified"]
 [connection signal="timeline_modified" from="Timeline" to="UI/TimelineUI" method="_on_timeline_timeline_modified"]
-[connection signal="use_fx_dragged" from="CardManager" to="UI/UseEffectPrompt" method="_on_card_manager_use_fx_dragged"]
-[connection signal="use_fx_released" from="CardManager" to="UI/UseEffectPrompt" method="_on_card_manager_use_fx_released"]
+[connection signal="use_fx_dragged" from="CardManager" to="UseEffectAnchor/UseEffectPrompt" method="_on_card_manager_use_fx_dragged"]
+[connection signal="use_fx_released" from="CardManager" to="UseEffectAnchor/UseEffectPrompt" method="_on_card_manager_use_fx_released"]
