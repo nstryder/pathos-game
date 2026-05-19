@@ -67,6 +67,7 @@ func _build_entity_card_data(skip_existing: bool = true) -> void:
 		entity_resource.base_attack = entity_entry["ATK"]
 		entity_resource.base_shield = entity_entry["SHD"]
 		entity_resource.rarity = EntityCardData.Rarity[str(entity_entry["Rarity"]).to_upper()]
+		entity_resource.timeline_condition = EntityCardData.EntityTimelineCondition[str(entity_entry["Timeline Condition"]).to_upper()]
 		entity_resource.description = entity_entry["Ability Desc"]
 		entity_resource.amp_description = entity_entry["AMP"]
 

@@ -1,11 +1,11 @@
 ﻿Code,Nickname,Entity Name,ATK,SHD,Ability Name,Ability Desc,AMP,Set Name,Timeline Condition,Ability Phase,Rarity,Artist
-S001-E01-N001,Kei,KEI,3,2,Engagement,Opponent must use selected Entity in combat next turn.,Opponent must declare selected Entity in combat next Phase. They cannot Attach Effect cards to that Entity.,Midnight Corridor,None,Offense,Protagonist,
-S001-E01-N002,Shin,SHIN,0,5,Counterattack,Deal 3 DMG back at the enemy Entity after hit.,Deal 5 DMG back at the enemy Entity after hit.,Midnight Corridor,None,Defense,Protagonist,
+S001-E01-N001,Kei,KEI,3,2,Engagement,Opponent must declare selected Entity in combat next Phase.,Opponent must declare selected Entity in combat next Phase. They cannot Attach Effect cards to that Entity.,Midnight Corridor,None,Offense,Protagonist,
+S001-E01-N002,Shin,SHIN,0,5,Counterattack ,Deal 3 DMG back at the enemy Entity after being hit in combat.,Deal 5 DMG back at the enemy Entity after hit.,Midnight Corridor,None,Defense,Protagonist,
 S001-E01-N003,Ginko,GINKO,1,2,Barrage,Deal her ATK to all Revealed Entities other than herself.,Deal her ATK to all Entities other than herself.,Midnight Corridor,None,Offense,Protagonist,Poco*P
-S001-E01-N004,Hibiki,HIBIKI,2,1,Embark,Draw 1 Effect card.,,Midnight Corridor,Immediate,Both,Character,
-S001-E01-N005,Mira,MIRA,X,1,Reflection,Permanently *copy* the ATK of the first Entity you attack.,,Midnight Corridor,None,Offense,Character,
+S001-E01-N004,Hibiki,HIBIKI,2,1,Embark,Draw 1 Effect card.,,Midnight Corridor,None,Both,Character,
+S001-E01-N005,Mira,MIRA,X,1,Reflection,Permanently Copy the ATK of the first Entity you attack.,,Midnight Corridor,None,Offense,Character,
 S001-E01-N006,Haru,HARU,1,2,Voyage,Shuffle your Effect discard pile back into your Effect draw pile.,,Midnight Corridor,Immediate,Offense,Character,
-S001-E01-N007,Akari,AKARI,1,2,Sparkle,Negate the enemy Entity's ability during combat.,,Midnight Corridor,Immediate,Both,Character,
+S001-E01-N007,Akari,AKARI,1,2,Sparkle,Negate the enemy Entity's ability in combat.,,Midnight Corridor,Immediate,Both,Character,
 S001-E01-N008,Kumiko,KUMIKO,2,2,Memory,Keep attached Effect cards until the next turn.,,Midnight Corridor,None,Both,Character,MM
 S001-E01-N009,Golem,GOLEM,1,3,,,,Midnight Corridor,None,None,Character,
-S001-E01-N010,Pixie,PIXIE,3,1,,,,Midnight Corridor,None,None,Character,
+S001-E01-N010,Pixie,PIXIE,3,1,,,,Midnight Corridor,None,None,Character
