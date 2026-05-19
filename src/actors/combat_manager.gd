@@ -97,8 +97,13 @@ func reset_attack_indexes() -> void:
 	declared_target_idx = -1
 
 
+func reveal_combatants() -> void:
+	for entity: EntityCard in [get_current_attacker(), get_current_target()]:
+		reveal_entity(entity)
+
+
 #endregion
-#region DAMAGE CALCULATION
+#region CARD FUNCTIONALITY
 
 ## Use this in most cases when an Entity is trying to attack another Entity
 ## whether a direct attack or through its ability
@@ -122,6 +127,23 @@ func deal_global_damage(target: EntityCard, amount: int) -> void:
 ## Use this when the player needs to take damage
 func deal_player_damage(player: Player, amount: int) -> void:
 	player.take_damage(amount)
+
+
+func reveal_entity(entity: EntityCard) -> void:
+	entity.is_revealed = true
+	if entity.data.timeline_condition == EntityCardData.EntityTimelineCondition.IMMEDIATE:
+		activate_entity_ability(entity)
+
+
+func activate_entity_ability(entity: EntityCard) -> void:
+	var ability_game_data := EntityAbility.GameData.new()
+	ability_game_data.server = server
+	ability_game_data.combat_data = combat_data
+
+	if entity.is_amped:
+		entity.ability.activate_amped(ability_game_data)
+	else:
+		entity.ability.activate(ability_game_data)
 
 
 func get_all_active_entities() -> Array[EntityCard]:
@@ -195,19 +217,9 @@ func _resolve_abilities() -> void:
 	var attacker: EntityCard = get_current_attacker()
 	var defender: EntityCard = get_current_target()
 
-	var ability_game_data := EntityAbility.GameData.new()
-	ability_game_data.server = server
-	ability_game_data.combat_data = combat_data
-
-	if attacker.is_amped:
-		attacker.ability.activate_amped(ability_game_data)
-	else:
-		attacker.ability.activate(ability_game_data)
-
-	if defender.is_amped:
-		defender.ability.activate_amped(ability_game_data)
-	else:
-		defender.ability.activate(ability_game_data)
+	for entity: EntityCard in [attacker, defender]:
+		if entity.data.timeline_condition == EntityCardData.EntityTimelineCondition.NONE:
+			activate_entity_ability(entity)
 
 	await Utils.sleep(1)
 
