@@ -48,3 +48,7 @@ func _load_effect_behavior(code: String, is_amp: bool) -> EffectBehavior:
 	var effect_behavior := EffectBehavior.new()
 	effect_behavior.set_script(script)
 	return effect_behavior
+
+
+func discard() -> void:
+	player.discard_effect(current_idx)

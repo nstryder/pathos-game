@@ -99,6 +99,25 @@ func return_effect_to_deck(effect_idx: int) -> void:
 	add_effect_to_deck(effect_idx)
 
 
+func discard_effect(effect_idx: int) -> void:
+	assert(effect_idx not in effect_discard_pile, "Effect was already discarded.")
+	effect_discard_pile.append(effect_idx)
+
+
+func return_discards_to_deck() -> void:
+	print("Returning...", effect_discard_pile)
+	# Check for dupes
+	var dupe_map := {}
+	for i in effect_deck + effect_discard_pile:
+		dupe_map[i] = true
+	effect_deck.append_array(effect_discard_pile)
+	effect_discard_pile.clear()
+
+	assert(dupe_map.size() == effect_deck.size(), "Duplicate effect exists in both deck and discards.")
+	
+	effect_deck.shuffle()
+		
+
 func get_effect_card_at_index(idx: int) -> EffectCard:
 	assert(idx >= 0, "Attempted to get an invalid effect idx.")
 	return effect_card_holder.get_child(idx)
