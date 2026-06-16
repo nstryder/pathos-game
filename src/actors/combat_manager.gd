@@ -230,6 +230,9 @@ func _resolve_combat() -> void:
 	var attacker: EntityCard = get_current_attacker()
 	var defender: EntityCard = get_current_target()
 
+	for condition in attacker.get_conditions():
+		condition.on_pre_damage_given(attacker, defender)
+
 	deal_damage(attacker, defender, attacker.current_attack)
 
 	for condition in attacker.get_conditions():

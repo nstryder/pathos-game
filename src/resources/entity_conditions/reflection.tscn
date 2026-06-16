@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://c0n3pek3aobko"]
+
+[ext_resource type="PackedScene" uid="uid://ciuga10gboorw" path="res://src/resources/entity_conditions/_base_condition.tscn" id="1_dpukl"]
+[ext_resource type="Script" uid="uid://c4xwhuhimlqn" path="res://src/resources/entity_conditions/reflection.gd" id="2_so22s"]
+
+[node name="reflection" unique_id=1455647321 instance=ExtResource("1_dpukl")]
+script = ExtResource("2_so22s")
