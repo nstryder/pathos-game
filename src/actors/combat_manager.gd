@@ -7,6 +7,7 @@ signal attack_rescinded
 
 class EntityCombatData:
 	var hit_player_instead: bool = false
+	var can_use_ability: bool = true
 
 
 class PlayerCombatData:
@@ -72,6 +73,23 @@ func get_current_attacker() -> EntityCard:
 func get_current_target() -> EntityCard:
 	assert(defending_player != null, "Defender is not set yet.")
 	return defending_player.get_entity_card_at_index(declared_target_idx)
+
+
+## Useful for entities to figure out who is their attacker/target
+## null output means the card is not even part of the combat
+func get_opposing_entity_to(entity: EntityCard) -> EntityCard:
+	if not attack_is_declared():
+		return null
+
+	var attacker := get_current_attacker()
+	var defender := get_current_target()
+
+	if entity == attacker:
+		return defender
+	elif entity == defender:
+		return attacker
+	else:
+		return null
 
 
 func attack_is_declared() -> bool:
@@ -218,7 +236,8 @@ func _resolve_abilities() -> void:
 	var defender: EntityCard = get_current_target()
 
 	for entity: EntityCard in [attacker, defender]:
-		if entity.data.timeline_condition == EntityCardData.EntityTimelineCondition.NONE:
+		if entity.data.timeline_condition == EntityCardData.EntityTimelineCondition.NONE \
+		and combat_data.entities[entity].can_use_ability:
 			activate_entity_ability(entity)
 
 	await Utils.sleep(1)
