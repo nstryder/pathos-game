@@ -69,11 +69,21 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="Visuals/Info/VBoxContainer" index="2" unique_id=1366815692]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Visuals/Info/VBoxContainer" index="2" unique_id=1724336022]
 layout_mode = 2
+
+[node name="Label" type="Label" parent="Visuals/Info/VBoxContainer/HBoxContainer2" index="0" unique_id=1366815692]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "Description"
-horizontal_alignment = 1
+
+[node name="TimelineCondition" type="Label" parent="Visuals/Info/VBoxContainer/HBoxContainer2" index="1" unique_id=821779288]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "IMMEDIATE"
+horizontal_alignment = 2
 
 [node name="HSeparator" type="HSeparator" parent="Visuals/Info/VBoxContainer" index="3" unique_id=1067651188]
 layout_mode = 2

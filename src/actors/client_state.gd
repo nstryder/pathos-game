@@ -203,7 +203,7 @@ func arrange_attached_effects() -> void:
 	const CARD_SPACING = 32
 	var attachments: Dictionary[EntityCard, int] = {}
 
-	for action in timeline.get_queue():
+	for action in timeline.get_main_queue():
 		if action.type != EffectCardData.UsageType.ATTACH:
 			continue
 		# Take the entity from the target

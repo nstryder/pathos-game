@@ -215,18 +215,25 @@ func _initialize_combat_data() -> void:
 func _resolve_effects() -> void:
 	server.client.set_status.rpc("Resolving Effects...")
 	for action: Timeline.Action in server.timeline.get_organized_queue():
-		var game_data := _create_game_data(action)
-		if action.effect.behavior is AmpBehavior:
-			print("AMPING!!!")
-		action.effect.behavior.enter(game_data)
-
+		resolve_one_effect(action)
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
 			server.timeline.transfer_action_to_discard(action)
 		else:
 			server.timeline.remove_from_queue(action)
-		server.client.visualize_combat_phase_fx.rpc(action.to_dict())
 		await Utils.sleep(1)
 	await Utils.sleep(1)
+
+
+func resolve_one_effect(action: Timeline.Action) -> void:
+	if not multiplayer.is_server():
+		return
+	var game_data := _create_game_data(action)
+	if action.effect.behavior is AmpBehavior:
+		print("AMPING!!!")
+	action.effect.behavior.enter(game_data)
+
+
+	server.client.visualize_combat_phase_fx.rpc(action.to_dict())
 
 
 func _resolve_abilities() -> void:

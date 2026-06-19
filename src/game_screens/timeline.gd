@@ -6,8 +6,12 @@ signal discard_queue_modified
 
 const UsageType = EffectCardData.UsageType
 
+# TODO: Make a cosmetic queue for immediates, theyre just for showing in the UI
+
 var _main_timeline_queue: Array[Action] = []
 var _discard_queue: Array[Action] = []
+
+@onready var combat_manager: CombatManager = %CombatManager
 
 class Action:
 	var type: EffectCardData.UsageType
@@ -55,7 +59,8 @@ func register_effect_attachment(owner_player_path: NodePath, effect_idx: int, ta
 
 	player.remove_effect_from_hand(effect_idx)
 	action.effect.is_client_veiled = false
-	_add_action_to_main_timeline(action)
+
+	_add_action_to_timeline(action)
 
 
 @rpc("any_peer", "call_local", "reliable")
@@ -69,7 +74,8 @@ func register_effect_use(owner_player_path: NodePath, effect_idx: int) -> void:
 
 	player.remove_effect_from_hand(effect_idx)
 	action.effect.hide_from_field()
-	_add_action_to_main_timeline(action)
+
+	_add_action_to_timeline(action)
 
 
 @rpc("any_peer", "call_local", "reliable")
@@ -90,10 +96,10 @@ func clear_timeline() -> void:
 	timeline_modified.emit()
 
 
-func get_queue() -> Array[Action]:
+func get_main_queue() -> Array[Action]:
 	return _main_timeline_queue
 
-# TODO: Separate queue into immediates vs normals
+
 func get_organized_queue() -> Array[Action]:
 	return _main_timeline_queue.duplicate()
 
@@ -166,6 +172,12 @@ func _get_action_idx(action: Action) -> int:
 	return idx
 
 
-func _add_action_to_main_timeline(action: Action) -> void:
-	_main_timeline_queue.append(action)
-	timeline_modified.emit()
+func _add_action_to_timeline(action: Action) -> void:
+	if action.effect.data.timeline_condition == EffectCardData.TimelineCondition.IMMEDIATE:
+		if multiplayer.is_server():
+			combat_manager.resolve_one_effect(action)
+		_discard_queue.append(action)
+		discard_queue_modified.emit()
+	else:
+		_main_timeline_queue.append(action)
+		timeline_modified.emit()
