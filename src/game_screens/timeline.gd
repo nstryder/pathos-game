@@ -146,9 +146,7 @@ func remove_from_queue(action: Action) -> void:
 
 @rpc("authority", "call_local", "reliable")
 func _rpc_remove_from_queue(action_idx: int) -> void:
-	var action: Action = _main_timeline_queue.pop_at(action_idx)
-	if action.effect.data.after_use == EffectCardData.AfterUse.DISCARD:
-		action.effect.discard()
+	_main_timeline_queue.pop_at(action_idx)
 	timeline_modified.emit()
 
 
@@ -162,7 +160,9 @@ func remove_from_discard_queue(action: Action) -> void:
 
 @rpc("authority", "call_local", "reliable")
 func _rpc_remove_from_discard_queue(action_idx: int) -> void:
-	_discard_queue.pop_at(action_idx)
+	var action: Action = _discard_queue.pop_at(action_idx)
+	if action.effect.data.after_use == EffectCardData.AfterUse.DISCARD:
+		action.effect.discard()
 	discard_queue_modified.emit()
 
 

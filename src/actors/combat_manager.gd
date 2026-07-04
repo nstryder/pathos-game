@@ -8,6 +8,7 @@ signal attack_rescinded
 class EntityCombatData:
 	var hit_player_instead: bool = false
 	var can_use_ability: bool = true
+	var keep_fx_attach_longer: bool = false
 
 
 class PlayerCombatData:
@@ -216,7 +217,7 @@ func _resolve_effects() -> void:
 	server.client.set_status.rpc("Resolving Effects...")
 	for action: Timeline.Action in server.timeline.get_organized_queue():
 		resolve_one_effect(action)
-		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
+		if action.effect.data.after_use == EffectCardData.AfterUse.DISCARD:
 			server.timeline.transfer_action_to_discard(action)
 		else:
 			server.timeline.remove_from_queue(action)
@@ -273,8 +274,12 @@ func _resolve_discards() -> void:
 	server.client.set_status.rpc("Discarding cards...")
 	for action: Timeline.Action in server.timeline.get_discard_queue():
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
-			var game_data := _create_game_data(action)
-			action.effect.behavior.exit(game_data)
+			var entity_data: EntityCombatData = combat_data.entities[action.entity]
+			if entity_data.keep_fx_attach_longer:
+				entity_data.keep_fx_attach_longer = false
+			else:
+				var game_data := _create_game_data(action)
+				action.effect.behavior.exit(game_data)
 			server.timeline.remove_from_discard_queue(action)
 	await Utils.sleep(1)
 
