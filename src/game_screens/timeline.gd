@@ -115,12 +115,11 @@ func get_queue_filtered_by_entity(entity_card: EntityCard) -> Array[Action]:
 func get_discard_queue() -> Array[Action]:
 	return _discard_queue
 
-
+#region RPC METHODS
 # The following methods are split into two parts:
 #	A public method used by the server
 #	A private RPC method that gets called on every client
 # 	This split is necessary since Action is not serializable
-
 	
 func transfer_action_to_discard(action: Action) -> void:
 	if not multiplayer.is_server():
