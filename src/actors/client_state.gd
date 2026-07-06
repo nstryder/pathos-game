@@ -107,15 +107,18 @@ func visualize_combat_phase_fx(action_dict: Dictionary) -> void:
 	var action := Timeline.Action.from_dict(action_dict)
 	var presentation_point: Node2D = %PresentationPoint
 	var board_center: Node2D = %BoardCenter
-	action.effect.slot_attachment_effects_disable()
-	action.effect.is_client_veiled = false
-	action.effect.global_position = board_center.global_position
+	var effect_visuals: Control = action.effect.visuals.duplicate()
+	action.effect.add_sibling(effect_visuals)
+	# effect_visuals.slot_attachment_effects_disable()
+	# effect_visuals.is_client_veiled = false
+	effect_visuals.global_position = board_center.global_position
 	var tween := create_tween()
-	tween.tween_property(action.effect, "global_position", presentation_point.global_position, 0.1)
+	tween.tween_property(effect_visuals, "global_position", presentation_point.global_position, 0.1)
 	tween.tween_interval(0.9)
-	tween.tween_property(action.effect, "global_position:y", action.effect.global_position.y + 400, 0.1)
+	tween.tween_property(effect_visuals, "global_position:y", effect_visuals.global_position.y + 400, 0.1)
+	tween.tween_callback(effect_visuals.queue_free)
+	# effect.hide_from_field()
 	await tween.finished
-	action.effect.hide_from_field()
 
 
 @rpc("authority", "call_local", "reliable")

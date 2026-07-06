@@ -5,6 +5,8 @@ class_name Card
 var starting_position: Vector2
 var player: Player
 
+@onready var visuals: Control = $Visuals
+
 var detectable: bool = true:
 	set(value):
 		detectable = value
@@ -40,7 +42,7 @@ var is_client_veiled: bool = false:
 
 func _ready() -> void:
 	player = get_parent().get_parent()
-	Utils.validate_vars(self , player, current_idx)
+	Utils.validate_vars(self, player, current_idx)
 
 
 func drag_effects_enable() -> void:

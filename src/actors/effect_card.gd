@@ -54,3 +54,6 @@ func _load_effect_behavior(code: String, is_amp: bool) -> EffectBehavior:
 
 func discard() -> void:
 	player.discard_effect(current_idx)
+	slot_attachment_effects_disable()
+	is_client_veiled = false
+	hide_from_field()
