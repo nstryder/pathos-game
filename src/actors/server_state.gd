@@ -36,6 +36,10 @@ func start_game() -> void:
 
 func execute_phase_flow() -> void:
 	while true:
+		# BUG (Potential): Because CombatData is only initialized when this is called,
+		# then updates to Entities in play aren't reflected immediately
+		# So if for whatever reason they are changed in the middle of a phase...
+		# Errors might happen, so we should re-examine this in the future
 		combat_manager.resolve_turn_start()
 		combat_manager.current_phase = Phases.PLAYER1_OFFENSE
 		
@@ -51,6 +55,7 @@ func execute_phase_flow() -> void:
 		if player1.hp <= 0 or player2.hp <= 0:
 			break
 		
+		combat_manager.resolve_turn_start()
 		combat_manager.current_phase = Phases.PLAYER2_OFFENSE
 		execute_offense_phase(player2, player1)
 		await turn_ended
