@@ -275,11 +275,12 @@ func _resolve_discards() -> void:
 	for action: Timeline.Action in server.timeline.get_discard_queue():
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
 			var entity_data: EntityCombatData = combat_data.entities[action.entity]
-			if entity_data.keep_fx_attach_longer:
-				entity_data.keep_fx_attach_longer = false
-			else:
+			if not entity_data.keep_fx_attach_longer:
 				var game_data := _create_game_data(action)
 				action.effect.behavior.exit(game_data)
+				server.timeline.remove_from_discard_queue(action)
+		# For USE-type FX
+		else:
 			server.timeline.remove_from_discard_queue(action)
 	await Utils.sleep(1)
 
