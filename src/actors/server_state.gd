@@ -79,13 +79,14 @@ func execute_offense_phase(attacker: Player, defender: Player) -> void:
 	combat_manager.attacking_player_nodepath = attacker.get_path()
 	combat_manager.defending_player_nodepath = defender.get_path()
 	client.start_client_offense.rpc_id(attacker.id)
-	client.wait_for_offense.rpc_id(defender.id)
+	client.wait_for_action.rpc_id(defender.id)
 
 
 func execute_defense_phase() -> void:
 	if combat_manager.attack_is_declared():
 		combat_manager.reveal_combatants()
 	client.start_client_defense.rpc_id(combat_manager.defending_player.id)
+	client.wait_for_action.rpc_id(combat_manager.attacking_player.id)
 
 
 func execute_combat_phase() -> void:

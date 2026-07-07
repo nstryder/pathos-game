@@ -11,6 +11,7 @@ var player: Player
 @onready var hand: PlayerHand = %Hand
 @onready var entity_slot_markers: EntitySlotMarkers = %EntitySlotMarkers
 @onready var timeline: Timeline = %Timeline
+@onready var combat_manager: CombatManager = %CombatManager
 
 
 # Called when the node enters the scene tree for the first time.
@@ -67,6 +68,11 @@ func realize_effect_state() -> void:
 		if effect_card.is_hidden_from_field():
 			effect_card.global_position = global_position
 		effect_card.is_client_veiled = is_enemy
+		if combat_manager.phase_matches_fx(effect_card.data) \
+		and combat_manager.player_is_taking_action(effect_card.player):
+			effect_card.modulate = Color.WHITE
+		else:
+			effect_card.modulate = Color.GRAY
 		hand.update_hand_positions()
 	effect_deck.update_counter(player.effect_deck)
 

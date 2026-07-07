@@ -12,6 +12,7 @@ var behavior: EffectBehavior
 @onready var _description: Label = %Description
 @onready var _effect_type: Label = %EffectType
 @onready var _identifier: Label = %Identifier
+@onready var _phase: Label = %Phase
 @onready var _timeline_condition: Label = %TimelineCondition
 
 func _ready() -> void:
@@ -37,6 +38,7 @@ func _ready() -> void:
 	_effect_type.text = EffectCardData.EffectType.keys()[data.effect_type]
 	_description.text = data.description
 	_identifier.text = EffectCardData.Identifier.keys()[data.identifier]
+	_phase.text = EffectCardData.AbilityPhase.keys()[data.ability_phase]
 	_timeline_condition.text = "IMMEDIATE" if data.timeline_condition == EffectCardData.TimelineCondition.IMMEDIATE else ""
 	
 	Utils.validate_vars(self, effect_code, data, behavior)

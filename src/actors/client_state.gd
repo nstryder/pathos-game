@@ -54,7 +54,7 @@ func start_turn() -> void:
 
 
 @rpc("authority", "call_local", "reliable")
-func wait_for_offense() -> void:
+func wait_for_action() -> void:
 	await client_sync_server_state()
 	sync_hands()
 	wait_for_turn()
@@ -108,7 +108,7 @@ func visualize_combat_phase_fx(action_dict: Dictionary) -> void:
 	var presentation_point: Node2D = %PresentationPoint
 	var board_center: Node2D = %BoardCenter
 	var effect_visuals: Control = action.effect.visuals.duplicate()
-	action.effect.add_sibling(effect_visuals)
+	action.effect.player.add_child(effect_visuals)
 	# effect_visuals.slot_attachment_effects_disable()
 	# effect_visuals.is_client_veiled = false
 	effect_visuals.global_position = board_center.global_position
