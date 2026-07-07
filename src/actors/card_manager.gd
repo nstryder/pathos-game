@@ -18,6 +18,7 @@ var _entity_targeting_line_visual: Line2D
 var _entity_card_to_declare: EntityCard
 
 @onready var client: ClientState = %ClientState
+@onready var server: ServerState = %ServerState
 
 
 func _input(event: InputEvent) -> void:
@@ -42,7 +43,9 @@ func _process(_delta: float) -> void:
 func _on_press() -> void:
 	if dragging_enabled:
 		var effect_card := _detect_effect_card()
-		if effect_card and not _is_enemy_card(effect_card):
+		if effect_card \
+		and not _is_enemy_card(effect_card) \
+		and server.combat_manager.phase_matches_fx(effect_card.data):
 			_drag_effect(effect_card)
 	if attacking_enabled and not _effect_card_being_dragged:
 		_drag_entity()

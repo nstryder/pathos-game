@@ -66,6 +66,17 @@ func phase_is_defense() -> bool:
 	return current_phase in [Phases.PLAYER1_DEFENSE, Phases.PLAYER2_DEFENSE]
 
 
+func phase_matches_fx(effect_data: EffectCardData) -> bool:
+	return effect_data.ability_phase == EffectCardData.AbilityPhase.BOTH \
+	or (phase_is_offense() and effect_data.ability_phase == EffectCardData.AbilityPhase.OFFENSE) \
+	or (phase_is_defense() and effect_data.ability_phase == EffectCardData.AbilityPhase.DEFENSE)
+ 
+
+func player_is_taking_action(player: Player) -> bool:
+	return (phase_is_offense() and attacking_player == player) \
+	or (phase_is_defense() and defending_player == player)
+
+
 func get_current_attacker() -> EntityCard:
 	assert(attacking_player != null, "Attacker is not set yet.")
 	return attacking_player.get_entity_card_at_index(declared_attacker_idx)
