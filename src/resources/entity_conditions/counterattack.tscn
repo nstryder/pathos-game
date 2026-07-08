@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://daxb2fmjafasg"]
+
+[ext_resource type="PackedScene" uid="uid://ciuga10gboorw" path="res://src/resources/entity_conditions/_base_condition.tscn" id="1_4tdaj"]
+[ext_resource type="Script" uid="uid://c0bopdwlvt1po" path="res://src/resources/entity_conditions/counterattack.gd" id="2_0mcs1"]
+
+[node name="Counterattack" unique_id=1455647321 instance=ExtResource("1_4tdaj")]
+script = ExtResource("2_0mcs1")

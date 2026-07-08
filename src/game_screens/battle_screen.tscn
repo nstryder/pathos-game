@@ -47,8 +47,9 @@ font_size = 64
 font_size = 64
 
 [node name="BattleScreen" type="Node2D" unique_id=935212692]
+position = Vector2(1, 0)
 script = ExtResource("1_36hs7")
-template_entity_deck = Array[String](["Golem", "Pixie", "Hibiki", "Akari", "Kumiko"])
+template_entity_deck = Array[String](["Pixie", "Akari", "Hibiki", "Golem", "Shin"])
 template_effect_deck = Array[String](["Bite", "Snipe", "Sludge", "Taunt", "Medkit", "Plate", "Reshuffler", "Dome", "Knife"])
 can_shuffle_cards = false
 
@@ -58,7 +59,7 @@ unique_name_in_owner = true
 [node name="ClientState" parent="." unique_id=1605554048 instance=ExtResource("3_tlhb1")]
 unique_name_in_owner = true
 
-[node name="CombatManager" parent="." unique_id=88729818 instance=ExtResource("8_lp51r")]
+[node name="CombatManager" parent="." unique_id=88729818 groups=["CombatManager"] instance=ExtResource("8_lp51r")]
 unique_name_in_owner = true
 
 [node name="Timeline" parent="." unique_id=152600920 instance=ExtResource("5_tlhb1")]
