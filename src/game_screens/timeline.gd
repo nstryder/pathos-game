@@ -113,7 +113,7 @@ func get_queue_filtered_by_entity(entity_card: EntityCard) -> Array[Action]:
 
 
 func get_discard_queue() -> Array[Action]:
-	return _discard_queue
+	return _discard_queue.duplicate()
 
 #region RPC METHODS
 # The following methods are split into two parts:
@@ -175,6 +175,8 @@ func _add_action_to_timeline(action: Action) -> void:
 	if action.effect.data.timeline_condition == EffectCardData.TimelineCondition.IMMEDIATE:
 		if multiplayer.is_server():
 			combat_manager.resolve_one_effect(action)
+		if action.type == UsageType.ATTACH:
+			action.effect.hide_from_field()
 		_discard_queue.append(action)
 		discard_queue_modified.emit()
 	else:
