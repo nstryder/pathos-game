@@ -83,7 +83,7 @@ func _ready() -> void:
 	_description.text = data.description if data.description else "No special ability."
 	_status_label.text = ""
 
-	Utils.validate_vars(self , entity_code, data)
+	Utils.validate_vars(self, entity_code, data)
 
 
 func _load_entity_behavior(code: String) -> EntityAbility:

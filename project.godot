@@ -47,6 +47,10 @@ display_server/driver.linuxbsd="wayland"
 
 project/assembly_name="Pathos"
 
+[global_group]
+
+CombatManager=""
+
 [gui]
 
 theme/default_font_multichannel_signed_distance_field=true

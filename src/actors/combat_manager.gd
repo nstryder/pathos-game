@@ -275,6 +275,9 @@ func _resolve_combat() -> void:
 
 	for condition in attacker.get_conditions():
 		condition.on_post_damage_given(attacker, defender)
+	for condition in defender.get_conditions():
+		condition.on_post_damage_taken(attacker, defender)
+	
 	
 	attacker.clear_conditions()
 	defender.clear_conditions()
