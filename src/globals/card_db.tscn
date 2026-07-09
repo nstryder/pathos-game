@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://rs44lwk8injo" path="res://src/globals/card_db.gd" id="1_p485w"]
 [ext_resource type="Script" uid="uid://d3iqhcpkdtq6i" path="res://src/resources/entity_card_data/entity_card_data.gd" id="2_msm5g"]
 [ext_resource type="Script" uid="uid://bsj6kvr5i23qw" path="res://src/resources/effect_card_data/effect_card_data.gd" id="3_kwtlh"]
+[ext_resource type="Script" uid="uid://bxvps7ei55gdl" path="res://src/resources/synergy.gd" id="4_kwtlh"]
 
 [sub_resource type="Resource" id="Resource_msm5g"]
 script = ExtResource("2_msm5g")
@@ -335,6 +336,11 @@ identifier = 1
 timeline_condition = 1
 description = "Search your Discard pile and take 1 Effect card into your hand."
 
+[sub_resource type="Resource" id="Resource_5hnwd"]
+script = ExtResource("4_kwtlh")
+name = "Midnight Corridor"
+description = "Draw 1 Effect card every time Synergy activates."
+
 [node name="CardDB" type="Node" unique_id=452699192]
 script = ExtResource("1_p485w")
 entity_cards = Dictionary[String, ExtResource("2_msm5g")]({
@@ -430,4 +436,7 @@ effect_cards_indexed_by_name = Dictionary[String, String]({
 "Tempered Core": "S000-E01-A002",
 "Treasure": "S000-E01-N027",
 "Whistle": "S000-E01-N018"
+})
+synergies = Dictionary[String, ExtResource("4_kwtlh")]({
+"Midnight Corridor": SubResource("Resource_5hnwd")
 })

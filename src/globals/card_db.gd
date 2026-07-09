@@ -7,13 +7,16 @@ extends Node
 
 const base_effect_behavior_path: String = "res://src/resources/effect_behaviors/%s.gd"
 const base_entity_ability_path: String = "res://src/resources/entity_abilities/%s.gd"
+const base_synergy_path: String = "res://src/resources/synergies/%s.gd"
 
 @export var entity_cards: Dictionary[String, EntityCardData] = {} # {Code: EntityCardData}
 @export var effect_cards: Dictionary[String, EffectCardData] = {} # {Code: EffectCardData}
 @export var entity_cards_indexed_by_name: Dictionary[String, String] = {} # {Nickname: Code}
 @export var effect_cards_indexed_by_name: Dictionary[String, String] = {} # {Nickname: Code}
-@export_tool_button("Build Card Data From CSV", "Callable") var build_button: Callable = _build_all_data
+@export var synergies: Dictionary[String, Synergy] = {} # {Name: Synergy}
+@export_tool_button("Build Card DB From CSV", "Callable") var build_button: Callable = _build_all_data
 @export_tool_button("Re-build Card DB From CSV", "Callable") var rebuild_button: Callable = _rebuild_all_data
+@export_tool_button("Build Synergy Data From CSV", "Callable") var build_synergy_button: Callable = _build_synergy_data
 
 
 func get_entity_by_code(entity_code: String) -> EntityCardData:
@@ -103,6 +106,21 @@ func _build_effect_card_data(skip_existing: bool = true) -> void:
 	print("Done")
 
 
+func _build_synergy_data(skip_existing: bool = true) -> void:
+	print("Building Synergy data...")
+	var synergy_array: Array[Dictionary] = csv_parse("res://src/globals/synergies.csv")
+	for synergy_entry in synergy_array:
+		if skip_existing and synergy_entry["Name"] in synergies:
+			continue
+		var synergy_resource := Synergy.new()
+		synergy_resource.name = synergy_entry["Name"]
+		synergy_resource.description = synergy_entry["Description"]
+		synergy_resource.trigger = Synergy.Trigger[str(synergy_entry["Trigger"]).to_snake_case().to_upper()]
+		synergies[synergy_resource.name] = synergy_resource
+	print("Done")
+	_create_synergy_behavior_files()
+
+
 func _create_entity_behavior_files() -> void:
 	print("Creating EntityAbility files...")
 	for entity_code in entity_cards:
@@ -129,6 +147,19 @@ func _create_effect_behavior_files() -> void:
 		ResourceSaver.save(script, path)
 	print("Done")
 
+
+func _create_synergy_behavior_files() -> void:
+	print("Creating SynergyBehavior files...")
+	for synergy_name in synergies:
+		var filename: String = synergy_name.to_snake_case()
+		var path: String = base_synergy_path % filename
+		if FileAccess.file_exists(path):
+			continue
+		var script := GDScript.new()
+		script.source_code = "extends SynergyBehavior"
+		ResourceSaver.save(script, path)
+	print("Done")
+		
 
 func get_effect_behavior_name(effect_code: String) -> String:
 	# Use snake case because its friendlier for file names
