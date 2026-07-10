@@ -148,6 +148,12 @@ func get_all_entities_in_play() -> Array[EntityCard]:
 	return entities
 
 
+func get_all_entities() -> Array[EntityCard]:
+	var entities: Array[EntityCard]
+	entities.assign(entity_card_holder.get_children())
+	return entities
+
+
 func has_aggro() -> bool:
 	for entity in get_all_entities_in_play():
 		if entity.status == EntityCard.Status.AGGRO:

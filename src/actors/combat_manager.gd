@@ -54,8 +54,25 @@ var declared_target_idx: int
 var attacking_player: Player
 var defending_player: Player
 var combat_data: CombatData
-
+@export var synergy_tracker: Dictionary[String, bool] = {}
+var synergies: Dictionary[String, SynergyBehavior] = {}
 @onready var server: ServerState = %ServerState
+
+
+func load_synergies() -> void:
+	# Load synergies
+	var entity_list := server.player1.get_all_entities() + server.player2.get_all_entities()
+	for entity in entity_list:
+		var synergy_name: String = entity.data.synergy_name
+		if synergy_name in synergies:
+			continue
+		var synergy_path: String = CardDb.get_synergy_behavior_path(synergy_name)
+		var script: GDScript = load(synergy_path)
+		var synergy_behavior := SynergyBehavior.new()
+		synergy_behavior.set_script(script)
+		synergies.set(synergy_name, synergy_behavior)
+		synergy_tracker[synergy_name] = false
+		
 
 #region STATE UTILS
 func phase_is_offense() -> bool:

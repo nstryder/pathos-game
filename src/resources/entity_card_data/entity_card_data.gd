@@ -17,5 +17,4 @@ enum EntityTimelineCondition {
 @export var timeline_condition: EntityTimelineCondition = EntityTimelineCondition.NONE
 @export var description: String
 @export var amp_description: String
-var synergy_type: Variant
-var name_of_set: Variant
+@export var synergy_name: String

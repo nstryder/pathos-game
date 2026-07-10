@@ -73,6 +73,7 @@ func _build_entity_card_data(skip_existing: bool = true) -> void:
 		entity_resource.timeline_condition = EntityCardData.EntityTimelineCondition[str(entity_entry["Timeline Condition"]).to_upper()]
 		entity_resource.description = entity_entry["Ability Desc"]
 		entity_resource.amp_description = entity_entry["AMP"]
+		entity_resource.synergy_name = entity_entry["Set Name"]
 
 		entity_cards[entity_entry["Code"]] = entity_resource
 		entity_cards_indexed_by_name[entity_resource.nickname] = entity_entry["Code"]
@@ -171,6 +172,10 @@ func get_entity_behavior_name(entity_code: String) -> String:
 	# Use snake case because its friendlier for file names
 	var snake_name: String = get_entity_by_code(entity_code).nickname.to_snake_case()
 	return entity_code + "_" + snake_name
+
+
+func get_synergy_behavior_path(synergy_name: String) -> String:
+	return base_synergy_path % synergy_name.to_snake_case()
 
 
 static func csv_parse(csv_path: String) -> Array[Dictionary]:

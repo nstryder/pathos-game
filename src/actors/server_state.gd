@@ -23,6 +23,7 @@ func initialize_board() -> void:
 	_assign_player_ids()
 	_setup_player_decks()
 	_draw_initial_entities()
+	combat_manager.load_synergies()
 	client._finish_client_side_setup.rpc()
 	await Utils.sleep(1)
 	# At this point, assume game state is synced and ready to start
