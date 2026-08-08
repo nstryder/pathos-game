@@ -64,6 +64,10 @@ var ability: EntityAbility
 			else:
 				_status_label.text = Status.keys()[value]
 
+@export var hit_player_instead: bool = false
+@export var can_use_ability: bool = true
+@export var keep_fx_attach_longer: bool = false
+
 @onready var conditions: Node2D = $Conditions
 @onready var _nickname: Label = %Nickname
 @onready var _description: Label = %Description

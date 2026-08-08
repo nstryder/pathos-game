@@ -80,6 +80,15 @@ properties/5/replication_mode = 2
 properties/6/path = NodePath(".:is_amped")
 properties/6/spawn = true
 properties/6/replication_mode = 2
+properties/7/path = NodePath(".:hit_player_instead")
+properties/7/spawn = true
+properties/7/replication_mode = 2
+properties/8/path = NodePath(".:can_use_ability")
+properties/8/spawn = true
+properties/8/replication_mode = 2
+properties/9/path = NodePath(".:keep_fx_attach_longer")
+properties/9/spawn = true
+properties/9/replication_mode = 2
 
 [node name="EntityCard" unique_id=1641401315 instance=ExtResource("1_skp7o")]
 script = ExtResource("2_ewlyu")
@@ -89,6 +98,9 @@ current_attack = 0
 current_shield = 0
 overshield = 0
 status = 0
+hit_player_instead = false
+can_use_ability = true
+keep_fx_attach_longer = false
 
 [node name="Background" parent="Visuals" parent_id_path=PackedInt32Array(1408353716) index="0" unique_id=1883745025]
 theme_override_styles/panel = SubResource("StyleBoxFlat_vc8ps")

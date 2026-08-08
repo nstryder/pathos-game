@@ -23,7 +23,6 @@ func initialize_board() -> void:
 	_assign_player_ids()
 	_setup_player_decks()
 	_draw_initial_entities()
-	combat_manager.load_synergies()
 	client._finish_client_side_setup.rpc()
 	await Utils.sleep(1)
 	# At this point, assume game state is synced and ready to start
@@ -37,10 +36,6 @@ func start_game() -> void:
 
 func execute_phase_flow() -> void:
 	while true:
-		# BUG (Potential): Because CombatData is only initialized when this is called,
-		# then updates to Entities in play aren't reflected immediately
-		# So if for whatever reason they are changed in the middle of a phase...
-		# Errors might happen, so we should re-examine this in the future
 		combat_manager.resolve_turn_start()
 		combat_manager.current_phase = Phases.PLAYER1_OFFENSE
 		

@@ -13,7 +13,7 @@ const base_synergy_path: String = "res://src/resources/synergies/%s.gd"
 @export var effect_cards: Dictionary[String, EffectCardData] = {} # {Code: EffectCardData}
 @export var entity_cards_indexed_by_name: Dictionary[String, String] = {} # {Nickname: Code}
 @export var effect_cards_indexed_by_name: Dictionary[String, String] = {} # {Nickname: Code}
-@export var synergies: Dictionary[String, Synergy] = {} # {Name: Synergy}
+@export var synergies: Dictionary[String, SynergyData] = {} # {Name: Synergy}
 @export_tool_button("Build Card DB From CSV", "Callable") var build_button: Callable = _build_all_data
 @export_tool_button("Re-build Card DB From CSV", "Callable") var rebuild_button: Callable = _rebuild_all_data
 @export_tool_button("Build Synergy Data From CSV", "Callable") var build_synergy_button: Callable = _build_synergy_data
@@ -113,10 +113,10 @@ func _build_synergy_data(skip_existing: bool = true) -> void:
 	for synergy_entry in synergy_array:
 		if skip_existing and synergy_entry["Name"] in synergies:
 			continue
-		var synergy_resource := Synergy.new()
+		var synergy_resource := SynergyData.new()
 		synergy_resource.name = synergy_entry["Name"]
 		synergy_resource.description = synergy_entry["Description"]
-		synergy_resource.trigger = Synergy.Trigger[str(synergy_entry["Trigger"]).to_snake_case().to_upper()]
+		synergy_resource.trigger = SynergyData.Trigger[str(synergy_entry["Trigger"]).to_snake_case().to_upper()]
 		synergies[synergy_resource.name] = synergy_resource
 	print("Done")
 	_create_synergy_behavior_files()

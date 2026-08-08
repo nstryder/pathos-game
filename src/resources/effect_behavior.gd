@@ -2,11 +2,13 @@ extends Resource
 class_name EffectBehavior
 
 
+## Data class to pass into this behavior's methods.
+## We use this to make it easier to add new parameters
+## Instead of changing the function parameters every time
 class GameData:
 	var effect_player: Player
 	var target_entity: EntityCard
 	var server: ServerState
-	var combat_data: CombatManager.CombatData
 
 	func get_opponent() -> Player:
 		if effect_player == server.player1:

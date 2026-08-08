@@ -1,5 +1,5 @@
 extends Resource
-class_name Synergy
+class_name SynergyData
 
 
 enum Trigger {

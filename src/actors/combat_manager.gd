@@ -1,24 +1,13 @@
 extends Node2D
 class_name CombatManager
 
+"""
+God class that handles almost everything combat related.
+"""
+
+
 signal attack_declared
 signal attack_rescinded
-
-
-class EntityCombatData:
-	var hit_player_instead: bool = false
-	var can_use_ability: bool = true
-	var keep_fx_attach_longer: bool = false
-
-
-class PlayerCombatData:
-	var damage_modifier: float = 1.0
-	var overdamage_modifier: float = 1.0
-
-
-class CombatData:
-	var entities: Dictionary[EntityCard, EntityCombatData] = {}
-	var players: Dictionary[Player, PlayerCombatData] = {}
 
 	
 enum Phases {
@@ -53,25 +42,7 @@ var declared_target_idx: int
 			defending_player = get_node(value)
 var attacking_player: Player
 var defending_player: Player
-var combat_data: CombatData
-@export var synergy_tracker: Dictionary[String, bool] = {}
-var synergies: Dictionary[String, SynergyBehavior] = {}
 @onready var server: ServerState = %ServerState
-
-
-func load_synergies() -> void:
-	# Load synergies
-	var entity_list := server.player1.get_all_entities() + server.player2.get_all_entities()
-	for entity in entity_list:
-		var synergy_name: String = entity.data.synergy_name
-		if synergy_name in synergies:
-			continue
-		var synergy_path: String = CardDb.get_synergy_behavior_path(synergy_name)
-		var script: GDScript = load(synergy_path)
-		var synergy_behavior := SynergyBehavior.new()
-		synergy_behavior.set_script(script)
-		synergies.set(synergy_name, synergy_behavior)
-		synergy_tracker[synergy_name] = false
 		
 
 #region STATE UTILS
@@ -155,9 +126,9 @@ func reveal_combatants() -> void:
 ## Use this in most cases when an Entity is trying to attack another Entity
 ## whether a direct attack or through its ability
 func deal_damage(attacker: EntityCard, target: EntityCard, amount: int) -> void:
-	var damage_modifier: float = combat_data.players[target.player].damage_modifier
+	var damage_modifier: float = target.player.damage_modifier
 	var damage := int(amount * damage_modifier)
-	if combat_data.entities[attacker].hit_player_instead:
+	if attacker.hit_player_instead:
 		deal_player_damage(target.player, damage)
 	else:
 		target.take_damage(damage)
@@ -166,7 +137,7 @@ func deal_damage(attacker: EntityCard, target: EntityCard, amount: int) -> void:
 ## Use this for cases when you are dealing damage from non-entity sources
 ## For example Mortar
 func deal_global_damage(target: EntityCard, amount: int) -> void:
-	var damage_modifier: float = combat_data.players[target.player].damage_modifier
+	var damage_modifier: float = target.player.damage_modifier
 	var damage := int(amount * damage_modifier)
 	target.take_damage(damage)
 
@@ -180,12 +151,27 @@ func reveal_entity(entity: EntityCard) -> void:
 	entity.is_revealed = true
 	if entity.data.timeline_condition == EntityCardData.EntityTimelineCondition.IMMEDIATE:
 		activate_entity_ability(entity)
+	check_synergy()
+
+
+# TODO
+func check_synergy() -> void:
+	# for player: Player in [server.player1, server.player2]:
+	# 	var entities: Array[EntityCard] = player.get_all_entities_in_play()
+	# 	if entities.size() < 3:
+	# 		continue
+	# 	var everyone_is_revealed: bool = entities.all(func(e: EntityCard) -> bool: return e.is_revealed)
+	# 	var synergy_list: Array = entities.map(func(e: EntityCard) -> String: return e.data.synergy_name)
+	# 	var synergies_match: bool = synergy_list[0] == synergy_list[1] and synergy_list[1] == synergy_list[2]
+	# 	if everyone_is_revealed and synergies_match:
+	# 		player.synergy_is_active = true
+	# 		synergies[synergy_list[0]]
+	pass
 
 
 func activate_entity_ability(entity: EntityCard) -> void:
 	var ability_game_data := EntityAbility.GameData.new()
 	ability_game_data.server = server
-	ability_game_data.combat_data = combat_data
 
 	if entity.is_amped:
 		entity.ability.activate_amped(ability_game_data)
@@ -208,7 +194,7 @@ func get_all_revealed_entities() -> Array[EntityCard]:
 
 
 func resolve_turn_start() -> void:
-	_initialize_combat_data()
+	_reset_turn_start_state()
 	for entity in get_all_active_entities():
 		match entity.status:
 			EntityCard.Status.POISONED:
@@ -229,16 +215,15 @@ func start_combat() -> void:
 	await _resolve_deaths()
 
 
-func _initialize_combat_data() -> void:
-	combat_data = CombatData.new()
-	var all_active_entities: Array[EntityCard] = get_all_active_entities()
-	for entity in all_active_entities:
-		var entity_data := EntityCombatData.new()
-		combat_data.entities[entity] = entity_data
+func _reset_turn_start_state() -> void:
+	for entity: EntityCard in get_all_active_entities():
+		entity.hit_player_instead = false
+		entity.can_use_ability = true
+		entity.keep_fx_attach_longer = false
 	
-	combat_data.players[server.player1] = PlayerCombatData.new()
-	combat_data.players[server.player2] = PlayerCombatData.new()
-	print("Combat Data inited: ", combat_data.players)
+	for player: Player in [server.player1, server.player2]:
+		player.damage_modifier = 1.0
+		player.overdamage_modifier = 1.0
 	
 
 func _resolve_effects() -> void:
@@ -273,7 +258,7 @@ func _resolve_abilities() -> void:
 
 	for entity: EntityCard in [attacker, defender]:
 		if entity.data.timeline_condition == EntityCardData.EntityTimelineCondition.NONE \
-		and combat_data.entities[entity].can_use_ability:
+		and entity.can_use_ability:
 			activate_entity_ability(entity)
 
 	await Utils.sleep(1)
@@ -305,8 +290,7 @@ func _resolve_discards() -> void:
 	server.client.set_status.rpc("Discarding cards...")
 	for action: Timeline.Action in server.timeline.get_discard_queue():
 		if action.effect.data.usage_type == EffectCardData.UsageType.ATTACH:
-			var entity_data: EntityCombatData = combat_data.entities[action.entity]
-			if not entity_data.keep_fx_attach_longer:
+			if not action.entity.keep_fx_attach_longer:
 				var game_data := _create_game_data(action)
 				action.effect.behavior.exit(game_data)
 				server.timeline.remove_from_discard_queue(action)
@@ -322,7 +306,7 @@ func _resolve_deaths() -> void:
 		for entity in player.get_all_entities_in_play():
 			if entity.current_shield <= 0:
 				print("Removing entity from play: ", entity.data.nickname)
-				var overdamage: int = abs(entity.current_shield) * combat_data.players[player].overdamage_modifier
+				var overdamage: int = abs(entity.current_shield) * player.overdamage_modifier
 				deal_player_damage(player, 2 + overdamage)
 				player.remove_entity_from_play(entity.current_idx)
 				player.send_entity_to_graveyard(entity.current_idx)
@@ -337,7 +321,6 @@ func _create_game_data(action: Timeline.Action) -> EffectBehavior.GameData:
 	game_data.effect_player = action.effect.player
 	game_data.target_entity = action.entity
 	game_data.server = server
-	game_data.combat_data = combat_data
 	return game_data
 
 

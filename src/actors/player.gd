@@ -2,16 +2,27 @@ extends Node2D
 class_name Player
 
 signal hp_changed(new_hp: int)
+signal synergy_activated
 
 const ENTITY_LIMIT = 3
 const entity_card_scene = preload("uid://djf85mhy7rn64")
 const effect_card_scene = preload("uid://lfqkryekm4io")
+const synergy_node_scene = preload("uid://drynlu0kuhbj8")
 
 @export var id: int
 @export var hp: int = 10:
 	set(value):
 		hp = value
 		hp_changed.emit(value)
+@export var synergy_is_active: bool = false:
+	set(value):
+		synergy_is_active = value
+		if value == true:
+			synergy_activated.emit()
+
+@export var damage_modifier: float = 1.0
+@export var overdamage_modifier: float = 1.0
+		
 @export var base_entity_deck: Array[String] = []
 @export var base_effect_deck: Array[String] = []
 
@@ -32,6 +43,7 @@ const effect_card_scene = preload("uid://lfqkryekm4io")
 @onready var effect_card_holder: Node2D = $EffectCards
 
 @onready var syncer: MultiplayerSynchronizer = $MultiplayerSynchronizer
+@onready var synergies: Node2D = $Synergies
 
 
 ## This should only be called after both base entity and effect decks are set up
@@ -59,6 +71,20 @@ func initialize_decks() -> void:
 	if battle_screen.can_shuffle_cards:
 		entity_deck.shuffle()
 		effect_deck.shuffle()
+
+
+func initialize_synergies() -> void:
+	if not multiplayer.is_server():
+		return
+	var entity_list := get_all_entities()
+	for entity in entity_list:
+		var synergy_name: String = entity.data.synergy_name
+		if synergy_name in synergies:
+			continue
+
+
+		var synergy: SynergyNode = synergy_node_scene.instantiate()
+		synergy.synergy_name = synergy_name
 
 
 func draw_entities() -> void:
