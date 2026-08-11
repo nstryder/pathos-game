@@ -9,6 +9,9 @@ properties/0/replication_mode = 2
 properties/1/path = NodePath(".:is_active")
 properties/1/spawn = true
 properties/1/replication_mode = 2
+properties/2/path = NodePath(".:player_nodepath")
+properties/2/spawn = true
+properties/2/replication_mode = 2
 
 [node name="SyngergyNode" type="Node2D" unique_id=676753930]
 script = ExtResource("1_yhmum")

@@ -2,7 +2,6 @@ extends Node2D
 class_name Player
 
 signal hp_changed(new_hp: int)
-signal synergy_activated
 
 const ENTITY_LIMIT = 3
 const entity_card_scene = preload("uid://djf85mhy7rn64")
@@ -14,11 +13,6 @@ const synergy_node_scene = preload("uid://drynlu0kuhbj8")
 	set(value):
 		hp = value
 		hp_changed.emit(value)
-@export var synergy_is_active: bool = false:
-	set(value):
-		synergy_is_active = value
-		if value == true:
-			synergy_activated.emit()
 
 @export var damage_modifier: float = 1.0
 @export var overdamage_modifier: float = 1.0
@@ -76,15 +70,19 @@ func initialize_decks() -> void:
 func initialize_synergies() -> void:
 	if not multiplayer.is_server():
 		return
+	var synergy_list: Dictionary[String, bool] = {}
 	var entity_list := get_all_entities()
 	for entity in entity_list:
 		var synergy_name: String = entity.data.synergy_name
-		if synergy_name in synergies:
+		if synergy_name in synergy_list:
 			continue
-
+		synergy_list.set(synergy_name, true)
 
 		var synergy: SynergyNode = synergy_node_scene.instantiate()
 		synergy.synergy_name = synergy_name
+		synergy.name = synergy_name
+		synergy.player_nodepath = get_path()
+		synergies.add_child(synergy)
 
 
 func draw_entities() -> void:
@@ -178,6 +176,19 @@ func get_all_entities() -> Array[EntityCard]:
 	var entities: Array[EntityCard]
 	entities.assign(entity_card_holder.get_children())
 	return entities
+
+
+func get_synergy(synergy_name: String) -> SynergyNode:
+	return synergies.get_node(synergy_name)
+
+
+func activate_synergy(synergy_name: String) -> void:
+	get_synergy(synergy_name).is_active = true
+
+
+func deactivate_all_synergies() -> void:
+	for synergy: SynergyNode in synergies.get_children():
+		synergy.is_active = false
 
 
 func has_aggro() -> bool:

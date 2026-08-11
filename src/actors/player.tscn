@@ -24,15 +24,12 @@ properties/5/replication_mode = 2
 properties/6/path = NodePath(".:hp")
 properties/6/spawn = true
 properties/6/replication_mode = 2
-properties/7/path = NodePath(".:synergy_is_active")
+properties/7/path = NodePath(".:damage_modifier")
 properties/7/spawn = true
 properties/7/replication_mode = 2
-properties/8/path = NodePath(".:damage_modifier")
+properties/8/path = NodePath(".:overdamage_modifier")
 properties/8/spawn = true
 properties/8/replication_mode = 2
-properties/9/path = NodePath(".:overdamage_modifier")
-properties/9/spawn = true
-properties/9/replication_mode = 2
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gdh0h"]
 properties/0/path = NodePath(".:effect_deck")
@@ -64,6 +61,10 @@ spawn_path = NodePath("../EntityCards")
 [node name="EffectSpawner" type="MultiplayerSpawner" parent="." unique_id=1713749885]
 _spawnable_scenes = PackedStringArray("uid://lfqkryekm4io")
 spawn_path = NodePath("../EffectCards")
+
+[node name="SynergySpawner" type="MultiplayerSpawner" parent="." unique_id=273519178]
+_spawnable_scenes = PackedStringArray("uid://drynlu0kuhbj8")
+spawn_path = NodePath("../Synergies")
 
 [node name="EntityCards" type="Node2D" parent="." unique_id=185373872]
 position = Vector2(10000, 10000)

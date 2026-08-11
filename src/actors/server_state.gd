@@ -139,7 +139,9 @@ func _setup_player_decks() -> void:
 	player2.base_entity_deck = player1.base_entity_deck.duplicate()
 	player2.base_effect_deck = player1.base_effect_deck.duplicate()
 	player1.initialize_decks()
+	player1.initialize_synergies()
 	player2.initialize_decks()
+	player2.initialize_synergies()
 
 
 func _draw_initial_entities() -> void:

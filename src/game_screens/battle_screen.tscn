@@ -49,7 +49,7 @@ font_size = 64
 [node name="BattleScreen" type="Node2D" unique_id=935212692]
 position = Vector2(1, 0)
 script = ExtResource("1_36hs7")
-template_entity_deck = Array[String](["Pixie", "Akari", "Hibiki", "Golem", "Shin"])
+template_entity_deck = Array[String](["Pixie", "Hibiki", "Akari", "Golem", "Shin"])
 template_effect_deck = Array[String](["Bite", "Snipe", "Sludge", "Taunt", "Medkit", "Plate", "Tempered Core", "Treasure", "Knife"])
 can_shuffle_cards = false
 

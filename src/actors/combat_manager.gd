@@ -154,19 +154,19 @@ func reveal_entity(entity: EntityCard) -> void:
 	check_synergy()
 
 
-# TODO
 func check_synergy() -> void:
-	# for player: Player in [server.player1, server.player2]:
-	# 	var entities: Array[EntityCard] = player.get_all_entities_in_play()
-	# 	if entities.size() < 3:
-	# 		continue
-	# 	var everyone_is_revealed: bool = entities.all(func(e: EntityCard) -> bool: return e.is_revealed)
-	# 	var synergy_list: Array = entities.map(func(e: EntityCard) -> String: return e.data.synergy_name)
-	# 	var synergies_match: bool = synergy_list[0] == synergy_list[1] and synergy_list[1] == synergy_list[2]
-	# 	if everyone_is_revealed and synergies_match:
-	# 		player.synergy_is_active = true
-	# 		synergies[synergy_list[0]]
-	pass
+	for player: Player in [server.player1, server.player2]:
+		var entities: Array[EntityCard] = player.get_all_entities_in_play()
+		if entities.size() < 3:
+			continue
+		var everyone_is_revealed: bool = entities.all(func(e: EntityCard) -> bool: return e.is_revealed)
+		var synergy_list: Array[String]
+		synergy_list.assign(entities.map(func(e: EntityCard) -> String: return e.data.synergy_name))
+		var synergies_match: bool = synergy_list[0] == synergy_list[1] and synergy_list[1] == synergy_list[2]
+		if everyone_is_revealed and synergies_match:
+			player.activate_synergy(synergy_list[0])
+		else:
+			player.deactivate_all_synergies()
 
 
 func activate_entity_ability(entity: EntityCard) -> void:
